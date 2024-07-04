@@ -2,6 +2,9 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
-    '@pinia/nuxt',
-  ]
+    ['@pinia/nuxt', {autoImports: 'defineStore'}],
+  ],
+  imports: {
+    dirs: ['stores']
+  }
 })
