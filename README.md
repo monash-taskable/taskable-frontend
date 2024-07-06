@@ -1,75 +1,23 @@
-# Nuxt 3 Minimal Starter
+# Monash Taskable Frontend Components
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Frontend written in Nuxt 3, with Vue 3 composition API.
 
-## Setup
+### Development, Test and Build
 
-Make sure to install the dependencies:
+To develop and test the project:
+1. Clone the repository and cd into the workspace
+2. Use your favourite package manager (`pnpm` is recommended) and install all dependencies (e.g. `pnpm i`).
+3. Run development server with `dev` subcommand (e.g. `pnpm run dev`).
+4. Check ip address in terminal and open it in a browser.
 
-```bash
-# npm
-npm install
+To build the production server:
+1. idk, might update the steps later :P
 
-# pnpm
-pnpm install
+### Documentation
 
-# yarn
-yarn install
+Other than typical Nuxt pattern, there are an extra directory called [`documentation/`](/documentation/) with markdown files describing some rules, conventions and structures specific to this project (i.e. Monash Taskable Frontend).
 
-# bun
-bun install
-```
 
-## Development Server
+### Licences
 
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+To be decided.
