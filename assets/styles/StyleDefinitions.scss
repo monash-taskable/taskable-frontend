@@ -1,0 +1,67 @@
+@import "./Utils.scss"
+
+:root {
+  // gray scale
+  --white: white;
+  --g10: #F5F5F5;
+  --g20: #E0E0E0;
+  --g30: #C6C6C6;
+  --g40: #A8A8A8;
+  --g50: #8D8D8D;
+  --g60: #727272;
+  --g70: #555555;
+  --g80: #393939;
+  --g90: #252525;
+  --g100: #161616;
+  --black: black;
+
+  // blue
+  --gnr-blue10: #EDF6F8;
+  --gnr-blue20: #E0EEF1;
+  --gnr-blue30: #B6D4DF;
+  --gnr-blue40: #8DBACB;
+  --gnr-blue50: #669FB5;
+  --gnr-blue60: #4B8DAA;
+  --gnr-blue70: #317C9F;
+  --gnr-blue80: #267195;
+  --gnr-blue90: #176185;
+  --gnr-blue100: #0B5174;
+
+  // red
+  --gnr-red10: #FCE8E6;
+  --gnr-red20: #FFC8BB;
+  --gnr-red30: #FFA48E;
+  --gnr-red40: #FF7F62;
+  --gnr-red50: #FF6041;
+  --gnr-red60: #FF3E1F;
+  --gnr-red70: #FA371C;
+  --gnr-red80: #EC3017;
+  --gnr-red90: #DE2712;
+  --gnr-red100: #C61306;
+
+  // functional
+  --popup-overlay: rgba(57, 57, 57, 0.1);
+}
+
+body.theme--light {
+  // generic colours
+  --background: v(g10);
+  --background-interaction-strong: v(g20);
+  --layer-background: v(white);
+  --foreground: v(80);
+  --foreground-weak: v(50);
+  --foreground-disabled: v(g30);
+  
+  // functional colours
+  --dangerous-strong: v(gnr-red100);
+  --dangerous-intermediate: v(gnr-red60);
+  --dangerous-interact: v(gnr-red20);
+  --dangerous-weak: v(gnr-red10);
+
+  &.color--blue {
+    --accent-strong: v(gnr-blue100);
+    --accent-intermediate: v(gnr-blue60);
+    --accent-interact: v(gnr-blue20);
+    --accent-weak: v(gnr-blue10);
+  }
+}
