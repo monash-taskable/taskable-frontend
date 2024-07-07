@@ -1,0 +1,9 @@
+@import "./StyleDefinitions/Index.scss";
+@import "./FontDefinitions.scss";
+@import "./Utils.scss";
+
+
+body {
+  color: v(color1);
+  font-size: 50px;
+}
