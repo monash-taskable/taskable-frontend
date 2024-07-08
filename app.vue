@@ -1,11 +1,13 @@
 <template>
   <div id="theme-provider" :class="classes(appConfigRef.theme.value, appConfigRef.accent.value)">
-    <taskable-home-button></taskable-home-button>
+    <TaskableHomeButton @click="log"/>
   </div>
 </template>
 
 <script setup lang="ts">
 import type { AccentColor, Theme } from './types/Theming';
+
+const log = () => {console.log("awaaa")};
 
 // app config and theme provider
 const appConfig = useAppConfigStore();

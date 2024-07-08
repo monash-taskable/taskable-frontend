@@ -1,5 +1,7 @@
 <template>
-  <button @mouseover="onHoverOn" @mouseleave="onHoverOff">
+  <button
+      @mouseover="onHoverOn" @mouseleave="onHoverOff"
+      @click="$emit('click')" @keyup="onEnter">
     <TaskableLogo v-if="!hovered"/>
     <TaskableLogo v-if="hovered" color="var(--hovered)"/>
     {{ $t("taskable") }}
@@ -12,6 +14,8 @@ const t = useI18n();
 const hovered = ref(false);
 const onHoverOn = () => { hovered.value = true; };
 const onHoverOff = () => { hovered.value = false; };
+const emitClick = defineEmits(["click"]);
+const onEnter = (event: KeyboardEvent) => (event.key === "enter" && emitClick("click")); 
 </script>
 
 <style lang="scss" scoped>
