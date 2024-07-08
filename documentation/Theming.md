@@ -10,13 +10,14 @@ When importing, the imports (`@use` and `@import` statements) should be on the t
 
 The global style files are categorised based on the nature of their code.
 
-* `StyleDefinitions.scss` defines the constant values for different colour mode and theme modes, as well as other generic style constants such as spacing, typography and screen-sizes.
+* `StaticTokenDefinitions.scss` defines static constant variable tokens, as well as other generic style constants such as spacing, typography and screen-sizes.
+* `DynamicTokenDefinitions.css` 
 * `FontDefinitions.scss` is used when local font file is used (See [Fonts](#fonts)).
 * `Utils.scss` defines utility functions that can be used globally.
 
 Define global constant immutable [scss variables](https://sass-lang.com/documentation/variables/) can be done in `Main.scss` (although it's recommended to have a separate file to do so, while importing that file in `Main.scss`). These variables are replaced to it's literal values when building, which means it cannot be updated during runtime.
 
-Theme related variables needs to be defined in vanilla css variable (`:root{ --var: value; }`). Thought it's constant, it has to be changed during runtime (i.e. Theme Switching), thus instead of [scss variables](https://sass-lang.com/documentation/variables/) syntax `$varname`, `v(varname)` function [defined here]("/assets/styles/Utils.scss")., or the builtin `var(--varname)` should be used when referencing these variables.
+Theme related variables needs to be defined in vanilla css variable (`:root{ --var: value; }`). Thought it's constant, it has to be changed during runtime (i.e. Theme Switching), thus instead of [scss variables](https://sass-lang.com/documentation/variables/) syntax `$varname`, the builtin `var(--varname)` should be used when referencing these variables.
 
 ### Colours and Themes
 
@@ -36,12 +37,14 @@ Currently, the themes are:
 
 When adding a new theme, decide a code name, its class tag will be the code name prefixed with `theme--`.
 
-Add a section in `@/assets/styles/StyleDefinitions.scss`, with a selector of `body.<class tag>`. For example, a section for Light mode (i.e. class tag of `theme--light`) may look like this:
+First, add the theme's code name to `@/types/Theming.ts` (also note the theme down in the table above ideally in the same commit).
+
+Then, add a section in `@/assets/styles/StyleDefinitions.scss`, with a selector of `#theme-provider.<class tag>`. For example, a section for Light mode (i.e. class tag of `theme--light`) may look like this:
 
 ```scss
 // @/assets/styles/StyleDefinitions.scss
 
-body.theme--light{
+#theme-provider.theme--light{
   /* Some variable definitions here */
 
   &.color--blue{ /* accent colour definitions goes here */}
@@ -49,6 +52,12 @@ body.theme--light{
   /* ... other colours */
 }
 ```
+
+Adding a colour option will be as simple as adding a colour section in each theme section.
+
+See [Token Table](#token-table) for a list of token to be defined in each section.
+
+### Token Table
 
 In the theme section (outside of colour sections), define the following variables:
 
@@ -90,14 +99,14 @@ To improve performance, only import or define font weights and styles that is re
 
 ### Colour and Variable Tokens
 
-Tokens are pre-defined constants or variables to the `:root` tag or `<body>` tag, which contains styles that is being used universally in the application.
+Tokens are pre-defined constants or variables to the `:root` tag or `<... id='theme-provider'>` tag, which contains styles that is being used universally in the application.
 
 Raw tokens are fixed tokens defined to the `:root` tag, that doesn't change as theme changes. Examples are `white`, `gnr-blue20` etc.
-Variable tokens are defined to the `<body>` tag, where each tag usually is a reference to a raw token. When theme or colour changes, the theme variable tokens will change its reference to a new value, so that the elements using those tags changes its styles as well. Examples are `background`, `foreground`, `accent-strong` etc.
+Variable tokens are defined to the `<... id='theme-provider'>` tag, where each tag usually is a reference to a raw token. When theme or colour changes, the theme variable tokens will change its reference to a new value, so that the elements using those tags changes its styles as well. Examples are `background`, `foreground`, `accent-strong` etc.
 
 ### Class Binding and Theme Sepecific Customisation of Components
 
-the `<body>` html tag contains classes that allows browser to choose which set of variables to load.
+the `<... id='theme-provider'>` html tag contains classes that allows browser to choose which set of variables to load.
 The theme selected is denoted with the `theme--<name>` class tag and the accent colour selected is denoted with the `color--<name>` class tag.
 
 Usually, when styling a component, just use the predefined variable tokens will do. When theme changes, the referenced value of those token changes as well.
@@ -122,14 +131,14 @@ See the following example:
 
 .predefined {
   // definitions for all themes except contrast-light
-  background: v(accent-weak);
-  color: v(accent-strong);
+  background: var(--accent-weak);
+  color: var(--accent-strong);
   border-radius: 0px;
   border: 0px;
 
   // only contrast-light theme will have solid outlines
-  body.theme--contrast-light & {
-    border: 1px solid v(foreground);
+  #theme-provider.theme--contrast-light & {
+    border: 1px solid var(--foreground);
   }
 }
 
