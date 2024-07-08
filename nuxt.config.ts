@@ -3,7 +3,9 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
 
   modules: [
-    ['@pinia/nuxt', {autoImports: 'defineStore'}],
+    ['@pinia/nuxt', {
+      autoImports: 'defineStore'
+    }], 
     ["@nuxtjs/i18n", {
       locales: [
         {
@@ -16,11 +18,11 @@ export default defineNuxtConfig({
       defaultLocale: 'en-au'
     }],
   ],
-
+  
   imports: {
     dirs: ['stores']
   },
 
   css: ['assets/styles/Main.scss'],
-  compatibilityDate: '2024-07-08'
+  compatibilityDate: '2024-07-08',
 })

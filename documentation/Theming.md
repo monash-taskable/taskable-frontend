@@ -10,10 +10,10 @@ When importing, the imports (`@use` and `@import` statements) should be on the t
 
 The global style files are categorised based on the nature of their code.
 
-* `StaticTokenDefinitions.scss` defines static constant variable tokens, as well as other generic style constants such as spacing, typography and screen-sizes.
-* `DynamicTokenDefinitions.css` 
+* `Main.scss` the main entry point of global stylesheet.
+* `StyleDefinitions.scss` defines constant variable tokens, as well as other generic style constants such as spacing, typography and screen-sizes.
 * `FontDefinitions.scss` is used when local font file is used (See [Fonts](#fonts)).
-* `Utils.scss` defines utility functions that can be used globally.
+
 
 Define global constant immutable [scss variables](https://sass-lang.com/documentation/variables/) can be done in `Main.scss` (although it's recommended to have a separate file to do so, while importing that file in `Main.scss`). These variables are replaced to it's literal values when building, which means it cannot be updated during runtime.
 

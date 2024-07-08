@@ -1,5 +1,6 @@
 <template>
   <div id="theme-provider" :class="classes(appConfigRef.theme.value, appConfigRef.accent.value)">
+    <taskable-home-button></taskable-home-button>
   </div>
 </template>
 
@@ -16,5 +17,9 @@ const classes = (theme: Theme, accent: AccentColor) => `theme--${theme} color--$
 body {
   padding: 0;
   margin: 0;
+}
+
+* {
+  font-family: "IBM Plex Sans", sans-serif;
 }
 </style>

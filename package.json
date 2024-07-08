@@ -17,6 +17,7 @@
     "vue": "latest"
   },
   "devDependencies": {
-    "sass": "^1.77.6"
+    "sass": "^1.77.6",
+    "vue-svg-loader": "^0.16.0"
   }
 }
