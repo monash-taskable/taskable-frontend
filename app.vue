@@ -23,3 +23,11 @@ body {
   font-family: "IBM Plex Sans", sans-serif;
 }
 </style>
+
+<style lang="scss" scoped>
+#theme-provider {
+  width: 100vw;
+  height: 100vh;
+  background: var(--background);
+}
+</style>
