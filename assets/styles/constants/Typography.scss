@@ -1,0 +1,30 @@
+// constant sizes
+$typesize-default: 16px;
+$typesize-larger: 24px;
+$typesize-large: 32px;
+
+$typeweight-regular: 400;
+$typeweight-light: 300;
+
+
+// mixins
+@mixin typemix-default($color: var(--foreground)) {
+  color: $color;
+  font-size: $typesize-default;
+  font-weight: $typeweight-regular;
+}
+
+@mixin typemix-label($color: var(--foreground)) {
+  @include typemix-default($color);
+}
+
+@mixin typemix-header($color: var(--foreground)) {
+  @include typemix-default($color);
+  font-size: $typesize-larger;
+}
+
+@mixin typemix-title($color: var(--foreground)) {
+  @include typemix-default($color);
+  font-size: $typesize-large;
+  font-weight: $typeweight-light;
+}

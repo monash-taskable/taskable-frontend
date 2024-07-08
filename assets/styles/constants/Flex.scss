@@ -1,0 +1,19 @@
+@mixin flex-cross($align: center){
+  align-items: $align;
+}
+
+@mixin flex-main($align: center){
+  justify-content: $align;
+}
+
+@mixin flex-col {
+  display: flex;
+  flex-direction: column;
+  @include flex-main();
+}
+
+@mixin flex-row {
+  display: flex;
+  flex-direction: row;
+  @include flex-main();
+}

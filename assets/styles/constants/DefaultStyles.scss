@@ -1,0 +1,25 @@
+@import "./Spacing.scss";
+
+$def-transition: 150ms cubic-bezier(0.33, 1, 0.68, 1) 0s;
+$def-tabsel-outline: 2px solid var(--accent-strong);
+
+// mixins
+@mixin defmix-box($background: transparent) {
+  background: $background;
+  border: 0px;
+  border-radius: 0px;
+}
+
+@mixin defmix-boxpad($padding: $space-medium $space-large $space-medium $space-medium) {
+  padding: $padding;
+}
+
+@mixin defmix-focusable($outline: $def-tabsel-outline, $cursor: pointer) {
+  outline: $outline;
+  outline-color: transparent;
+  cursor: $cursor;
+  
+  &:focus{
+    outline: $outline;
+  }
+}
