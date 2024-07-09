@@ -1,7 +1,7 @@
 @import "./Sizes.scss";
 
 $def-transition: 150ms cubic-bezier(0.33, 1, 0.68, 1) 0s;
-$def-tabsel-outline: 2px solid var(--accent-strong);
+$def-tabsel-outline: 2px solid var(--outline);
 
 // mixins
 @mixin defmix-box($background: transparent) {

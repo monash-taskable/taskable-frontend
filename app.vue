@@ -1,6 +1,7 @@
 <template>
   <div id="theme-provider" :class="classes(appConfigRef.theme.value, appConfigRef.accent.value)">
     <TaskableHomeButton @click="log"/>
+    <IconButton @click="log" expanding caption="A long long button caption thing" :styles="{focusable: true, colorPreset: 'layer', size: 'medium'}"/>
   </div>
 </template>
 

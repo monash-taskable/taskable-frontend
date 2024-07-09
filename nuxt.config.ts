@@ -3,9 +3,10 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
 
   modules: [
+    "@nuxt/icon",
     ['@pinia/nuxt', {
       autoImports: 'defineStore'
-    }], 
+    }],
     ["@nuxtjs/i18n", {
       locales: [
         {
