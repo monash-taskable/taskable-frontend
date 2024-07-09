@@ -1,5 +1,5 @@
 <template>
-  <button
+  <button :tabindex="tabindex"
       @mouseover="onHoverOn" @mouseleave="onHoverOff"
       @click="$emit('click')" @keyup="onEnter">
     <TaskableLogo v-if="!hovered"/>
@@ -10,6 +10,7 @@
 
 <script lang="ts" setup>
 const t = useI18n();
+const props = defineProps({tabindex: {type: Number, required: false}});
 
 const hovered = ref(false);
 const onHoverOn = () => { hovered.value = true; };
