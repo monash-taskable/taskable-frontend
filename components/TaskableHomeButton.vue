@@ -22,7 +22,7 @@ const onEnter = (event: KeyboardEvent) => (event.key === "enter" && emitClick("c
 @import "/assets/styles/constants/Typography.scss";
 @import "/assets/styles/constants/DefaultStyles.scss";
 @import "/assets/styles/constants/Flex.scss";
-@import "/assets/styles/constants/Spacing.scss";
+@import "/assets/styles/constants/Sizes.scss";
 
 button {
   @include typemix-label();
