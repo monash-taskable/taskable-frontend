@@ -7,7 +7,7 @@
       @click="$emit('click')" @keyup="onEnter"
       >
     <Icon :name="icon"/>
-    <span class="caption">
+    <span tabindex="-1" @click="$emit('click')" class="caption">
       {{ caption }}
     </span>
   </button>
@@ -43,7 +43,7 @@ const onFocusOut = () => {
 const initExpandedState = (props.expanded === undefined) ? !props.expanding : props.expanded;
 const expandedState = ref(initExpandedState);
 const expand = () => { expandedState.value = (props.expanded === undefined) ? true : props.expanded; };
-const collapse = () => { expandedState.value = (props.expanded === undefined) ? false : props.expanded; };
+const collapse = () => { expandedState.value = (props.expanded === undefined) ? initExpandedState : props.expanded; };
 
 // getters
 const getClass = (
@@ -53,7 +53,7 @@ const getClass = (
   const expandedCls = expanded ? "expanded" : "";
   const expandingCls = expanding ? "expanding" : "";
   const enterCls = enter ? "enter" : "";
-  
+
   styles = <ButtonStyle>((styles === undefined) ? presets.get("background") : styles);
   styles = buttonStyle(styles);
   const sizeCls = (styles.size === undefined) ? "medium" : styles.size;

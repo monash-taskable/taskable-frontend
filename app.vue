@@ -1,14 +1,13 @@
 <template>
   <div id="theme-provider" :class="classes(appConfigRef.theme.value, appConfigRef.accent.value)">
-    <TaskableHomeButton @click="log"/>
-    <IconButton @click="log" expanding caption="A long long button caption thing" :styles="{focusable: true, colorPreset: 'layer', size: 'medium'}"/>
+    <NuxtLayout>
+      <NuxtPage/>
+    </NuxtLayout>
   </div>
 </template>
 
 <script setup lang="ts">
 import type { AccentColor, Theme } from './types/Theming';
-
-const log = () => {console.log("awaaa")};
 
 // app config and theme provider
 const appConfig = useAppConfigStore();
