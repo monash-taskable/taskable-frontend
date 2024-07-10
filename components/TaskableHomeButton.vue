@@ -1,7 +1,7 @@
 <template>
   <button :tabindex="tabindex" :class="getClass(enterFlag, focusFlag)"
       @mouseover="onHoverOn" @mouseleave="onHoverOff"
-      @click="$emit('click')" @keyup="onKeyUp"
+      @click="onClick" @keyup="onKeyUp"
       @focusout="onFocusOut"
       >
     <TaskableLogo v-if="!hovered"/>
@@ -25,20 +25,24 @@ const hovered = ref(false);
 const enterFlag = ref(false);
 const focusFlag = ref(false);
 const onHoverOn = () => { hovered.value = true; };
-const onHoverOff = () => { hovered.value = false; };
+const onHoverOff = () => { hovered.value = enterFlag.value; };
 const emitClick = defineEmits(["click"]);
 const onKeyUp = (event: KeyboardEvent) => {
   focusFlag.value = true;
   if (event.key === "Enter"){
-    enterFlag.value = true;
+    onClick();
     hovered.value = true;
-    emitClick("click");
   }
 };
 const onFocusOut = () => {
   focusFlag.value = false;
   hovered.value = false;
   enterFlag.value = false;
+}
+const onClick = () => {
+  enterFlag.value = true;
+  hovered.value = true;
+  emitClick("click");
 }
 
 </script>

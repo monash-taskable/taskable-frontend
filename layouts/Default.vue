@@ -8,6 +8,7 @@
       <nav>
         <IconButton
           expanding
+          maintain-click
           :styles="navBtnStyle"
           icon="fluent:alert-20-regular"
           :caption="(notificationCount === 0) ?
@@ -15,6 +16,7 @@
             sprintf($t('header.btn.notifications'), notificationCount)"/>
         <IconButton
           expanding
+          maintain-click
           :styles="navBtnStyle"
           icon="fluent:settings-20-regular"
           :caption="$t('header.btn.settings')"/>
