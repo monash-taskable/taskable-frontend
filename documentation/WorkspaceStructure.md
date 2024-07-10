@@ -1,0 +1,55 @@
+Workspace Structure
+==
+
+### `@/assets/`
+
+Assets directories are static assets that will be compiled into the final packed webpage, which cannot be directly accessed by frontend through typical http requests.
+
+Use this directory to store stylesheets (`*.scss`), images, icons and other static assets.
+
+For more information about stylesheets, see [Theming.md](/documentation/Theming.md).
+
+
+### `@/components/`
+
+[Vue components](https://vuejs.org/guide/essentials/component-basics.html) are stored here. Each `.vue` file in this directory.
+
+### `@/documentation/`
+
+Stores documentations (markdown files) that explains the implementation details and guidelines for developers and users who wish to customise this project.
+
+### `@/lang/`
+
+Stores localisation files of this project. See [I18n.md](/documentation/I18n.md).
+
+### `@/layouts/`
+
+Stores [page layouts](https://nuxt.com/docs/guide/directory-structure/layouts) of this project. This is a Nuxt feature.
+
+### `@/pages/`
+
+Stores [pages](s://nuxt.com/docs/guide/directory-structure/pages) of this project. This is a Nuxt feature.
+
+### `@/public/`
+
+Stores static assets. Different from `@/assets/`, assets stored under this directory are directly accessible from the frontend using HTTP requests.
+
+### `@/scripts/`
+
+The source directory for typescript files.
+
+Use this directory to store typescript files, that does not belong to any component, page or store. However, don't store major type definitions here.
+
+### `@/types/`
+
+The source directory for typescript type definitions. See [`CodeAndNamingGuide.md`](/documentation/CodeAndNamingGuide.md).
+
+Use this directory to store type definitions and it's methods, constructors and utilities here.
+
+### `@/stores/`
+
+The source directory for [Pinia Stores](https://pinia.vuejs.org/core-concepts/).
+
+### `@/app.vue`
+
+The entry point of frontend rendering.
