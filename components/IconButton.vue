@@ -1,10 +1,10 @@
 <template>
   <button :tabindex="tabindex"
-      :class="getClass(expandedState, props.expanding, enterFlag, props.styles)"
+      :class="getClass(expandedState, props.expanding, enterFlag, focusFlag, props.styles)"
       :style="getStyle(props.styles)"
       @mouseover="expand" @mouseleave="collapse"
       @focusin="expand" @focusout="onFocusOut"
-      @click="$emit('click')" @keyup="onEnter"
+      @click="$emit('click')" @keyup="onKeyUp"
       >
     <Icon :name="icon"/>
     <span tabindex="-1" @click="$emit('click')" class="caption">
@@ -27,8 +27,10 @@ const props = defineProps({
 
 // interaction logic
 const enterFlag = ref(false);
+const focusFlag = ref(false);
 const emitClick = defineEmits(["click"]);
-const onEnter = (event: KeyboardEvent) => {
+const onKeyUp = (event: KeyboardEvent) => {
+  focusFlag.value = true;
   if (event.key === "Enter"){
     enterFlag.value = true;
     emitClick("click");
@@ -36,6 +38,7 @@ const onEnter = (event: KeyboardEvent) => {
 };
 const onFocusOut = () => {
   enterFlag.value = false;
+  focusFlag.value = false;
   collapse();
 }
 
@@ -48,11 +51,13 @@ const collapse = () => { expandedState.value = (props.expanded === undefined) ? 
 // getters
 const getClass = (
   expanded: boolean, expanding: boolean,
-  enter: boolean, styles?: ButtonStyle): string => {
+  enter: boolean, focus: boolean, 
+  styles?: ButtonStyle): string => {
 
   const expandedCls = expanded ? "expanded" : "";
   const expandingCls = expanding ? "expanding" : "";
   const enterCls = enter ? "enter" : "";
+  const focusCls = focus ? "focused" : "";
 
   styles = <ButtonStyle>((styles === undefined) ? presets.get("background") : styles);
   styles = buttonStyle(styles);
@@ -62,8 +67,18 @@ const getClass = (
   const fgHoverCls = (styles.foregroundColorHover === undefined) ? "" : "fgHover";
   const paddingCls = (styles.padding === undefined) ? "" : "padding";
 
-
-  return `${expandedCls} ${expandingCls} ${sizeCls} ${focusableCls} ${bgHoverCls} ${fgHoverCls} ${paddingCls} ${enterCls}`;
+  return [
+    expandedCls,
+    expandedCls,
+    sizeCls,
+    focusableCls,
+    bgHoverCls,
+    fgHoverCls,
+    paddingCls,
+    expandingCls,
+    focusCls,
+    enterCls,
+  ].join(" ");
 }
 
 const getStyle = (styles?: ButtonStyle): string => {

@@ -19,7 +19,7 @@ $def-tabsel-outline: 2px solid var(--outline);
   outline-color: transparent;
   cursor: $cursor;
   
-  &:focus{
+  &.focused{
     outline: $outline;
   }
 }

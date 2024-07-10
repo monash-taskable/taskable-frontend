@@ -1,7 +1,7 @@
 <template>
-  <button :tabindex="tabindex" :class="getClass(enterFlag)"
+  <button :tabindex="tabindex" :class="getClass(enterFlag, focusFlag)"
       @mouseover="onHoverOn" @mouseleave="onHoverOff"
-      @click="$emit('click')" @keyup="onEnter"
+      @click="$emit('click')" @keyup="onKeyUp"
       @focusout="onFocusOut"
       >
     <TaskableLogo v-if="!hovered"/>
@@ -14,14 +14,21 @@
 const t = useI18n();
 const props = defineProps({tabindex: {type: Number, required: false}});
 
-const getClass = (enter: boolean): string => enter ? "enter" : "";
+const getClass = (enter: boolean, focus: boolean): string => {
+  const enterCls = enter ? "enter" : "";
+  const focusCls = focus ? "focused" : "";
+
+  return [focusCls, enterCls].join(" ");
+}
 
 const hovered = ref(false);
 const enterFlag = ref(false);
+const focusFlag = ref(false);
 const onHoverOn = () => { hovered.value = true; };
 const onHoverOff = () => { hovered.value = false; };
 const emitClick = defineEmits(["click"]);
-const onEnter = (event: KeyboardEvent) => {
+const onKeyUp = (event: KeyboardEvent) => {
+  focusFlag.value = true;
   if (event.key === "Enter"){
     enterFlag.value = true;
     hovered.value = true;
@@ -29,6 +36,7 @@ const onEnter = (event: KeyboardEvent) => {
   }
 };
 const onFocusOut = () => {
+  focusFlag.value = false;
   hovered.value = false;
   enterFlag.value = false;
 }
