@@ -47,6 +47,11 @@ export const presets: ReadonlyMap<ColorPreset, ButtonStyle> = new Map([
     foregroundColor: "var(--accent-strong)",
   }],
   ["dangerous", {
+    backgroundColor: "transparent",
+    backgroundColorHover: "var(--dangerous-weak)",
+    foregroundColor: "var(--dangerous-strong)",
+  }],
+  ["dangerous-strong", {
     backgroundColor: "var(--dangerous-weak)",
     backgroundColorHover: "var(--dangerous-interact)",
     foregroundColor: "var(--dangerous-strong)",

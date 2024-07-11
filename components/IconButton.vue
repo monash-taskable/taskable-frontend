@@ -1,7 +1,7 @@
 <template>
   <button :tabindex="tabindex"
       :class="getClass(expandedState, props.expanding, enterFlag, focusFlag, props.styles)"
-      :style="getStyle(props.styles)"
+      :style="getStyle(props.styles)" :id="id"
       @mouseover="expand" @mouseleave="collapse"
       @focusin="expand" @focusout="onFocusOut"
       @click="onClick()" @keyup="onKeyUp"
@@ -24,6 +24,7 @@ const props = defineProps({
   styles: {type: Object, required: false},
   tabindex: {type: Number, required: false},
   maintainClick: {type: Boolean, default: false},
+  id: {type: String, required:false, default: undefined},
 })
 
 // interaction logic
@@ -128,6 +129,7 @@ button {
   @include defmix-box();
   @include flex-row();
   @include flex-cross(center);
+  @include flex-main(flex-start);
 
   .caption {
     overflow-x: hidden;

@@ -2,5 +2,8 @@
   "taskable": "Monash Taskable",
   "header.btn.settings": "Settings",
   "header.btn.notifications": "%s Notification(s)",
-  "header.btn.noNotifications": "No Notifications"
+  "header.btn.noNotifications": "No Notifications",
+  "header.btn.profile": "View Profile",
+  "header.btn.about": "About Monash Taskable",
+  "header.btn.signOut": "Sign Out"
 }
