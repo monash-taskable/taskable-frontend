@@ -190,7 +190,7 @@ button {
     background: var(--bgHover);
   }
 
-  &.fgHover:hover, &.enter {
+  &.fgHover:hover, &.fgHover.enter {
     color: var(--fgHover);
   }
 
