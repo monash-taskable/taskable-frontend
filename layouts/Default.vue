@@ -39,9 +39,16 @@
               />
           </template>
           <div class="user-menu">
-            <IconButton :caption="$t('header.btn.profile')"/>
-            <IconButton :caption="$t('header.btn.about')"/>
-            <IconButton :caption="$t('header.btn.signOut')" :styles="{colorPreset: 'dangerous'}"/>
+            <IconButton
+              :caption="$t('header.btn.profile')"
+              icon="fluent:person-square-20-regular"/>
+            <IconButton 
+              :caption="$t('header.btn.about')"
+              icon="fluent:info-20-regular"/>
+            <IconButton
+              :caption="$t('header.btn.signOut')" 
+              :styles="{colorPreset: 'dangerous'}"
+              icon="fluent:arrow-exit-20-filled"/>
           </div>
         </TitleDropdown>
       </nav>
