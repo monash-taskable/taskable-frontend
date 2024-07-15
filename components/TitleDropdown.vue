@@ -42,8 +42,8 @@ const getStyle = (parent: HTMLElement, width: number): string => {
   let tabTranslateX = 0;
 
   if (modelX + width > vw) {
-    modelX = vw - width;
-    tabTranslateX = x + width - vw;
+    modelX = vw - width - 32;
+    tabTranslateX = x + width - vw + 32;
   }
 
   return `--x: ${modelX}px; --tab: ${tabTranslateX}px`;

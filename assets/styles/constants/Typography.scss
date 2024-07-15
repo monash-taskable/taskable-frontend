@@ -1,7 +1,7 @@
-// constant sizes
-$typesize-default: 16px;
-$typesize-larger: 24px;
-$typesize-large: 32px;
+// constant sizing, reference point is 16px
+$typesize-default: 1rem;
+$typesize-larger: 1.5rem;
+$typesize-large: 2rem;
 
 $typeweight-regular: 400;
 $typeweight-light: 300;
