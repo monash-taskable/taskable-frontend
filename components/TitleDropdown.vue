@@ -60,7 +60,6 @@ onUpdated(() => {
   const model = element.querySelector(".container");
   const modelBound = model!.getBoundingClientRect();
   if (renderedWidth.value === modelBound.width) return;
-  console.log(model, modelBound);
   renderedWidth.value = modelBound.width;
 })
 </script>
