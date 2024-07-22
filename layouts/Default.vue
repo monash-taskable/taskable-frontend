@@ -107,8 +107,6 @@
 
 <script lang="ts" setup>
 import { sprintf } from 'sprintf-js';
-import { fetchAndDecode } from '~/scripts/FetchTools';
-import { Post } from '~/types/proto/Post';
 import { buttonStyle } from '~/types/ButtonStyle';
 import type { Optional } from '~/types/Optional';
 
