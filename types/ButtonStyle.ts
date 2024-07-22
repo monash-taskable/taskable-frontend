@@ -20,7 +20,8 @@ export type ColorPreset =
   | "strong" 
   | "accent" 
   | "accent-strong" 
-  | "dangerous";
+  | "dangerous"
+  | "dangerous-strong";
 
 
 export const presets: ReadonlyMap<ColorPreset, ButtonStyle> = new Map([
