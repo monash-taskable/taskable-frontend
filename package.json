@@ -1,5 +1,5 @@
 {
-  "name": "nuxt-app",
+  "name": "monash-taskable-frontend",
   "private": true,
   "type": "module",
   "scripts": {
