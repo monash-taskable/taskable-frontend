@@ -14,7 +14,3 @@ When running `pnpm run build` or `pnpm run dev`, `pnpm run protobuild` is automa
 ### Fetching and Requesting Remote HTTP Server
 
 Use functions defined in `@/scripts/FetchTools.ts` for HTTP requests related, including sending, receiving, encoding and decoding messages.
-
-See [api-references/FetchTools.ts.md](/documentation/api-references/FetchTools.ts.md) for API references of tools provided in `FetchTools.ts`.
-
-### Manual Encoding and Decoding Protobuf Messages

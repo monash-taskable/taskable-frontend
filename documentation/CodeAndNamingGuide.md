@@ -57,3 +57,21 @@ The alias symbol for workspace root are `@` and `~`. There are no specific prefe
 For example: `@/components/`, `@/assets/styles/Main.scss` etc.
 
 Note that not all programmatic reference of path supports this, some uses absolute path format. For example, the above paths will be referenced like `/components/` or `/assets/styles/Main.scss`.
+
+### Documenting Code
+
+When writing code in script, types or stores, it is a good practice to document your code, including function or type definition.
+All public documentation should be written in the format supported by [TypeDoc](https://typedoc.org/).
+
+For example, this is a simple documentation
+
+```ts
+/**
+ * @param x - the first number to be added
+ * @param y - the second number to be added
+ * @returns the sum of x and y
+ */
+const add = (x: number, y:number): number => {
+  return x + y;
+}
+```
