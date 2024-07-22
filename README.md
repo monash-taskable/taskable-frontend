@@ -2,6 +2,40 @@
 
 Frontend written in Nuxt 3, with Vue 3 composition API.
 
+### External Dependencies
+
+#### 1. Proto Compiler
+
+This project may require the `protoc` command from protobuf compiler implementations.
+
+If you're using macos, install the `protobuf` package using Homebrew:
+
+```shell
+brew install protobuf
+protoc --version # check if the installation is working
+```
+
+If you're using linux, here are some packages for common distros:
+
+* [`protobuf-compiler` - Ubuntu](https://packages.ubuntu.com/noble/protobuf-compiler)
+* [`protobuf` - Arch Linux](https://archlinux.org/packages/extra/x86_64/protobuf/)
+
+If you're using windows, *get a better OS (recommended)*, or use one of the following ways
+
+* [Official release](https://github.com/protocolbuffers/protobuf/releases) on Github (Recommended)
+* Commandline with Chocolatey `choco install protoc`
+
+#### 2. Global `protoc-gen-js` Package
+
+You also need an extra package to allow proto compiler to generate the JavaScript logic for .proto files.
+
+Install `protoc-gen-js` using your favourite node package manager (`pnpm` is recommended)
+
+```bash
+# Using pnpm to install `protoc-gen-js`, but you can use npm, yarn or anything you like
+pnpm i -g protoc-gen-js
+```
+
 ### Development, Test and Build
 
 To develop and test the project:

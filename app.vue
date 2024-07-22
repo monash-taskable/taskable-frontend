@@ -28,6 +28,11 @@ body {
 </style>
 
 <style lang="scss" scoped>
+.icon-test{
+  color: green;
+  font-size: 40px;
+}
+
 #theme-provider {
   width: 100vw;
   height: 100vh;
