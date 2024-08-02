@@ -39,29 +39,34 @@
 
   // functional
   --popup-overlay: rgba(57, 57, 57, 0.1);
-  --float-color: rgba(0,0,0,0.05);
+  --float-color: rgba(0, 0, 0, 0.05);
   --outline: #0D8CE9;
 }
 
-#theme-provider.theme--light {
-  // generic colours
-  --background: var(--g10);
-  --background-interaction-strong: var(--g20);
-  --layer-background: var(--white);
-  --foreground: var(--g80);
-  --foreground-weak: var(--g50);
-  --foreground-disabled: var(--g30);
-  
-  // functional colours
-  --dangerous-strong: var(--gnr-red100);
-  --dangerous-intermediate: var(--gnr-red60);
-  --dangerous-interact: var(--gnr-red20);
-  --dangerous-weak: var(--gnr-red10);
+#theme-provider,
+.theme-override {
 
-  &.color--blue {
-    --accent-strong: var(--gnr-blue100);
-    --accent-intermediate: var(--gnr-blue60);
-    --accent-interact: var(--gnr-blue20);
-    --accent-weak: var(--gnr-blue10);
+  &.theme--light {
+    // generic colours
+    --background: var(--g10);
+    --background-interaction-strong: var(--g20);
+    --layer-background: var(--white);
+    --foreground: var(--g80);
+    --foreground-weak: var(--g50);
+    --foreground-disabled: var(--g30);
+
+    // functional colours
+    --dangerous-strong: var(--gnr-red100);
+    --dangerous-intermediate: var(--gnr-red60);
+    --dangerous-interact: var(--gnr-red20);
+    --dangerous-weak: var(--gnr-red10);
+
+    &.color--blue {
+      --accent-strong: var(--gnr-blue100);
+      --accent-intermediate: var(--gnr-blue60);
+      --accent-interact: var(--gnr-blue20);
+      --accent-weak: var(--gnr-blue10);
+    }
   }
+
 }
