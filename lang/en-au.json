@@ -7,6 +7,7 @@
   "header.btn.about": "About Monash Taskable",
   "header.btn.signOut": "Sign Out",
   "header.noti.newNotification": "New Notifications (%s)",
+  
   "datetime.today": "Today",
   "datetime.now": "Now",
   "datetime.sunday": "Sunday",
@@ -27,5 +28,18 @@
   "datetime.am": "AM",
   "datetime.formatAgo": "%1d %2d ago",
   "datetime.formatDate": "%(day)d/%(month)d/%(year)d",
-  "datetime.formatTime": "%(m)d:%(y)d %(part)s"
+  "datetime.formatTime": "%(m)d:%(y)d %(part)s",
+
+  "home.welcomeBack": "Welcome back, ",
+  "home.recentProj": "Recent Projects",
+  "home.viewAllProj": "View All Projects",
+  "home.viewAllProjDesc": "View all projects assigned to or created by you",
+  "home.appSettings": "App Settings",
+  "home.appSettingsDesc": "Change themes, languages and others",
+  "home.newProj": "Create a New Project",
+  "home.newProjDesc": "Create an Empty Project",
+  "home.userProfile": "View User Profile",
+  "home.userProfileDesc": "View name, edit profile picture and others",
+
+  "signin.signin": "Sign in with Google"
 }

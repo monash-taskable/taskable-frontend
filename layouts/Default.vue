@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="layout-root">
     <header>
       <nav>
         <TaskableHomeButton :tabindex="1001"/>
@@ -159,6 +159,10 @@ const {
 @import "/assets/styles/constants/Flex.scss";
 @import "/assets/styles/constants/Sizes.scss";
 @import "/assets/styles/constants/Typography.scss";
+
+.layout-root {
+  height: 100%;
+}
 
 header {
   @include flex-row;
