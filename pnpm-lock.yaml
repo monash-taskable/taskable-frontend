@@ -36,6 +36,9 @@ importers:
         specifier: latest
         version: 3.4.31(typescript@5.5.3)
     devDependencies:
+      '@iconify-json/fluent':
+        specifier: ^1.1.60
+        version: 1.1.60
       '@iconify/icons-fluent':
         specifier: ^1.2.38
         version: 1.2.38
@@ -674,6 +677,9 @@ packages:
     resolution: {integrity: sha512-AiXO/bfe9bmxBjxxtYxFAXGZvMaN5s8kO+jBHAJCON8rJoB5YS/D6X7ZNc6XQkuHNmyl4CYaMI1fJ/Gn27RGGw==}
     engines: {node: '>=6'}
     hasBin: true
+
+  '@iconify-json/fluent@1.1.60':
+    resolution: {integrity: sha512-o1SsJtT0YxphVgHI+LuAMZfA+KlBnXVK+xVQ0nLwMk4bmZNw3i07Jb+nkrCESGKFIFZf6TFuO0fcrsidpgQpSA==}
 
   '@iconify/collections@1.0.438':
     resolution: {integrity: sha512-ALVdSPaJW06TZubNHTCYqsWCYPV+InHZwU4foqRzQaCDFN5V5s+SB41wsjD/DkZlSJ3p3jAmKn5xeNMoeCyskQ==}
@@ -4593,6 +4599,10 @@ snapshots:
       long: 5.2.3
       protobufjs: 7.3.2
       yargs: 17.7.2
+
+  '@iconify-json/fluent@1.1.60':
+    dependencies:
+      '@iconify/types': 2.0.0
 
   '@iconify/collections@1.0.438':
     dependencies:
