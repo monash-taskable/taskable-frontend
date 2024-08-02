@@ -3,8 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "pnpm run protobuild || nuxt build",
-    "dev": "pnpm run protobuild || nuxt dev",
+    "build": "pnpm run protobuild; nuxt build",
+    "dev": "pnpm run protobuild; nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
