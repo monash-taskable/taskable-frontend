@@ -33,8 +33,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { ButtonStyle } from "~/types/ButtonStyle"
-import { User } from "~/types/proto/User";
+import type { ButtonStyle } from "~/types/ButtonStyle";
 
 // placeholder values
 const userName = "John Smith";
