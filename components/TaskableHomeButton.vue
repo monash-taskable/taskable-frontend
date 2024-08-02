@@ -1,18 +1,15 @@
 <template>
-  <button :tabindex="tabindex" :class="getClass(enterFlag, focusFlag)"
-      @mouseover="onHoverOn" @mouseleave="onHoverOff"
-      @click="onClick" @keyup="onKeyUp"
-      @focusout="onFocusOut"
-      >
-    <TaskableLogo v-if="!hovered"/>
-    <TaskableLogo v-if="hovered" color="var(--hovered)"/>
+  <button :tabindex="tabindex" :class="getClass(enterFlag, focusFlag)" @mouseover="onHoverOn" @mouseleave="onHoverOff"
+    @click="onClick" @keyup="onKeyUp" @focusout="onFocusOut">
+    <TaskableLogo v-if="!hovered" />
+    <TaskableLogo v-if="hovered" color="var(--hovered)" />
     {{ $t("taskable") }}
   </button>
 </template>
 
 <script lang="ts" setup>
 const t = useI18n();
-const props = defineProps({tabindex: {type: Number, required: false}});
+const props = defineProps({ tabindex: { type: Number, required: false } });
 
 const getClass = (enter: boolean, focus: boolean): string => {
   const enterCls = enter ? "enter" : "";
@@ -29,9 +26,10 @@ const onHoverOff = () => { hovered.value = enterFlag.value; };
 const emitClick = defineEmits(["click"]);
 const onKeyUp = (event: KeyboardEvent) => {
   focusFlag.value = true;
-  if (event.key === "Enter"){
+  if (event.key === "Enter") {
     onClick();
     hovered.value = true;
+    enterFlag.value = true;
   }
 };
 const onFocusOut = () => {
@@ -39,9 +37,8 @@ const onFocusOut = () => {
   hovered.value = false;
   enterFlag.value = false;
 }
+
 const onClick = () => {
-  enterFlag.value = true;
-  hovered.value = true;
   emitClick("click");
 }
 
@@ -62,11 +59,13 @@ button {
 
   gap: $space-medium;
   transition: $def-transition;
-  
+
   #theme-provider.theme--light & {
     color: var(--accent-strong);
     --hovered: var(--background);
-    &:hover, &.enter{
+
+    &:hover,
+    &.enter {
       background: var(--accent-strong);
       color: var(--background);
     }
