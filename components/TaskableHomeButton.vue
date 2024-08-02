@@ -70,5 +70,16 @@ button {
       color: var(--background);
     }
   }
+
+  .theme--dark & {
+    color: var(--foreground);
+    --hovered: var(--background);
+
+    &:hover,
+    &.enter {
+      background: var(--foreground);
+      color: var(--background);
+    }
+  }
 }
 </style>

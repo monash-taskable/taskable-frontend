@@ -63,6 +63,7 @@ const getClass = (
   const focusableCls = (styles.focusable === undefined || styles.focusable) ? "focusable" : "non-focusable";
   const bgHoverCls = (styles.backgroundColorHover === undefined) ? "" : "bgHover";
   const fgHoverCls = (styles.foregroundColorHover === undefined) ? "" : "fgHover";
+  const fgCls = (styles.foregroundColor === undefined) ? "" : "fg";
   const paddingCls = (styles.padding === undefined) ? "" : "padding";
 
   return [
@@ -71,6 +72,7 @@ const getClass = (
     bgHoverCls,
     fgHoverCls,
     paddingCls,
+    fgCls,
     focusCls,
     enterCls,
   ].join(" ");
@@ -141,7 +143,7 @@ button {
   gap: $space-small;
   transition: $def-transition;
   background: var(--bg);
-  color: var(--fg);
+  color: var(--foreground);
   
   & span:not(.caption) {
     font-size: $icon-size-medium;
@@ -171,6 +173,10 @@ button {
 
   &.bgHover:hover, &.enter {
     background: var(--bgHover);
+  }
+
+  &.fg {
+    color: var(--fg);
   }
 
   &.fgHover:hover, &.fgHover.enter {

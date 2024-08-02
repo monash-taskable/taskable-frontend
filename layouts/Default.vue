@@ -165,6 +165,8 @@ div.dropdown-content {
     padding-bottom: $space-small;
 
     &.new {
+      .theme--dark & { background: var(--background); }
+      
       background: var(--accent-weak);
       color: var(--accent-strong);
     }

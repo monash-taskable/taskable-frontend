@@ -5,7 +5,7 @@ import type { AccentColor, Theme } from '~/types/Theming';
 export const useAppConfigStore = defineStore({
   id: 'appConfigStore',
   state: (): AppConfig => ({
-    theme: "light",
+    theme: "dark",
     accent: "blue",
   }),
   actions: {

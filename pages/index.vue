@@ -50,20 +50,6 @@ const buttonStyle: ButtonStyle = {
   colorPreset: "strong",
   backgroundColor: "var(--layer-background)"
 };
-
-async function xx(){
-  const res = await fetch("http://192.168.22.45:8080/api/get-user");
-  console.log(res);
-  const blob = await res.blob();
-  // @ts-ignore
-  const bytes = await blob.bytes();
-  console.log(bytes);
-
-  const user = User.decode(bytes);
-  console.log(user);
-}
-
-xx()
 </script>
 
 <style lang="scss" scoped>

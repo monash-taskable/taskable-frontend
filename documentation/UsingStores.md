@@ -20,6 +20,16 @@ When using stores in a component, call `use_________Store` function directly.
 To make it reactive, use `storeToRefs`, pass in the store object as the first argument to convert the store to a ref, then use it in the component.
 Update store values through functions defined in the `actions` field of the store as an interface.
 
+For example:
+
+```vue
+<script lang="ts" setup>
+// note that you don't need to import the store function and `storeToRefs` function.
+const myStore = storeToRefs(useMyStore());
+console.log(myStore.something);
+</script>
+```
+
 When typing a store object, you can type the return value of the `state()` method when defining a store using `defineStore()`. For example:
 
 ```typescript

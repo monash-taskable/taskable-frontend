@@ -1,5 +1,6 @@
 {
   "taskable": "Monash Taskable",
+
   "header.btn.settings": "Settings",
   "header.btn.notifications": "%s Notification(s)",
   "header.btn.noNotifications": "No Notifications",
@@ -7,7 +8,7 @@
   "header.btn.about": "About Monash Taskable",
   "header.btn.signOut": "Sign Out",
   "header.noti.newNotification": "New Notifications (%s)",
-  
+
   "datetime.today": "Today",
   "datetime.now": "Now",
   "datetime.sunday": "Sunday",
@@ -41,5 +42,11 @@
   "home.userProfile": "View User Profile",
   "home.userProfileDesc": "View name, edit profile picture and others",
 
-  "signin.signin": "Sign in with Google"
+  "signin.signin": "Sign in with Google",
+  
+  "settings.appearance": "Appearance Options",
+  "settings.colorTheme": "Colour Theme",
+  "settings.accentColor": "Accent Colour",
+  "settings.locale": "Language",
+  "settings.general": "General Options"
 }

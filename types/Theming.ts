@@ -1,3 +1,9 @@
-export type Theme = "light" | "dark" | "contrast-light";
+import { isOfType } from "~/scripts/Utils";
 
-export type AccentColor = "orange" | "green" | "blue" | "purple" | "pink";
+const themes = ["light", "dark", "contrast-light"] as const;
+export type Theme = typeof themes[number];
+export const isTheme = isOfType(themes);
+
+const accentColor = ["orange", "green", "blue", "purple", "pink"] as const;
+export type AccentColor = typeof accentColor[number];
+export const isAccentColor = isOfType(accentColor);

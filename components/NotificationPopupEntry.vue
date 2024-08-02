@@ -15,7 +15,7 @@
     <div class="actions">
       <IconButton
         v-if="newEntry"
-        :styles="{colorPreset:'accent', backgroundColorHover: 'var(--accent-weak)'}" 
+        :styles="getCheckButtonStyle(appConfig.theme.value)" 
         icon="fluent:checkmark-20-regular"
         :tabindex="getActionIndex(tabindex, 1)"
         :expanded="false"
@@ -31,7 +31,9 @@
 </template>
 
 <script lang="ts" setup>
+import type { ButtonStyle } from '~/types/ButtonStyle';
 import type { Optional } from '~/types/Optional';
+import type { Theme } from '~/types/Theming';
 
 // @ts-ignore
 const props = defineProps({
@@ -57,6 +59,12 @@ const getActionIndex = (base: Optional<number>, index: number): Optional<number>
   
   const bstr = base.toString();
   return Number(bstr + (bstr.includes(".") ? "" : ".") + index.toString());
+}
+
+const appConfig = storeToRefs(useAppConfigStore());
+const getCheckButtonStyle = (theme: Theme): ButtonStyle => {
+  if (theme === "dark") return {colorPreset: 'background'}
+  return {colorPreset: 'accent', backgroundColorHover: 'var(--accent-weak)'};
 }
 
 // interaction logic
@@ -108,6 +116,7 @@ const onClick = () => {
   background: var(--background);
 
   &.new {
+    .theme--dark & { background: var(--layer-background); }
     background: var(--accent-weak);
     padding-left: calc($space-medium-large - 5px);
     border-left: var(--accent-strong) 2px solid;
@@ -117,13 +126,17 @@ const onClick = () => {
 
   &:hover, &.enter {
     background: var(--background-interaction-strong);
-    &.new { background: var(--accent-interact); }
+    &.new {
+      .theme--dark & { background: var(--background-interaction-strong); }
+      background: var(--accent-interact);
+    }
   }
 }
 
 .icon {
   font-size: $icon-size-large;
   height: $icon-size-large;
+  color: var(--foreground);
 }
 
 .captions{
