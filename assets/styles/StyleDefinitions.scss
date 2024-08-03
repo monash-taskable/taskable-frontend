@@ -16,7 +16,7 @@
 
   // blue
   --gnr-blue10: #EDF6F8;
-  --gnr-blue20: #E0EEF1;
+  --gnr-blue20: #daf6fc;
   --gnr-blue30: #B6D4DF;
   --gnr-blue40: #8DBACB;
   --gnr-blue50: #669FB5;
@@ -62,29 +62,29 @@
   --gnr-green90: #558b2a;
   --gnr-green100: #336919;
 
-  // lavender
-  --gnr-lavender10: #f0e7f1;
-  --gnr-lavender20: #dbc2de;
-  --gnr-lavender30: #c49bca;
-  --gnr-lavender40: #ac76b3;
-  --gnr-lavender50: #9b5ca3;
-  --gnr-lavender60: #8a4793;
-  --gnr-lavender70: #7f428c;
-  --gnr-lavender80: #6f3b82;
-  --gnr-lavender90: #603578;
-  --gnr-lavender100: #472c63;
+  // purple
+  --gnr-purple10: #f0e7f1;
+  --gnr-purple20: #dbc2de;
+  --gnr-purple30: #c49bca;
+  --gnr-purple40: #ac76b3;
+  --gnr-purple50: #9b5ca3;
+  --gnr-purple60: #8a4793;
+  --gnr-purple70: #7f428c;
+  --gnr-purple80: #6f3b82;
+  --gnr-purple90: #603578;
+  --gnr-purple100: #472c63;
 
-  // lilac
-  --gnr-lilac10: #fae7f2;
-  --gnr-lilac20: #f4c4df;
-  --gnr-lilac30: #ef9eca;
-  --gnr-lilac40: #ed79b4;
-  --gnr-lilac50: #eb60a1;
-  --gnr-lilac60: #eb4c8f;
-  --gnr-lilac70: #d94889;
-  --gnr-lilac80: #c14480;
-  --gnr-lilac90: #ab4078;
-  --gnr-lilac100: #833969;
+  // magenta
+  --gnr-magenta10: #fae7f2;
+  --gnr-magenta20: #f4c4df;
+  --gnr-magenta30: #ef9eca;
+  --gnr-magenta40: #ed79b4;
+  --gnr-magenta50: #eb60a1;
+  --gnr-magenta60: #eb4c8f;
+  --gnr-magenta70: #d94889;
+  --gnr-magenta80: #c14480;
+  --gnr-magenta90: #ab4078;
+  --gnr-magenta100: #833969;
 
   // functional
   --popup-overlay: rgba(57, 57, 57, 0.1);
@@ -110,11 +110,44 @@
     --dangerous-interact: var(--gnr-red20);
     --dangerous-weak: var(--gnr-red10);
 
-    &.color--blue {
+    &.color--orange,
+    & .theme-override.color--orange {
+      --accent-strong: var(--gnr-orange100);
+      --accent-intermediate: var(--gnr-orange60);
+      --accent-interact: var(--gnr-orange20);
+      --accent-weak: var(--gnr-orange10);
+    }
+
+    &.color--green,
+    & .theme-override.color--green {
+      --accent-strong: var(--gnr-green100);
+      --accent-intermediate: var(--gnr-green60);
+      --accent-interact: var(--gnr-green20);
+      --accent-weak: var(--gnr-green10);
+    }
+
+    &.color--blue,
+    & .theme-override.color--blue {
       --accent-strong: var(--gnr-blue100);
       --accent-intermediate: var(--gnr-blue60);
       --accent-interact: var(--gnr-blue20);
       --accent-weak: var(--gnr-blue10);
+    }
+
+    &.color--purple,
+    & .theme-override.color--purple {
+      --accent-strong: var(--gnr-purple100);
+      --accent-intermediate: var(--gnr-purple60);
+      --accent-interact: var(--gnr-purple20);
+      --accent-weak: var(--gnr-purple10);
+    }
+
+    &.color--magenta,
+    & .theme-override.color--magenta {
+      --accent-strong: var(--gnr-magenta100);
+      --accent-intermediate: var(--gnr-magenta60);
+      --accent-interact: var(--gnr-magenta20);
+      --accent-weak: var(--gnr-magenta10);
     }
   }
 
@@ -137,11 +170,44 @@
     --popup-overlay: rgba(255, 255, 255, 0.167);
     --float-color: rgba(255, 255, 255, 0.05);
 
-    &.color--blue {
+    &.color--orange,
+    & .theme-override.color--orange {
+      --accent-strong: var(--gnr-orange20);
+      --accent-intermediate: var(--gnr-orange40);
+      --accent-interact: var(--gnr-orange90);
+      --accent-weak: var(--gnr-orange100);
+    }
+
+    &.color--green,
+    & .theme-override.color--green {
+      --accent-strong: var(--gnr-green20);
+      --accent-intermediate: var(--gnr-green40);
+      --accent-interact: var(--gnr-green90);
+      --accent-weak: var(--gnr-green100);
+    }
+
+    &.color--blue,
+    & .theme-override.color--blue {
       --accent-strong: var(--gnr-blue20);
       --accent-intermediate: var(--gnr-blue40);
       --accent-interact: var(--gnr-blue90);
       --accent-weak: var(--gnr-blue100);
+    }
+
+    &.color--purple,
+    & .theme-override.color--purple {
+      --accent-strong: var(--gnr-purple20);
+      --accent-intermediate: var(--gnr-purple40);
+      --accent-interact: var(--gnr-purple90);
+      --accent-weak: var(--gnr-purple100);
+    }
+
+    &.color--magenta,
+    & .theme-override.color--magenta {
+      --accent-strong: var(--gnr-magenta20);
+      --accent-intermediate: var(--gnr-magenta40);
+      --accent-interact: var(--gnr-magenta90);
+      --accent-weak: var(--gnr-magenta100);
     }
   }
 
