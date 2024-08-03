@@ -49,8 +49,8 @@ Then, add a section in `@/assets/styles/StyleDefinitions.scss`, with a selector 
   &.theme--light{
     /* Some variable definitions here */
   
-    &.color--blue{ /* accent colour definitions goes here */}
-    &.color--green{ /* accent colour definitions goes here */ }
+    &.color--blue, & .theme-override.color--blue { /* accent colour definitions goes here */}
+    &.color--green, & .theme-override.color--green { /* accent colour definitions goes here */ }
     /* ... other colours */
   }
 
