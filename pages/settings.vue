@@ -4,12 +4,23 @@
     <!-- Appearence -->
     <div class="section">
       <h3>{{ $t("settings.appearance") }}</h3>
-      <div class="option color-theme">
-        <!-- Color Theme -->
+      <!-- Theme -->
+      <div class="option row">
         <h4> {{ $t("settings.colorTheme") }} </h4>
         <div class="options">
           <ThemePreview/>
           <ThemePreview theme="dark"/>
+        </div>
+      </div>
+      <!-- color -->
+      <div class="option row">
+        <h4> {{ $t("settings.accentColor") }} </h4>
+        <div class="options">
+          <ColorPreview color="orange"/>
+          <ColorPreview color="green"/>
+          <ColorPreview color="blue"/>
+          <ColorPreview color="purple"/>
+          <ColorPreview color="magenta"/>
         </div>
       </div>
     </div>
@@ -67,7 +78,7 @@ const t = useI18n();
     width: calc(100% - ($space-medium * 2));
   }
 
-  .color-theme .options {
+  .row .options {
     @include flex-row;
     gap: $space-small;
   }
