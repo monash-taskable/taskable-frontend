@@ -133,7 +133,7 @@ See the following example:
 <template>
   <div>
     <button>I am a button with global light theme</button>
-    <div class=".theme-override .theme--dark">
+    <div class="theme-override theme--dark">
       <button>I am a button with dark theme</button>
     </div>
   </div>

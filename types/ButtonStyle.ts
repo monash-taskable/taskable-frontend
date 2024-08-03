@@ -59,6 +59,16 @@ export const presets: ReadonlyMap<ColorPreset, ButtonStyle> = new Map([
   }],
 ]);
 
+/**
+ * This function takes a base button style, and returns a new 
+ * button style with all the fields filled.
+ * 
+ * When using presets, pass in a style with only presets set, and the returned the style
+ * will contain all the needed fields required by a button tuned to the preset selected.
+ * 
+ * @param style The base button style
+ * @returns The filled button style
+ */
 export const buttonStyle = (style: ButtonStyle): ButtonStyle => {
   const { colorPreset } = style;
 
