@@ -44,9 +44,18 @@
 
   "signin.signin": "Sign in with Google",
   
+  "settings.title": "App Settings",
   "settings.appearance": "Appearance Options",
   "settings.colorTheme": "Colour Theme",
   "settings.accentColor": "Accent Colour",
+  "settings.general": "General Options",
   "settings.locale": "Language",
-  "settings.general": "General Options"
+
+  "projects.title": "All Projects",
+  "projects.noProjects": "There are no projects. Start by creating one!",
+  "projects.newProject": "Create Project",
+  "projects.newClass": "Create Class",
+  "projects.newTemplate": "Create Template",
+  "projects.class": "Projects of Class: %s",
+  "projects.personal": "Personal Projects"
 }

@@ -3,8 +3,13 @@
     <header>
       <nav>
         <TaskableHomeButton @click="navToHome" :tabindex="1001" />
-
-        <IconButton :tabindex="1002" :styles="navBtnStyle" caption="Hello world!" />
+        
+        <IconButton
+          v-if="appState.showingTitle.value"
+          :tabindex="1002"
+          :styles="navBtnStyle"
+          :icon="appState.titleIcon.value"
+          :caption="appState.titleI18n ? $t(appState.title.value) : appState.title.value" />
       </nav>
       <nav>
         <!-- Notification Menu -->
@@ -113,6 +118,9 @@ const {
   elem: _notiMenu,
   id: _notiMenuId
 } = _constructExpandingDropdown(ref(false), ref(undefined), "navbtn-notimenu");
+
+// page title
+const appState = storeToRefs(useAppStateStore());
 
 // static nav links
 const navTo = (path: string) => async () => {

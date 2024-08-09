@@ -49,6 +49,9 @@ const buttonStyle: ButtonStyle = {
   colorPreset: "strong",
   backgroundColor: "var(--layer-background)"
 };
+
+// hide title
+useAppStateStore().hideTitle();
 </script>
 
 <style lang="scss" scoped>

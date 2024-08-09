@@ -13,7 +13,7 @@
         </div>
       </div>
       <!-- color -->
-      <div class="option row">
+      <div class="option row row-center">
         <h4> {{ $t("settings.accentColor") }} </h4>
         <div class="options">
           <ColorPreview color="orange"/>
@@ -24,12 +24,24 @@
         </div>
       </div>
     </div>
+
+    <!-- General -->
+    <div class="section">
+      <h3>{{ $t("settings.general") }}</h3>
+      <!-- Theme -->
+      <div class="option row row-center">
+        <h4> {{ $t("settings.locale") }} </h4>
+        <div>
+          
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 const t = useI18n();
-
+useAppStateStore().setTitle("settings.title", true, true, "fluent:settings-20-regular");
 </script>
 
 <style lang="scss" scoped>
@@ -49,6 +61,7 @@ const t = useI18n();
 
   height: calc(100% - 100px);
   padding: 0 4rem;
+  gap: $space-large;
 }
 
 .section{
@@ -76,6 +89,8 @@ const t = useI18n();
     background: var(--layer-background);
     padding: $space-medium;
     width: calc(100% - ($space-medium * 2));
+
+    &.row-center { @include flex-cross(center); };
   }
 
   .row .options {

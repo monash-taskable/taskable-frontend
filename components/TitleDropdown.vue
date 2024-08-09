@@ -68,6 +68,7 @@ onUpdated(() => {
 @import "/assets/styles/constants/DefaultStyles.scss";
 
 .overlay {
+  z-index: 1000;
   position: absolute;
   height: 100vh;
   width: 100vw;
