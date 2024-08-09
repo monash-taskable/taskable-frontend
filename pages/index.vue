@@ -6,10 +6,12 @@
       </div>
       <div class="row">
         <TitleButton 
+          @click="navToProjects"
           :styles="buttonStyle"
           :description="$t('home.viewAllProjDesc')"
           :caption="$t('home.viewAllProj')"/>
         <TitleButton
+          @click="navToSettings"
           icon="fluent:settings-20-regular"
           :styles="buttonStyle"
           :description="$t('home.appSettingsDesc')"
@@ -52,6 +54,12 @@ const buttonStyle: ButtonStyle = {
 
 // hide title
 useAppStateStore().hideTitle();
+
+// static links
+const navTo = (path: string) => async () => await navigateTo(path);
+const navToSettings = navTo("/settings");
+const navToProjects = navTo("/projects");
+
 </script>
 
 <style lang="scss" scoped>
