@@ -24,3 +24,7 @@ $def-float: drop-shadow(0px 2px 2px var(--float-color));
     outline: $outline;
   }
 }
+
+@mixin defmix-float($float: $def-float) {
+  filter: $float;
+}

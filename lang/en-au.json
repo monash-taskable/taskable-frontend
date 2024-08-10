@@ -57,5 +57,7 @@
   "projects.newClass": "Create Class",
   "projects.newTemplate": "Create Template",
   "projects.class": "Projects of Class: %s",
-  "projects.personal": "Personal Projects"
+  "projects.personal": "Personal Projects",
+
+  "dialogCommon.close": "Close"
 }

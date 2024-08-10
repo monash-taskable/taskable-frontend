@@ -1,5 +1,6 @@
 <template>
   <div id="theme-provider" :class="classes(appConfigRef.theme.value, appConfigRef.accent.value)">
+    <DialogManager/>
     <NuxtLayout>
       <NuxtPage/>
     </NuxtLayout>
