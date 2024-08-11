@@ -4,7 +4,8 @@
       :style="getStyle(props.styles)" :id="id"
       @mouseover="expand" @mouseleave="collapse"
       @focusin="expand" @focusout="onFocusOut"
-      @click="onClick()" @keyup="onKeyUp"
+      @keyup="onKeyUp" @keydown="()=>{}"
+      @click="_onClick"
       >
     <Icon :name="icon"/>
     <span tabindex="-1" @click="onClick" class="caption">
@@ -31,21 +32,16 @@ const props = defineProps({
 const enterFlag = ref(false);
 const focusFlag = ref(false);
 const emitClick = defineEmits(["click"]);
-const onKeyUp = (event: KeyboardEvent) => {
-  focusFlag.value = true;
-  if (event.key === "Enter"){
-    onClick();
-    enterFlag.value = true;
-  }
-};
+const onKeyUp = () => { focusFlag.value = true; };
 const onFocusOut = () => {
   enterFlag.value = false;
   focusFlag.value = false;
   collapse();
 }
-const onClick = () => {
+const _onClick = () => {
   enterFlag.value = props.maintainClick;
   emitClick("click");
+  console.log("hi")
 }
 
 // expandable logic
