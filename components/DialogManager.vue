@@ -1,12 +1,11 @@
 <template>
   <div class="dialog-overlay">
-    <Dialog v-for="dialog in dialogs(dialogControllerRef)" :context="dialog"/>
+    <Dialog v-for="dialog in dialogControllerRef.dialogs.value" :context="dialog"/>
   </div>
 </template>
 
 <script lang="ts" setup>
 const dialogControllerRef = storeToRefs(useDialogControlStore());
-const dialogs = (ref: typeof dialogControllerRef) => ref.dialogs.value;
 </script>
 
 <style lang="scss" scoped>

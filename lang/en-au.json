@@ -54,10 +54,16 @@
   "projects.title": "All Projects",
   "projects.noProjects": "There are no projects. Start by creating one!",
   "projects.newProject": "Create Project",
-  "projects.newClass": "Create Class",
   "projects.newTemplate": "Create Template",
   "projects.class": "Projects of Class: %s",
   "projects.personal": "Personal Projects",
+  "projects.newClass": "Create Class",
+  "projects.newClass.title": "Create Class",
+  "projects.newClass.instruction": "Create a class by entering a class name below, and select 'Confirm'",
+  "projects.newClass.cannotBeEmpty": "Class name cannot be empty.",
+  "projects.newClass.name": "Class Name",
+  "projects.newClass.confirm": "Confirm",
+  "projects.newClass.cancel": "Cancel",
 
   "dialogCommon.close": "Close"
 }

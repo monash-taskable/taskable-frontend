@@ -17,3 +17,9 @@
   flex-direction: row;
   @include flex-main();
 }
+
+@mixin flex-row-rev {
+  display: flex;
+  flex-direction: row-reverse;
+  @include flex-main();
+}

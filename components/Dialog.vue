@@ -1,34 +1,36 @@
 <template>
-  <div :style="getStyle(props.context)" class="dialog">
+  <div :id="'dialog_' + $props.context.id" :style="getStyle(props.context)" class="dialog">
     <div class="title">
-      <div class="left" @mousedown="dragOn" @mouseup="dragOff" @mousemove="onDrag" @mouseleave="dragOff">
+      <div class="float">
         <Icon name="fluent:re-order-dots-vertical-20-regular"/>
         {{ (context.title === "@@UUID") ? context.id : (context.titleI18n ? $t(context.title) : context.title) }}
       </div>
       <div class="right">
         <IconButton 
-          v-for="action in context.actions"
-          @click="action.action"
-          expanding
-          :styles="action.style" 
-          :icon="action.icon" 
-          :caption="action.captionI18n 
-            ? $t(action.caption) 
-            : action.caption"/>
-
-        <IconButton 
           v-if="context.close !== undefined"
           @click="closeDialog"
-          expanding
-          :styles="context.close.style" 
-          :icon="context.close.icon" 
-          :caption="context.close.captionI18n 
-            ? $t(context.close.caption) 
+          :expanding="context.close.expanding"
+          :styles="{...context.close.style, size: 'small'}"
+          :icon="context.close.icon"
+          :caption="context.close.captionI18n
+            ? $t(context.close.caption)
             : context.close.caption"/>
+        <IconButton 
+          v-for="action in context.actions"
+          @click="() => getClickEvent(props.context, emitted, action.action)"
+          :expanding="action.expanding"
+          :styles="{...action.style, size: 'small'}"
+          :icon="action.icon"
+          :caption="action.captionI18n
+            ? $t(action.caption)
+            : action.caption"/>
       </div>
+      <div class="left" @mousedown="dragOn" @mouseup="dragOff" @mousemove="onDrag" @mouseleave="dragOff"></div>
     </div>
     
+    <!-- Dialog Types -->
     <DialogsAlert v-if="context.dialogType === 'alert'" :context="props.context"/>
+    <DialogsCreateClass @emit="updateEmit" v-if="context.dialogType === 'createClass'" :context="props.context"/>
   </div>
 </template>
 
@@ -44,8 +46,8 @@ const props = defineProps({
 
 const getStyle = (context: Dialog<any>): string => {
   return [
-    `--width: ${context.width};`,
-    `--height: ${context.height};`,
+    `--width-dlg: ${context.width};`,
+    `--height-dlg: ${context.height};`,
     `--x: ${context.x}px;`,
     `--y: ${context.y}px;`,
   ].join("");
@@ -53,17 +55,17 @@ const getStyle = (context: Dialog<any>): string => {
 
 const control = useDialogControlStore();
 
-// close logic
+// clickable
 const closeDialog = () => control.closeDialog(props.context.id);
+const getClickEvent = <T>(
+  context: Dialog<T>, 
+  emit: any, 
+  action?: (context: Dialog<T>, emit: any) => void) => 
+    action ? action(context, emit) : null;
 
 // draggable logic
 const dragFlag = ref(false);
-// const dragOnPos = [0, 0];
-const dragOn = (e: MouseEvent) => {
-  // dragOnPos[0] = e.clientX;
-  // dragOnPos[1] = e.clientY;
-  dragFlag.value = true;
-}
+const dragOn = () => { dragFlag.value = true; }
 const dragOff = () => {dragFlag.value = false;}
 const onDrag = (e: MouseEvent) => {
   if (!dragFlag.value) return;
@@ -73,10 +75,11 @@ const onDrag = (e: MouseEvent) => {
     x: props.context.x + e.movementX,
     y: props.context.y + e.movementY,
   })
-  // const delta_x = e.clientX - dragOnPos[0];
-  // const delta_y = e.clientY - dragOnPos[1];
 }
 
+// getting emitted values
+const emitted: globalThis.Ref<any> = ref(undefined);
+const updateEmit = (new_val: any) => emitted.value = new_val;
 </script>
 
 <style lang="scss" scoped>
@@ -85,9 +88,21 @@ const onDrag = (e: MouseEvent) => {
 @import "/assets/styles/constants/DefaultStyles.scss";
 @import "/assets/styles/constants/Flex.scss";
 
+@keyframes pop {
+  0% {
+    opacity: 0.3;
+    transform: scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 .dialog {
   @include defmix-float;
 
+  animation: pop 0.1s ease-out forwards;
   border: var(--background-interaction-strong) 1px solid;
   border-radius: 3px;
   background: var(--background);
@@ -95,19 +110,19 @@ const onDrag = (e: MouseEvent) => {
   position: absolute;
   left: var(--x);
   top: var(--y);
-  width: var(--width);
+  width: var(--width-dlg);
   height: min-content;
 }
 
 .title {
   @include typemix-label;
-  @include flex-row;
+  @include flex-row-rev;
   @include flex-main(space-between);
-  @include flex-cross(center);
+  @include flex-cross(stretch);
   
   border-radius: 3px 3px 0px 0px;
   background: var(--layer-background);
-  width: var(--width);
+  width: var(--width-dlg);
   overflow-x: hidden;
   height: min-content;
   user-select: none;
@@ -117,10 +132,7 @@ const onDrag = (e: MouseEvent) => {
   }
 
   & .left {
-    @include flex-row;
-    @include flex-cross(center);
-    @include flex-main(flex-start);
-
+    text-wrap: nowrap;
     cursor: move;
     padding: $space-small;
     flex: 1;
@@ -129,6 +141,18 @@ const onDrag = (e: MouseEvent) => {
       width: $icon-size-medium;
       color: var(--foreground-weak);
     }
+  }
+
+  & .float {
+    @include flex-row;
+    @include flex-cross(center);
+    @include flex-main(flex-start);
+
+    gap: $space-small;
+    position: absolute;
+    top: $space-medium;
+    left: $space-small;
+    pointer-events: none;
   }
 }
 </style>

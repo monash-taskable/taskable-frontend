@@ -21,13 +21,14 @@
       </div>
     </div>
     <div class="new-section">
-      <IconButton icon="fluent:people-community-add-20-regular" :caption="$t('projects.newClass')" :styles="{...buttonStyleAccent, size: 'small'}" />
+      <IconButton @click="openCreateClassForm" icon="fluent:people-community-add-20-regular" :caption="$t('projects.newClass')" :styles="{...buttonStyleAccent, size: 'small'}" />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import type { ButtonStyle } from '~/types/ButtonStyle';
+import { defaultClose, quickAlert, type Dialog } from '~/types/Dialog';
 
 const t = useI18n();
 
@@ -36,6 +37,35 @@ const buttonStyleStrong: ButtonStyle = {colorPreset: "strong"};
 const buttonStyleAccent: ButtonStyle = {colorPreset: "accent"};
 
 useAppStateStore().setTitle("projects.title", true, true);
+
+const dialogControl = useDialogControlStore();
+
+// create class
+const openCreateClassForm = () => dialogControl.closeAllWithTypeThenOpen({
+  x: 100,
+  y: 100,
+  width: "350px",
+  height: "fit-content",
+  title: "projects.newClass.title",
+  titleI18n: true,
+  dialogType: "createClass",
+  close: {
+    ...defaultClose,
+    caption: "projects.newClass.cancel", 
+    style: {colorPreset: "strong"}
+  },
+  actions: [
+    {
+      caption: "projects.newClass.confirm",
+      captionI18n: true,
+      icon: "fluent:checkmark-20-regular",
+      style: {colorPreset: "accent-strong"},
+      action: (_: Dialog<{}>, emt?: any) => emt && quickAlert(`Name: ${emt}`),
+      expanding: false,
+    }
+  ],
+  payload: {}
+});
 
 </script>
 

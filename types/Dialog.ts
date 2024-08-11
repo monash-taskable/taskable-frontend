@@ -2,7 +2,7 @@ import { isOfType } from "~/scripts/Utils";
 import type { ButtonStyle } from "./ButtonStyle";
 import type { Optional } from "./Optional";
 
-const dialogTypes = ["alert"] as const;
+const dialogTypes = ["alert", "createClass"] as const;
 export type DialogType = typeof dialogTypes[number];
 export const isOfDialog = isOfType(dialogTypes);
 
@@ -42,5 +42,26 @@ export type DialogAction = {
   captionI18n: boolean,
   style: ButtonStyle,
   icon: string,
-  action?: () => void,
+  expanding: boolean,
+  action?: (context: Dialog<any>, emitted: any) => void,
 }
+
+export const defaultClose: DialogAction = {
+  caption: "dialogCommon.close",
+  captionI18n: true,
+  icon: "fluent:dismiss-20-regular",
+  style: {colorPreset: 'dangerous'},
+  expanding: true,
+};
+
+export const quickAlert = (message: string, title?: string) => useDialogControlStore().openDialog({
+  title: title ?? "Alert",
+  actions: [],
+  dialogType: 'alert',
+  height: "min-content",
+  payload: message,
+  titleI18n: false,
+  width: "300px",
+  x: 120,
+  y: 120,
+})
