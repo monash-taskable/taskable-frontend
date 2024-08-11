@@ -50,7 +50,7 @@ export const defaultClose: DialogAction = {
   caption: "dialogCommon.close",
   captionI18n: true,
   icon: "fluent:dismiss-20-regular",
-  style: {colorPreset: 'dangerous'},
+  style: {colorPreset: 'strong'},
   expanding: true,
 };
 
