@@ -1,5 +1,5 @@
 export type ButtonStyle = {
-  colorPreset?: ColorPreset,
+  colorPreset?: ButtonPreset,
   backgroundColor?: String,
   backgroundColorHover?: String,
   foregroundColor?: String,
@@ -14,7 +14,7 @@ export type ButtonSize =
   | "medium" 
   | "small";
 
-export type ColorPreset = 
+export type ButtonPreset = 
   | "background" 
   | "layer" 
   | "strong" 
@@ -24,7 +24,7 @@ export type ColorPreset =
   | "dangerous-strong";
 
 
-export const presets: ReadonlyMap<ColorPreset, ButtonStyle> = new Map([
+export const presets: ReadonlyMap<ButtonPreset, ButtonStyle> = new Map([
   ["background", {
     backgroundColor: "transparent",
     backgroundColorHover: "var(--background)",
