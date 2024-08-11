@@ -25,7 +25,6 @@ const props = defineProps({
 const error = ref(false);
 const checkInput = (val: string): boolean  => {
   error.value = val === "";
-  console.log(error.value);
   return val !== "";
 }
 

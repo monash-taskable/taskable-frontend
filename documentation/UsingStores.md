@@ -26,7 +26,6 @@ For example:
 <script lang="ts" setup>
 // note that you don't need to import the store function and `storeToRefs` function.
 const myStore = storeToRefs(useMyStore());
-console.log(myStore.something);
 </script>
 ```
 
