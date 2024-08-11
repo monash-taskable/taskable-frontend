@@ -41,7 +41,6 @@ const onFocusOut = () => {
 const _onClick = () => {
   enterFlag.value = props.maintainClick;
   emitClick("click");
-  console.log("hi")
 }
 
 // expandable logic
