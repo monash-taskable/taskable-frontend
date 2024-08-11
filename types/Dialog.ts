@@ -54,7 +54,7 @@ export const defaultClose: DialogAction = {
   expanding: true,
 };
 
-export const quickAlert = (message: string, title?: string) => useDialogControlStore().openDialog({
+export const quickAlert = (message: string, title?: string) => useDialogs().openDialog({
   title: title ?? "Alert",
   actions: [],
   dialogType: 'alert',

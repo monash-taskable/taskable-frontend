@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts" setup>
-const dialogControllerRef = storeToRefs(useDialogControlStore());
+const dialogControllerRef = storeToRefs(useDialogs());
 </script>
 
 <style lang="scss" scoped>

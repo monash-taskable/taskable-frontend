@@ -3,7 +3,7 @@ import { v4 as uuid } from 'uuid'
 import { defaultClose, type Dialog, type DialogAction, type DialogController, type DialogInit, type DialogType } from '~/types/Dialog'
 import type { Optional } from '~/types/Optional';
 
-export const useDialogControlStore = defineStore({
+export const useDialogs = defineStore({
   id: 'dialogControlStore',
   state: (): DialogController => ({
     dialogs: {}

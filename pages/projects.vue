@@ -38,7 +38,7 @@ const buttonStyleAccent: ButtonStyle = {colorPreset: "accent"};
 
 useAppStateStore().setTitle("projects.title", true, true);
 
-const dialogControl = useDialogControlStore();
+const dialogControl = useDialogs();
 
 // create class
 const openCreateClassForm = () => dialogControl.closeAllWithTypeThenOpen({

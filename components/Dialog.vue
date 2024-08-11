@@ -53,7 +53,7 @@ const getStyle = (context: Dialog<any>): string => {
   ].join("");
 }
 
-const control = useDialogControlStore();
+const control = useDialogs();
 
 // clickable
 const closeDialog = () => control.closeDialog(props.context.id);
