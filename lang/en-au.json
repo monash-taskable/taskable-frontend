@@ -65,5 +65,7 @@
   "projects.newClass.confirm": "Confirm",
   "projects.newClass.cancel": "Cancel",
 
-  "dialogCommon.close": "Close"
+  "dialogCommon.close": "Close",
+  "dialogError.somethingWentWrong": "Something Went Wrong",
+  "dialogError.sessionExpired": "User Credentials Expired"
 }

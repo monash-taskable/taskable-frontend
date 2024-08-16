@@ -2,7 +2,7 @@ import { isOfType } from "~/scripts/Utils";
 import type { ButtonStyle } from "./ButtonStyle";
 import type { Optional } from "./Optional";
 
-const dialogTypes = ["alert", "createClass"] as const;
+const dialogTypes = ["alert", "createClass", "error"] as const;
 export type DialogType = typeof dialogTypes[number];
 export const isOfDialog = isOfType(dialogTypes);
 
@@ -10,28 +10,37 @@ export type DialogController = {
   dialogs: {[key: string]: Dialog<any>},
 };
 
+export type DialogStyle = {
+  titleBackground?: string
+  titleColor?: string
+}
+
 export type DialogInit<T> = {
   title: string,
-  titleI18n: boolean,
+  icon?: string,
+  titleI18n?: boolean,
+  style?: DialogStyle,
   dialogType: DialogType
   width: string,
-  height: string,
-  x: number,
-  y: number,
-  actions: DialogAction[]
+  height?: string,
+  x?: number,
+  y?: number,
+  actions?: DialogAction[]
   close?: DialogAction
-  payload: T
+  payload: T,
 }
 
 export type Dialog<T> = {
   id: string,
+  icon?: string,
   title: string,
   titleI18n: boolean,
+  style?: DialogStyle,
   dialogType: DialogType
   width: string,
   height: string,
-  x: number,
-  y: number,
+  x?: number,
+  y?: number,
   actions: DialogAction[],
   close: Optional<DialogAction>
   payload: T,
@@ -56,12 +65,23 @@ export const defaultClose: DialogAction = {
 
 export const quickAlert = (message: string, title?: string) => useDialogs().openDialog({
   title: title ?? "Alert",
-  actions: [],
   dialogType: 'alert',
-  height: "min-content",
   payload: message,
   titleI18n: false,
   width: "300px",
   x: 120,
   y: 120,
+})
+
+export const quickError = (message: string, title?: string, icon?: string) => useDialogs().openDialog({
+  title: title ?? "dialogError.somethingWentWrong",
+  icon: icon ?? "fluent:error-circle-20-regular",
+  dialogType: "error",
+  width: "400px",
+  titleI18n: true,
+  payload: message,
+  style: {
+    titleBackground: "var(--dangerous-weak)",
+    titleColor: "var(--dangerous-strong)",
+  },
 })

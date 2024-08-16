@@ -1,8 +1,11 @@
 <template>
-  <div :id="'dialog_' + $props.context.id" :style="getStyle(props.context)" class="dialog">
+  <div :id="'dialog_' + $props.context.id" :style="getStyle(props.context)" class="dialog" :class="getClass(props.context)">
     <div class="title">
       <div class="float">
         <Icon name="fluent:re-order-dots-vertical-20-regular"/>
+        <span v-if="context.icon" class="title-icon">
+          <Icon :name="context.icon"/>
+        </span>
         {{ (context.title === "@@UUID") ? context.id : (context.titleI18n ? $t(context.title) : context.title) }}
       </div>
       <div class="right">
@@ -29,7 +32,8 @@
     </div>
     
     <!-- Dialog Types -->
-    <DialogsAlert v-if="context.dialogType === 'alert'" :context="props.context"/>
+    <DialogsAlert @emit="updateEmit" v-if="context.dialogType === 'alert'" :context="props.context"/>
+    <DialogsError @emit="updateEmit" v-if="context.dialogType === 'error'" :context="props.context"/>
     <DialogsCreateClass @emit="updateEmit" v-if="context.dialogType === 'createClass'" :context="props.context"/>
   </div>
 </template>
@@ -37,6 +41,7 @@
 <script lang="ts" setup>
 import { type PropType } from 'vue';
 import type { Dialog } from '~/types/Dialog';
+import type { Optional } from '~/types/Optional';
 
 const t = useI18n();
 
@@ -44,13 +49,34 @@ const props = defineProps({
   context: {type: Object as PropType<Dialog<any>>, required: true},
 });
 
+const styleSwitch = (style: Optional<string>, name: string) =>
+  style ? `--${name}: ${style};` : "";
+
 const getStyle = (context: Dialog<any>): string => {
+  const style = context.style ?? {};
+  
   return [
     `--width-dlg: ${context.width};`,
     `--height-dlg: ${context.height};`,
     `--x: ${context.x}px;`,
     `--y: ${context.y}px;`,
+    styleSwitch(style.titleBackground, "title-background"),
+    styleSwitch(style.titleColor, "title-color"),
   ].join("");
+}
+
+const classSwitch = (on: Optional<any>, name: string) =>
+  on ? name : ""
+
+const getClass = (context: Dialog<any>): string => {
+  const style = context.style ?? {};
+  const draggable = context.x != undefined && context.y != undefined;
+
+  return  [
+    classSwitch(style.titleBackground, "title-background"),
+    classSwitch(style.titleColor, "title-color"),
+    classSwitch(draggable, "draggable"),
+  ].join(" ");
 }
 
 const control = useDialogs();
@@ -70,6 +96,7 @@ const dragOff = () => {dragFlag.value = false;}
 const onDrag = (e: MouseEvent) => {
   if (!dragFlag.value) return;
 
+  if (props.context.x != undefined && props.context.y != undefined)
   control.updateDialog(props.context.id, {
     ...props.context,
     x: props.context.x + e.movementX,
@@ -133,26 +160,49 @@ const updateEmit = (new_val: any) => emitted.value = new_val;
 
   & .left {
     text-wrap: nowrap;
-    cursor: move;
+    .draggable { cursor: move; }
     padding: $space-small;
     flex: 1;
 
-    & span {
-      width: $icon-size-medium;
-      color: var(--foreground-weak);
-    }
   }
-
+  
   & .float {
     @include flex-row;
     @include flex-cross(center);
     @include flex-main(flex-start);
-
+    
     gap: $space-small;
     position: absolute;
     top: $space-medium;
     left: $space-small;
     pointer-events: none;
+
+    & span:not(.title-icon) {
+      width: $icon-size-medium;
+      color: var(--foreground-weak);
+    }
+
+    & span.title-icon span {
+      width: $icon-size-small;
+      height: $icon-size-small;
+      color: var(--foreground);
+    }
+
+    & span.title-icon {
+      height: $icon-size-small;
+    }
+  }
+}
+
+// custom style
+.title {
+  .title-background & {
+    background-color: var(--title-background);
+  }
+
+  .title-color & {
+    color: var(--title-color);
+    & .float span.title-icon span { color: var(--title-color); }
   }
 }
 </style>

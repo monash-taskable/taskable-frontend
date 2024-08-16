@@ -21,7 +21,14 @@ export const useDialogs = defineStore({
       }
 
       const id = uuid();
-      this.dialogs[id] = {...dialog, id, close};
+      this.dialogs[id] = {
+        ...dialog,
+        id,
+        close,
+        actions: dialog.actions ?? [],
+        height: dialog.height ?? "max-content",
+        titleI18n: dialog.titleI18n ?? true,
+      };
       return id;
     },
     closeAllWithTypeThenOpen<T>(dialog: DialogInit<T>, closable?: boolean): string {
@@ -48,7 +55,14 @@ export const useDialogs = defineStore({
         close = this.dialogs[id].close;
       }
 
-      this.dialogs[id] = {...dialog, id, close};
+      this.dialogs[id] = {
+        ...dialog,
+        id,
+        close,
+        actions: dialog.actions ?? [],
+        height: dialog.height ?? "max-content",
+        titleI18n: dialog.titleI18n ?? true,
+      };
     }
   }
 })
