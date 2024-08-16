@@ -57,6 +57,7 @@
   "projects.newTemplate": "Create Template",
   "projects.class": "Projects of Class: %s",
   "projects.personal": "Personal Projects",
+  "projects.personalDesc": "All of your projects that doesn't belong to any classes",
   "projects.newClass": "Create Class",
   "projects.newClass.title": "Create Class",
   "projects.newClass.instruction": "Create a class by entering a class name below, and select 'Confirm'",

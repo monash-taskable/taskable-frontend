@@ -2,7 +2,7 @@ export type ProjectClass = {
   class_id: number,
   name: string,
   description: string,
-  created_at: Date,
+  created_at?: Date,
   archived: boolean,
   projects: Project[]
 }
