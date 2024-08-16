@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import type { AppState } from '~/types/AppState'
+import type { AppState, OAuthProvider } from '~/types/AppState'
 
 export const useAppStateStore = defineStore({
   id: 'appStateStore',
@@ -8,7 +8,8 @@ export const useAppStateStore = defineStore({
     title: "",
     titleI18n: true,
     titleHasIcon: true,
-    titleIcon: undefined
+    titleIcon: undefined,
+    token: undefined,
   }),
   actions: {
     hideTitle(){
@@ -20,6 +21,9 @@ export const useAppStateStore = defineStore({
       this.titleI18n = isI18n ?? true;
       this.titleHasIcon = titleHasIcon ?? true;
       this.titleIcon = titleIcon;
-    }
+    },
+    signin(oauthCode: string, provider: OAuthProvider){
+      
+    },
   }
 })
