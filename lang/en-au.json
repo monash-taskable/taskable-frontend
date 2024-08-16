@@ -62,6 +62,7 @@
   "projects.newClass.instruction": "Create a class by entering a class name below, and select 'Confirm'",
   "projects.newClass.cannotBeEmpty": "Class name cannot be empty.",
   "projects.newClass.name": "Class Name",
+  "projects.newClass.description": "Class Description",
   "projects.newClass.confirm": "Confirm",
   "projects.newClass.cancel": "Cancel",
 

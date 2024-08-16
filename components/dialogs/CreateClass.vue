@@ -4,10 +4,12 @@
       {{ $t("projects.newClass.instruction") }}
     </div>
 
-    <TextInput
-      :placeholder="$t('projects.newClass.name')"
-      :styles="{colorPreset: 'layer', width: '100%'}"
-      @change="emitValue" :error="error" :error-messages="$t('projects.newClass.cannotBeEmpty')"/>
+    <div class="input-group">
+      <TextInput
+        :placeholder="$t('projects.newClass.name')"
+        :styles="{colorPreset: 'layer', width: '100%'}"
+        @change="emitValue" :error="error" :error-messages="$t('projects.newClass.cannotBeEmpty')"/>
+    </div>
   </div>
 </template>
 
@@ -39,6 +41,7 @@ const emitValue = (v: string) => {
 <style scoped lang="scss">
 @import "/assets/styles/constants/Sizes.scss";
 @import "/assets/styles/constants/Typography.scss";
+@import "/assets/styles/constants/Flex.scss";
 
 .body {
   padding: $space-extra;
@@ -49,5 +52,9 @@ const emitValue = (v: string) => {
   @include typemix-label;
 
   margin-bottom: $space-large;
+}
+
+.input-group {
+  @include flex-col;
 }
 </style>

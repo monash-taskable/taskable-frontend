@@ -1,6 +1,6 @@
 <template>
   <div class="centered">
-    <IconButton :styles="buttonStyle" :caption="$t('signin.signin')"/>
+    <IconButton icon="ion:logo-google" :styles="buttonStyle" :caption="$t('signin.signin')"/>
   </div>
 </template>
 
