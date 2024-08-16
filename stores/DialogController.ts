@@ -25,7 +25,8 @@ export const useDialogs = defineStore({
         ...dialog,
         id,
         close,
-        actions: dialog.actions ?? [],
+        actionsRight: dialog.actionsRight ?? [],
+        actionsLeft: dialog.actionsLeft ?? [],
         height: dialog.height ?? "max-content",
         titleI18n: dialog.titleI18n ?? true,
       };
@@ -41,9 +42,9 @@ export const useDialogs = defineStore({
     closeDialog(id: string) {
       delete this.dialogs[id];
     },
-    closeAllWithType(dialogType: DialogType) {
+    closeAllWithType(_dialogType: DialogType) {
       for (const [_, {id, dialogType}] of Object.entries(this.dialogs)){
-        (dialogType === dialogType) && this.closeDialog(id);
+        (_dialogType === dialogType) && this.closeDialog(id);
       }
     },
     getDialog<T>(id: string): Optional<Dialog<T>> {
@@ -59,7 +60,8 @@ export const useDialogs = defineStore({
         ...dialog,
         id,
         close,
-        actions: dialog.actions ?? [],
+        actionsRight: dialog.actionsRight ?? [],
+        actionsLeft: dialog.actionsLeft ?? [],
         height: dialog.height ?? "max-content",
         titleI18n: dialog.titleI18n ?? true,
       };

@@ -25,7 +25,8 @@ export type DialogInit<T> = {
   height?: string,
   x?: number,
   y?: number,
-  actions?: DialogAction[]
+  actionsRight?: DialogAction[]
+  actionsLeft?: DialogAction[]
   close?: DialogAction
   payload: T,
 }
@@ -41,7 +42,8 @@ export type Dialog<T> = {
   height: string,
   x?: number,
   y?: number,
-  actions: DialogAction[],
+  actionsRight: DialogAction[],
+  actionsLeft: DialogAction[],
   close: Optional<DialogAction>
   payload: T,
 }

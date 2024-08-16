@@ -19,7 +19,7 @@
             ? $t(context.close.caption)
             : context.close.caption"/>
         <IconButton 
-          v-for="action in context.actions"
+          v-for="action in context.actionsRight"
           @click="() => getClickEvent(props.context, emitted, action.action)"
           :expanding="action.expanding"
           :styles="{...action.style, size: 'small'}"
