@@ -54,7 +54,7 @@ const openCreateClassForm = () => dialogControl.closeAllWithTypeThenOpen({
     caption: "projects.newClass.cancel", 
     style: {colorPreset: "strong"}
   },
-  actions: [
+  actionsRight: [
     {
       caption: "projects.newClass.confirm",
       captionI18n: true,
