@@ -5,12 +5,19 @@
 </template>
 
 <script lang="ts" setup>
+import { getAndDecode, postAndDecode } from '~/scripts/FetchTools';
 import { quickError, type DialogInit } from '~/types/Dialog';
+import { ReqAuth, ResAuth } from '~/types/proto/Auth';
+import { User } from '~/types/proto/User';
 
 const dialog = useDialogs();
 
-const debug = () => {
-  quickError("something went wrong!")
+ReqAuth.encode
+
+const debug = async () => {
+  console.log("pressed");
+  const shit = await postAndDecode("http://192.168.198.45:8080/api/auth/token", ReqAuth.encode, {authorizationCode: "hi"}, ResAuth.decode)
+  console.log(shit);
 }
 </script>
 

@@ -1,3 +1,5 @@
+import type { Writer } from "protobufjs";
+
 /**
  * Make a GET request to a HTTP server
  * 
@@ -35,11 +37,14 @@ export const getAndDecode = async <T>(url: string, decoder: (byte: Uint8Array) =
  * @returns The decoded request result
  */
 export const postAndDecode = async <T, R>(
-  url: string, encoder: ((_t: T) => Uint8Array), data: T, decoder: (byte: Uint8Array) => R): Promise<R> => {
+  url: string, encoder: ((_t: T, _o?: Writer) => Writer), data: T, decoder: (byte: Uint8Array) => R): Promise<R> => {
 
   const fetchRes = await (await fetch(url, {
     method: "POST",
-    body: encoder(data)
+    headers: {
+      "Content-Type": "application/x-protobuf",
+    },
+    body: encoder(data).finish()
   })).blob();
 
   const bytes = new Uint8Array(await fetchRes.arrayBuffer());
