@@ -15,9 +15,11 @@ const dialog = useDialogs();
 ReqAuth.encode
 
 const debug = async () => {
-  console.log("pressed");
-  const shit = await postAndDecode("http://192.168.198.45:8080/api/auth/token", ReqAuth.encode, {authorizationCode: "hi"}, ResAuth.decode)
+  // const shit = await postAndDecode("http://192.168.198.45:8080/api/auth/token", ReqAuth.encode, {authorizationCode: "4/0AQlEd8y51PjWR7NgogkpTe73Vw-pFZ3VJ_iVkrXhVGUbwriuuF-FLNcPU_4jY168X8LC0Q"}, ResAuth.decode)
+  const shit = await getAndDecode("http://192.168.198.45:8080/api/auth/check-session", ResAuth.decode);
   console.log(shit);
+
+  // useAppStateStore().sessionInit();
 }
 </script>
 

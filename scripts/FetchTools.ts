@@ -22,7 +22,10 @@ import type { Writer } from "protobufjs";
  * ```
  */
 export const getAndDecode = async <T>(url: string, decoder: (byte: Uint8Array) => T): Promise<T> => {
-  const fetchRes = await (await fetch(url)).blob();
+  const fetchRes = await (await fetch(url, {
+    method: "GET",
+    credentials: "include",
+  })).blob();
   const bytes = new Uint8Array(await fetchRes.arrayBuffer());
   return decoder(bytes);
 };
@@ -41,6 +44,7 @@ export const postAndDecode = async <T, R>(
 
   const fetchRes = await (await fetch(url, {
     method: "POST",
+    credentials: "include",
     headers: {
       "Content-Type": "application/x-protobuf",
     },

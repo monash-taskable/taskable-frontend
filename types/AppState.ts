@@ -7,7 +7,7 @@ export type AppState = {
   titleI18n: boolean,
   titleHasIcon: boolean,
   titleIcon: Optional<string>,
-  token: Optional<string>,
+  session: Optional<string>,
 };
 
 const oAuthProvider = ["Google"] as const;
