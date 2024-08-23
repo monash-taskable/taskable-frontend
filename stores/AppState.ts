@@ -24,24 +24,7 @@ export const useAppStateStore = defineStore({
       this.titleHasIcon = titleHasIcon ?? true;
       this.titleIcon = titleIcon;
     },
-    sessionClear(){
-
-    },
-    sessionInit(){
-      const currSession = localStorage.getItem("sessionid");
-
-      if (currSession !== null) {
-        this.session = currSession;
-      }
-    },
-    async signin(oAuthCode: string, provider: OAuthProvider){
-      try {
-        const session = await postAndDecode("http://192.168.198.45:8080/api/auth/token", ReqAuth.encode, {authorizationCode: oAuthCode}, ResAuth.decode);
-      } catch (e) {
-        console.log(e);
-      }
-
-    },
+    signin(){},
     signout() {},
     validateSession() {}
   }

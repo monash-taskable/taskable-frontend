@@ -37,8 +37,12 @@ const openSigninDialog = () => {
   }, false));
 };
 
+const appState = useAppStateStore();
+
 const error = (error: FetchError | Error) => {
-  dialogs.closeAllWithType("signInLoading");
+  appState.signout();
+
+  dialogs.closeAllDialogs();
   dialogs.closeAllWithTypeThenOpen({
     dialogType: "signInError",
     payload: error,
@@ -53,6 +57,8 @@ const error = (error: FetchError | Error) => {
 }
 
 onMounted(async ()=>{
+  dialogs.closeAllDialogs();
+  
   const signinLoading = openSigninDialog();
 
   // try sign in
