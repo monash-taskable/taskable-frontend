@@ -16,7 +16,7 @@ import type { Writer } from "protobufjs";
  * import { Post } from '~/types/proto/Post';
  * 
  * const url = 'http://0.1.2.3:8080/test';
- * const result = await fetchAndDecode(url, Post.decode); // returns a Post object
+ * const result = await getAndDecode(url, Post.decode); // returns a Post object
  * console.log(result);
  * </script>
  * ```
@@ -38,6 +38,21 @@ export const getAndDecode = async <T>(url: string, decoder: (byte: Uint8Array) =
  * @param data - the payload
  * @param decoder - the decoder function from a generated protobuf definition 
  * @returns The decoded request result
+ * 
+ * For example, requesting http://0.1.2.3:8080/test with a request message with typescript definition
+ * of ReqPost that returns a proto message with typescript definition of ResPost:
+ * 
+ * ```vue
+ * <!-- Note that in <script setup> tag, awaiting promises (the await keyword) is allowed -->
+ * <script lang="ts" setup>
+ * import { ReqPost, ResPost } from '~/types/proto/Post';
+ * 
+ * const url = 'http://0.1.2.3:8080/test';
+ * const postData = {foo: "bar"}; // a ReqPost object
+ * const result = await postAndDecode(url, ReqPost.encode, postData, ResPost.decode); // returns a Post object
+ * console.log(result);
+ * </script>
+ * ```
  */
 export const postAndDecode = async <T, R>(
   url: string, encoder: ((_t: T, _o?: Writer) => Writer), data: T, decoder: (byte: Uint8Array) => R): Promise<R> => {
