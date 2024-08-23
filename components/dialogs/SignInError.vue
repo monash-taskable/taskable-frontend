@@ -15,7 +15,7 @@ import type { FetchResult } from '~/scripts/FetchTools';
 import type { ButtonStyle } from '~/types/ButtonStyle';
 import type { Dialog } from '~/types/Dialog';
 
-const retryStyle: ButtonStyle = {colorPreset: 'accent-strong'};
+const retryStyle: ButtonStyle = {colorPreset: 'strong', backgroundColor: 'background'};
 
 const props = defineProps({
   context: {type: Object as PropType<Dialog<FetchResult<any> | string>>, required: true},

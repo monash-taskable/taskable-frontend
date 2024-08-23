@@ -43,17 +43,20 @@ const error = (error: FetchError | Error) => {
   appState.signout();
 
   dialogs.closeAllDialogs();
-  dialogs.closeAllWithTypeThenOpen({
-    dialogType: "signInError",
-    payload: error,
-    title: "dialogError.somethingWentWrong",
-    titleI18n: true,
-    width: "350px",
-    style: {
-      titleBackground: "var(--dangerous-weak)",
-      titleColor: "var(--dangerous-strong)",
-    }
-  }, false)
+  // timeout is for ux
+  setTimeout(()=>{
+    dialogs.openDialog({
+      dialogType: "signInError",
+      payload: error,
+      title: "dialogError.somethingWentWrong",
+      titleI18n: true,
+      width: "350px",
+      style: {
+        titleBackground: "var(--dangerous-weak)",
+        titleColor: "var(--dangerous-strong)",
+      }
+    }, false)
+  }, 200);
 }
 
 onMounted(async ()=>{
