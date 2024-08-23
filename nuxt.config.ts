@@ -2,6 +2,13 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
 
+  runtimeConfig: {
+    public: {
+      oAuthLinkGoogle: process.env.GOOGLE_OAUTH_URL,
+      apiHost: process.env.API_HOST
+    }
+  },
+
   modules: [
     "@nuxt/icon",
     ['@pinia/nuxt', {

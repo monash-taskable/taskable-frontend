@@ -10,6 +10,15 @@
       </div>
       <div class="right">
         <IconButton 
+          v-for="action in context.actionsLeft"
+          @click="() => getClickEvent(props.context, emitted, action.action)"
+          :expanding="action.expanding"
+          :styles="{...action.style, size: 'small'}"
+          :icon="action.icon"
+          :caption="action.captionI18n
+            ? $t(action.caption)
+            : action.caption"/>
+        <IconButton 
           v-if="context.close !== undefined"
           @click="closeDialog"
           :expanding="context.close.expanding"
@@ -35,6 +44,9 @@
     <DialogsAlert @emit="updateEmit" v-if="context.dialogType === 'alert'" :context="props.context"/>
     <DialogsError @emit="updateEmit" v-if="context.dialogType === 'error'" :context="props.context"/>
     <DialogsCreateClass @emit="updateEmit" v-if="context.dialogType === 'createClass'" :context="props.context"/>
+    <DialogsSignIn @emit="updateEmit" v-if="context.dialogType === 'signIn'" :context="props.context"/>
+    <DialogsSignInLoading @emit="updateEmit" v-if="context.dialogType === 'signInLoading'" :context="props.context"/>
+    <DialogsSignInError @emit="updateEmit" v-if="context.dialogType === 'signInError'" :context="props.context"/>
   </div>
 </template>
 
@@ -156,6 +168,7 @@ const updateEmit = (new_val: any) => emitted.value = new_val;
   
   & .right {
     @include flex-row;
+    min-height: ($space-small * 2) + $icon-size-medium;
   }
 
   & .left {

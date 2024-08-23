@@ -1,7 +1,8 @@
 // constant sizing, reference point is 16px
 $typesize-default: 1rem;
-$typesize-larger: 1.5rem;
-$typesize-large: 2rem;
+$typesize-large: 1.5rem;
+$typesize-larger: 1.8rem;
+$typesize-largest: 2rem;
 
 $typeweight-regular: 400;
 $typeweight-light: 300;
@@ -20,11 +21,17 @@ $typeweight-light: 300;
 
 @mixin typemix-header($color: var(--foreground)) {
   @include typemix-default($color);
-  font-size: $typesize-larger;
+  font-size: $typesize-large;
 }
 
 @mixin typemix-title($color: var(--foreground)) {
   @include typemix-default($color);
-  font-size: $typesize-large;
+  font-size: $typesize-largest;
+  font-weight: $typeweight-light;
+}
+
+@mixin typemix-title-small($color: var(--foreground)) {
+  @include typemix-default($color);
+  font-size: $typesize-larger;
   font-weight: $typeweight-light;
 }

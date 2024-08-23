@@ -42,7 +42,12 @@
   "home.userProfile": "View User Profile",
   "home.userProfileDesc": "View name, edit profile picture and others",
 
-  "signin.signin": "Sign in with Google",
+  "signin.welcome": "Welcome",
+  "signin.description": "Select an sign in option from below",
+  "signin.google": "Google",
+  "signin.loading": "Signing in...",
+  "signin.error": "Error occurred when signing in. If this continues to happen, contact administrator.",
+  "signin.retry": "Try Again",
   
   "settings.title": "App Settings",
   "settings.appearance": "Appearance Options",

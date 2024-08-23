@@ -1,24 +1,98 @@
 <template>
-  <div></div>
+  <div class="centered">
+    <div class="filter" :class="getClass(dialogFlag)">
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
-import { getAndDecode, postAndDecode } from '~/scripts/FetchTools';
+import { api, FetchError, postAndDecode } from '~/scripts/FetchTools';
+import type {ButtonStyle } from '~/types/ButtonStyle';
+import { quickError } from '~/types/Dialog';
+import type { Optional } from '~/types/Optional';
 import { ReqAuth, ResAuth } from '~/types/proto/Auth';
-import { User } from '~/types/proto/User';
 
+definePageMeta({ layout: "empty" });
 
-const route = useRoute();
-const code = route.query.code as string;
+const t = useI18n();
 
+const buttonStyle: ButtonStyle = {
+  colorPreset: "layer",
+  size: "large"
+};
 
-onMounted(async () => {
-  const session = await postAndDecode("http://192.168.198.45:8080/api/auth/token", ReqAuth.encode, {authorizationCode: code}, ResAuth.decode);
-  console.log(await getAndDecode("http://192.168.198.45:8080/api/get-user", User.decode));
-}) 
+const getClass = (dialog: boolean) => dialog ? "filtered" : "";
+
+// signin dialog
+const dialogFlag = ref(false);
+const dialogs = useDialogs();
+const openSigninDialog = () => {
+  dialogFlag.value = true;
+  return dialogs.getDialog(dialogs.closeAllWithTypeThenOpen({
+    title: "taskable",
+    titleI18n: true,
+    dialogType: "signInLoading",
+    payload: undefined,
+    width: "300px",
+  }, false));
+};
+
+const error = (error: FetchError | Error) => {
+  dialogs.closeAllWithType("signInLoading");
+  dialogs.closeAllWithTypeThenOpen({
+    dialogType: "signInError",
+    payload: error,
+    title: "dialogError.somethingWentWrong",
+    titleI18n: true,
+    width: "350px",
+    style: {
+      titleBackground: "var(--dangerous-weak)",
+      titleColor: "var(--dangerous-strong)",
+    }
+  }, false)
+}
+
+onMounted(async ()=>{
+  const signinLoading = openSigninDialog();
+
+  // try sign in
+  const code = useRoute().query.code as Optional<string>;
+
+  if (code === undefined) {
+    return;
+  }
+
+  const tokenExchange = await postAndDecode(
+    api("/auth/token"),
+    ReqAuth.encode,
+    {authorizationCode: code},
+    ResAuth.decode
+  );
+
+  tokenExchange.otherErr(error).httpErr(error).res((result) => {
+    dialogs.closeAllWithType("signInLoading");
+    // sign in code here
+  });
+})
+
 
 </script>
 
-<style>
+<style lang="scss" scoped>
+
+@import "/assets/styles/constants/Flex.scss";
+
+.centered {
+  height: 100%;
+  background-image: url('/assets/images/MonashBusLoop.png');
+  background-size: cover;
+}
+
+.filter {
+  height: 100%;
+
+  &.filtered{ backdrop-filter: blur(3px) saturate(60%); }
+}
+
 
 </style>
