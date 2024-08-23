@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+message ReqAuth {
+  string authorizationCode = 1;
+}
+
+message ResAuth {
+  string accessToken = 1;
+}
