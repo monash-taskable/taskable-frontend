@@ -7,7 +7,7 @@
 <script lang="ts" setup>
 import { FetchError, FetchRequest } from '~/scripts/FetchTools';
 import type { Optional } from '~/types/Optional';
-import { AuthRequest } from '~/types/proto/Auth';
+import { GetCsrfResponse, LoginExchangeRequest, LoginExchangeResponse } from '~/types/proto/Auth';
 
 definePageMeta({ layout: "empty" });
 
@@ -30,8 +30,6 @@ const openSignInLoadingDialog = () => {
 
 const appState = useAppStateStore();
 const error = (error: FetchError | Error) => {
-  appState.signOut();
-
   dialogs.closeAllDialogs();
   // timeout is for ux
   setTimeout(()=>{
@@ -55,7 +53,8 @@ onMounted(async ()=>{
   const route = useRoute();
 
   // check if error
-  if (route.query.error || route.query.code === undefined) {
+  const code = route.query.code as Optional<string>;
+  if (route.query.error || code === undefined) {
     dialogFlag.value = true;
     error(new Error());
     return;
@@ -63,22 +62,26 @@ onMounted(async ()=>{
 
   openSignInLoadingDialog();
 
-  // try sign in
-  const code = route.query.code as Optional<string>;
-
-  if (code === undefined) {
-    return;
+  // get temp csrf token
+  const tempCsrfTokenFetch = await FetchRequest.api("/auth/get-temp-csrf").commitAndRecv(GetCsrfResponse.decode);
+  let token = "";
+  if (tempCsrfTokenFetch._result !== undefined){
+    token = tempCsrfTokenFetch._result.csrfToken;
   }
 
-  const tokenExchange = await FetchRequest.api("/auth/token").post().payload(
-    AuthRequest.encode,
+  // try sign in
+  const tokenExchange = await FetchRequest.api("/auth/login-exchange").post().payload(
+    LoginExchangeRequest.encode,
     {authorizationCode: code},
-  ).commit();
+  ).overrideCsrf(token).commitAndRecv(LoginExchangeResponse.decode);
 
-  tokenExchange.otherErr(error).httpErr(error).resIgnoreUndefined((_) => {
+  // set global csrf
+  tokenExchange.res(csrfMessage => {
+    console.log(csrfMessage.csrfToken);
+    FetchRequest.updateCsrf(csrfMessage.csrfToken);
     dialogs.closeAllDialogs();
-    navigateTo("/");
-  });
+    location.href = "/";
+  })
 })
 </script>
 

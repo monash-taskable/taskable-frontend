@@ -28,15 +28,28 @@ const api = (endpoint: string): string => {
 export class FetchRequest {
   _dest: string;
   _reqInit: RequestInit;
+  _csrfOverride: Optional<string>;
+  static _csrf: Optional<string>
   
   constructor(destination: string) {
     this._dest = destination;
     this._reqInit = { credentials: "include" };
+    this._csrfOverride;
     this.attachHeader({ "ngrok-skip-browser-warning": "*" });
   }
 
   static api(destination: string) {
     return new FetchRequest(api(destination));
+  }
+
+  static updateCsrf(csrf: string) {
+    FetchRequest._csrf = csrf;
+  }
+
+  overrideCsrf(csrf: string): this {
+    this._csrfOverride = csrf;
+    this.attachHeader({ "X-XSRF-TOKEN": csrf })
+    return this;
   }
 
   method(method: string): this {
@@ -63,6 +76,10 @@ export class FetchRequest {
   
   async commitAndRecv<R>(decoder: (_b: Uint8Array) => R): Promise<FetchResult<R>> {
     try {
+      if (FetchRequest._csrf !== undefined && this._csrfOverride === undefined) {
+        this.attachHeader({ "X-XSRF-TOKEN": FetchRequest._csrf });
+      }
+
       const rawResult = await fetch(this._dest, this._reqInit);
 
       if (!rawResult.ok){
@@ -81,6 +98,10 @@ export class FetchRequest {
 
   async commit(): Promise<FetchResult<undefined>> {
     try {
+      if (FetchRequest._csrf !== undefined && this._csrfOverride === undefined) {
+        this.attachHeader({ "X-XSRF-TOKEN": FetchRequest._csrf });
+      }
+
       const rawResult = await fetch(this._dest, this._reqInit);
 
       if (!rawResult.ok){

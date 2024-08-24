@@ -6,12 +6,15 @@
 </template>
 
 <script lang="ts" setup>
+import { FetchRequest } from '~/scripts/FetchTools';
+
+definePageMeta({layout:"empty"});
 
 const dialog = useDialogs();
 
 const debug = async () => {
-  const x = await useAppStateStore().validateSession();
-  console.log(x);
+  const x = await FetchRequest.api("/auth/test").overrideCsrf("b04f01ab-8748-48ba-abb4-d068df4ff").post().commit();
+  console.log(x._response?.text());
 }
 
 const logout = async () => {

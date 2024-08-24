@@ -1,7 +1,6 @@
 <template>
-  <div class="layout-root">
-    <div class="layout-root centered" v-show="!authFlag"><Loading/></div>
-    <div class="layout-root">
+  <div class="stack">
+    <div class="page layout-root">
       <header>
         <nav>
           <TaskableHomeButton @click="navToHome" :tabindex="1001" />
@@ -67,6 +66,7 @@
       </header>
       <slot/>
     </div>
+    <div class="loading layout-root centered" v-show="!authFlag"><Loading/></div>
   </div>
 </template>
 
@@ -146,7 +146,7 @@ const authFlag = ref(false);
 onMounted(async () => {
   if (await appStateStore.validateSession()){
     authFlag.value = true;
-    await appStateStore.initSession();
+    await appStateStore.initSessionAndCsrf();
   }
   else {
     navigateTo("/login");
@@ -159,6 +159,15 @@ onMounted(async () => {
 @import "/assets/styles/constants/Flex.scss";
 @import "/assets/styles/constants/Sizes.scss";
 @import "/assets/styles/constants/Typography.scss";
+
+.stack>div {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  &.loading { background: var(--background); }
+}
 
 .centered {
   @include flex-col;

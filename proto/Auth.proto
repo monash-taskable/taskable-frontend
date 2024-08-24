@@ -1,17 +1,13 @@
 syntax = "proto3";
 
-message AuthRequest {
+message LoginExchangeRequest {
   string authorization_code = 1;
 }
 
-message AuthResponse {
-  string session_id = 1;
+message LoginExchangeResponse {
+  string csrf_token = 1;
 }
 
-message CheckSessionRequest {
-  string session_id = 1;
-}
-
-message CheckSessionResponse {
-  bool valid = 1;
+message GetCsrfResponse {
+  string csrf_token = 1;
 }

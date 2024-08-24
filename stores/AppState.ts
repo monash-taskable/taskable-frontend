@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { FetchRequest } from '~/scripts/FetchTools';
 import type { AppState } from '~/types/AppState';
+import { GetCsrfResponse } from '~/types/proto/Auth';
 import { nullSession } from '~/types/Session';
 
 export const useAppStateStore = defineStore({
@@ -43,6 +44,12 @@ export const useAppStateStore = defineStore({
       }
       return true;
     },
-    async initSession() {}
+    async initSessionAndCsrf() {
+      // get csrf
+      const csrfProxy = await FetchRequest.api("/auth/get-csrf").commitAndRecv(GetCsrfResponse.decode);
+      csrfProxy.res(csrfMessage => {
+        FetchRequest.updateCsrf(csrfMessage.csrfToken);
+      })
+    }
   }
 })
