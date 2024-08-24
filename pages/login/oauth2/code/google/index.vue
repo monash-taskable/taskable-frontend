@@ -79,7 +79,6 @@ onMounted(async ()=>{
   tokenExchange.res(csrfMessage => {
     console.log(csrfMessage.csrfToken);
     FetchRequest.updateCsrf(csrfMessage.csrfToken);
-    dialogs.closeAllDialogs();
     location.href = "/";
   })
 })
