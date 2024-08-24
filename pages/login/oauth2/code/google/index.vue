@@ -1,32 +1,23 @@
 <template>
   <div class="centered">
-    <div class="filter" :class="getClass(dialogFlag)">
-    </div>
+    <div class="filter" :class="getClass(dialogFlag)"/>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { api, FetchError, postAndDecode } from '~/scripts/FetchTools';
-import type {ButtonStyle } from '~/types/ButtonStyle';
-import { quickError } from '~/types/Dialog';
+import { FetchError, FetchRequest } from '~/scripts/FetchTools';
 import type { Optional } from '~/types/Optional';
-import { ReqAuth, ResAuth } from '~/types/proto/Auth';
+import { AuthRequest } from '~/types/proto/Auth';
 
 definePageMeta({ layout: "empty" });
 
 const t = useI18n();
-
-const buttonStyle: ButtonStyle = {
-  colorPreset: "layer",
-  size: "large"
-};
-
 const getClass = (dialog: boolean) => dialog ? "filtered" : "";
 
-// signin dialog
+// sign in dialog
 const dialogFlag = ref(false);
 const dialogs = useDialogs();
-const openSigninDialog = () => {
+const openSignInLoadingDialog = () => {
   dialogFlag.value = true;
   return dialogs.getDialog(dialogs.closeAllWithTypeThenOpen({
     title: "taskable",
@@ -38,9 +29,8 @@ const openSigninDialog = () => {
 };
 
 const appState = useAppStateStore();
-
 const error = (error: FetchError | Error) => {
-  appState.signout();
+  appState.signOut();
 
   dialogs.closeAllDialogs();
   // timeout is for ux
@@ -62,29 +52,34 @@ const error = (error: FetchError | Error) => {
 onMounted(async ()=>{
   dialogs.closeAllDialogs();
   
-  const signinLoading = openSigninDialog();
+  const route = useRoute();
+
+  // check if error
+  if (route.query.error || route.query.code === undefined) {
+    dialogFlag.value = true;
+    error(new Error());
+    return;
+  }
+
+  openSignInLoadingDialog();
 
   // try sign in
-  const code = useRoute().query.code as Optional<string>;
+  const code = route.query.code as Optional<string>;
 
   if (code === undefined) {
     return;
   }
 
-  const tokenExchange = await postAndDecode(
-    api("/auth/token"),
-    ReqAuth.encode,
+  const tokenExchange = await FetchRequest.api("/auth/token").post().payload(
+    AuthRequest.encode,
     {authorizationCode: code},
-    ResAuth.decode
-  );
+  ).commit();
 
-  tokenExchange.otherErr(error).httpErr(error).res((result) => {
-    dialogs.closeAllWithType("signInLoading");
-    // sign in code here
+  tokenExchange.otherErr(error).httpErr(error).resIgnoreUndefined((_) => {
+    dialogs.closeAllDialogs();
+    navigateTo("/");
   });
 })
-
-
 </script>
 
 <style lang="scss" scoped>

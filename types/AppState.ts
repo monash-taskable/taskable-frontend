@@ -1,5 +1,7 @@
 import { isOfType } from "~/scripts/Utils";
 import type { Optional } from "./Optional";
+import type { User } from "./User";
+import type { AppSession } from "./Session";
 
 export type AppState = {
   showingTitle: boolean
@@ -7,7 +9,7 @@ export type AppState = {
   titleI18n: boolean,
   titleHasIcon: boolean,
   titleIcon: Optional<string>,
-  session: Optional<string>,
+  session: AppSession
 };
 
 const oAuthProvider = ["Google"] as const;

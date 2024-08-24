@@ -32,12 +32,31 @@ const openSigninDialog = () => {
     width: "400px",
   }, false);
 };
+const openSignInLoadingDialog = () => {
+  dialogFlag.value = true;
+  return dialogs.getDialog(dialogs.closeAllWithTypeThenOpen({
+    title: "taskable",
+    titleI18n: true,
+    dialogType: "signInLoading",
+    payload: undefined,
+    width: "300px",
+  }, false));
+};
 
-onMounted(()=>{
-  openSigninDialog();
+const appState = useAppStateStore();
+
+openSignInLoadingDialog();
+
+onMounted(async ()=>{
+  setTimeout(async () => {
+    useDialogs().closeAllDialogs();
+  }, 200);
+  if (await appState.validateSession()){
+    navigateTo("/");
+    return
+  }
+  setTimeout(() => openSigninDialog(), 400);
 })
-
-
 </script>
 
 <style lang="scss" scoped>

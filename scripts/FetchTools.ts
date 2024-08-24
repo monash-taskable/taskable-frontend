@@ -117,6 +117,14 @@ export class FetchResult<T> {
     return this;
   }
 
+  resIgnoreUndefined(callback: (result: Optional<T>) => void): this {
+    if (!this.isError()) {
+      callback(this._result);
+    }
+
+    return this;
+  }
+
   httpErr(callback: (httpError: FetchError) => void): this {
     if (this._httpError !== undefined) {
       callback(this._httpError);

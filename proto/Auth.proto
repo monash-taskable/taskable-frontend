@@ -1,9 +1,17 @@
 syntax = "proto3";
 
-message ReqAuth {
-  string authorizationCode = 1;
+message AuthRequest {
+  string authorization_code = 1;
 }
 
-message ResAuth {
-  string accessToken = 1;
+message AuthResponse {
+  string session_id = 1;
+}
+
+message CheckSessionRequest {
+  string session_id = 1;
+}
+
+message CheckSessionResponse {
+  bool valid = 1;
 }

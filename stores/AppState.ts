@@ -1,7 +1,7 @@
-import { defineStore } from 'pinia'
-import { postAndDecode } from '~/scripts/FetchTools';
-import type { AppState, OAuthProvider } from '~/types/AppState'
-import { ReqAuth, ResAuth } from '~/types/proto/Auth';
+import { defineStore } from 'pinia';
+import { FetchRequest } from '~/scripts/FetchTools';
+import type { AppState } from '~/types/AppState';
+import { nullSession } from '~/types/Session';
 
 export const useAppStateStore = defineStore({
   id: 'appStateStore',
@@ -11,7 +11,7 @@ export const useAppStateStore = defineStore({
     titleI18n: true,
     titleHasIcon: true,
     titleIcon: undefined,
-    session: undefined,
+    session: nullSession(),
   }),
   actions: {
     hideTitle(){
@@ -24,8 +24,25 @@ export const useAppStateStore = defineStore({
       this.titleHasIcon = titleHasIcon ?? true;
       this.titleIcon = titleIcon;
     },
-    signin(){},
-    signout() {},
-    validateSession() {}
+    clearSession (){
+      this.session = nullSession();
+    },
+    async signOut() {
+      FetchRequest.api("/auth/logout").delete().commit();
+      this.clearSession();
+    },
+    async validateSession() {
+      if (this.session === undefined){
+        this.clearSession();
+        return false;
+      }
+      const testRes = await FetchRequest.api("/auth/verify").commit();
+      if (testRes.isError()){
+        this.clearSession();
+        return false;
+      }
+      return true;
+    },
+    async initSession() {}
   }
 })
