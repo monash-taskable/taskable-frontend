@@ -1,69 +1,72 @@
 <template>
   <div class="layout-root">
-    <header>
-      <nav>
-        <TaskableHomeButton @click="navToHome" :tabindex="1001" />
-        
-        <IconButton
-          v-if="appState.showingTitle.value"
-          :tabindex="1002"
-          :styles="navBtnStyle"
-          :icon="appState.titleIcon.value"
-          :caption="appState.titleI18n ? $t(appState.title.value) : appState.title.value" />
-      </nav>
-      <nav>
-        <!-- Notification Menu -->
-        <IconButton :tabindex="1003" expanding maintain-click :styles="navBtnStyle" icon="fluent:alert-20-regular"
-          :id="_notiMenuId" :expanded="_notiExpanded" @click="_showNotiMenu" :caption="(notificationCount === 0) ?
-            $t('header.btn.noNotifications') :
-            sprintf($t('header.btn.notifications'), notificationCount)" />
-        <TitleDropdown :id="_notiMenuId" :button="_notiMenu" click-away :show="_notiMenuRef" @hide="_hideNotiMenu">
-          <template #tab>
-            <IconButton :tabindex="1003.1" maintain-click
-              :styles="{ ...navBtnStyle, backgroundColor: 'var(--layer-background)' }" icon="fluent:alert-20-regular"
-              :id="_notiMenuId" @click="_hideNotiMenu" :caption="(notificationCount === 0) ?
-                $t('header.btn.noNotifications') :
-                sprintf($t('header.btn.notifications'), notificationCount)" />
-          </template>
-          <div class="dropdown-content noti-menu">
-            <div class="noti-label new">
-              {{ sprintf($t('header.noti.newNotification'), notificationCount) }}
+    <div class="layout-root centered" v-show="!authFlag"><Loading/></div>
+    <div class="layout-root">
+      <header>
+        <nav>
+          <TaskableHomeButton @click="navToHome" :tabindex="1001" />
+          
+          <IconButton
+            v-if="appState.showingTitle.value"
+            :tabindex="1002"
+            :styles="navBtnStyle"
+            :icon="appState.titleIcon.value"
+            :caption="appState.titleI18n ? $t(appState.title.value) : appState.title.value" />
+        </nav>
+        <nav>
+          <!-- Notification Menu -->
+          <IconButton :tabindex="1003" expanding maintain-click :styles="navBtnStyle" icon="fluent:alert-20-regular"
+            :id="_notiMenuId" :expanded="_notiExpanded" @click="_showNotiMenu" :caption="(notificationCount === 0) ?
+              $t('header.btn.noNotifications') :
+              sprintf($t('header.btn.notifications'), notificationCount)" />
+          <TitleDropdown :id="_notiMenuId" :button="_notiMenu" click-away :show="_notiMenuRef" @hide="_hideNotiMenu">
+            <template #tab>
+              <IconButton :tabindex="1003.1" maintain-click
+                :styles="{ ...navBtnStyle, backgroundColor: 'var(--layer-background)' }" icon="fluent:alert-20-regular"
+                :id="_notiMenuId" @click="_hideNotiMenu" :caption="(notificationCount === 0) ?
+                  $t('header.btn.noNotifications') :
+                  sprintf($t('header.btn.notifications'), notificationCount)" />
+            </template>
+            <div class="dropdown-content noti-menu">
+              <div class="noti-label new">
+                {{ sprintf($t('header.noti.newNotification'), notificationCount) }}
+              </div>
+              <NotificationPopupEntry new-entry title="Hello" source="world" :timestamp="new Date(Date.now().toString())"
+                :tabindex="1003.2" />
+              <div class="noti-label">
+                {{ sprintf($t('header.noti.newNotification'), notificationCount) }}
+              </div>
+              <NotificationPopupEntry title="Lorem Ipsum" source="Test notification" icon="fluent:animal-cat-20-regular"
+                :timestamp="new Date(Date.now().toString())" :tabindex="1003.3" />
             </div>
-            <NotificationPopupEntry new-entry title="Hello" source="world" :timestamp="new Date(Date.now().toString())"
-              :tabindex="1003.2" />
-            <div class="noti-label">
-              {{ sprintf($t('header.noti.newNotification'), notificationCount) }}
+          </TitleDropdown>
+  
+          <!-- Settings Link -->
+          <IconButton :tabindex="1004" expanding :styles="navBtnStyle" icon="fluent:settings-20-regular"
+            :caption="$t('header.btn.settings')" @click="navToSettings" />
+  
+          <!-- User Menu -->
+          <IconButton :tabindex="1005" :id="_userMenuId" @click="_showUserMenu" :styles="navBtnStyle"
+            icon="fluent:person-20-regular" caption="John Smith" />
+          <TitleDropdown :id="_userMenuId" :button="_userMenu" click-away :show="_userMenuRef" @hide="_hideUserMenu">
+            <template #tab>
+              <IconButton :tabindex="1005.1" @click="_hideUserMenu"
+                :styles="{ ...navBtnStyle, backgroundColor: 'var(--layer-background)' }" icon="fluent:person-20-regular"
+                caption="John Smith" />
+            </template>
+            <div class="dropdown-content user-menu">
+              <IconButton :tabindex="1005.2" @click="navToProfile" :caption="$t('header.btn.profile')"
+                icon="fluent:person-square-20-regular" />
+              <IconButton :tabindex="1005.3" @click="navToAbout" :caption="$t('header.btn.about')"
+                icon="fluent:info-20-regular" />
+              <IconButton :tabindex="1005.4" :caption="$t('header.btn.signOut')" :styles="{ colorPreset: 'dangerous' }"
+                icon="fluent:arrow-exit-20-filled" @click="signOut" />
             </div>
-            <NotificationPopupEntry title="Lorem Ipsum" source="Test notification" icon="fluent:animal-cat-20-regular"
-              :timestamp="new Date(Date.now().toString())" :tabindex="1003.3" />
-          </div>
-        </TitleDropdown>
-
-        <!-- Settings Link -->
-        <IconButton :tabindex="1004" expanding :styles="navBtnStyle" icon="fluent:settings-20-regular"
-          :caption="$t('header.btn.settings')" @click="navToSettings" />
-
-        <!-- User Menu -->
-        <IconButton :tabindex="1005" :id="_userMenuId" @click="_showUserMenu" :styles="navBtnStyle"
-          icon="fluent:person-20-regular" caption="John Smith" />
-        <TitleDropdown :id="_userMenuId" :button="_userMenu" click-away :show="_userMenuRef" @hide="_hideUserMenu">
-          <template #tab>
-            <IconButton :tabindex="1005.1" @click="_hideUserMenu"
-              :styles="{ ...navBtnStyle, backgroundColor: 'var(--layer-background)' }" icon="fluent:person-20-regular"
-              caption="John Smith" />
-          </template>
-          <div class="dropdown-content user-menu">
-            <IconButton :tabindex="1005.2" @click="navToProfile" :caption="$t('header.btn.profile')"
-              icon="fluent:person-square-20-regular" />
-            <IconButton :tabindex="1005.3" @click="navToAbout" :caption="$t('header.btn.about')"
-              icon="fluent:info-20-regular" />
-            <IconButton :tabindex="1005.4" :caption="$t('header.btn.signOut')" :styles="{ colorPreset: 'dangerous' }"
-              icon="fluent:arrow-exit-20-filled" />
-          </div>
-        </TitleDropdown>
-      </nav>
-    </header>
-    <slot />
+          </TitleDropdown>
+        </nav>
+      </header>
+      <slot/>
+    </div>
   </div>
 </template>
 
@@ -75,6 +78,9 @@ import type { Optional } from '~/types/Optional';
 const t = useI18n();
 const notificationCount = ref(30);
 const navBtnStyle = buttonStyle({ colorPreset: 'layer' });
+
+const appStateStore = useAppStateStore()
+const appState = storeToRefs(appStateStore);
 
 // menu methods
 const _constructDropdown = (show: globalThis.Ref<boolean>, id: string) => {
@@ -109,6 +115,11 @@ const {
   id: _userMenuId
 } = _constructDropdown(ref(false), "navbtn-usermenu");
 
+const signOut = async () => {
+  await appStateStore.signOut();
+  navigateTo("/login");
+}
+
 // notification menu
 const {
   hideDropdown: _hideNotiMenu,
@@ -119,8 +130,6 @@ const {
   id: _notiMenuId
 } = _constructExpandingDropdown(ref(false), ref(undefined), "navbtn-notimenu");
 
-// page title
-const appState = storeToRefs(useAppStateStore());
 
 // static nav links
 const navTo = (path: string) => async () => {
@@ -132,12 +141,29 @@ const navToAbout = navTo("/about");
 const navToSettings = navTo("/settings");
 const navToProfile = navTo("/profile");
 
+// session
+const authFlag = ref(false);
+onMounted(async () => {
+  if (await appStateStore.validateSession()){
+    authFlag.value = true;
+    await appStateStore.initSession();
+  }
+  else {
+    navigateTo("/login");
+  }
+})
+
 </script>
 
 <style lang="scss" scoped>
 @import "/assets/styles/constants/Flex.scss";
 @import "/assets/styles/constants/Sizes.scss";
 @import "/assets/styles/constants/Typography.scss";
+
+.centered {
+  @include flex-col;
+  @include flex-cross(center);
+}
 
 .layout-root {
   height: 100%;
