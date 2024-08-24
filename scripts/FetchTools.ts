@@ -15,120 +15,102 @@ export class FetchError extends Error {
 }
 
 /**
- * Make a GET request to a HTTP server
- * 
- * @param url - the URL to request 
- * @param decoder - the decoder function from a generated protobuf definition 
- * @returns The decoded request in a FetchResult object
- * 
- * For example, requesting http://0.1.2.3:8080/test that returns a proto message with typescript 
- * definition of Post:
- * 
- * ```vue
- * <!-- Note that in <script setup> tag, awaiting promises (the await keyword) is allowed -->
- * <script lang="ts" setup>
- * import { Post } from '~/types/proto/Post';
- * 
- * const url = 'http://0.1.2.3:8080/test';
- * const result = await getAndDecode(url, Post.decode); // returns a Post object
- * console.log(result);
- * </script>
- * ```
- */
-export const getAndDecode = async <T>(url: string, decoder: (byte: Uint8Array) => T): Promise<FetchResult<T>> => {
-  try{
-    const fetchRes = await fetch(url, {
-      method: "GET",
-      credentials: "include",
-    });
-  
-    if (fetchRes.ok){
-      const blob = await fetchRes.blob();
-      const bytes = new Uint8Array(await blob.arrayBuffer());
-      return new FetchResult(decoder(bytes));
-    }
-  
-    return new FetchResult(decoder(new Uint8Array()), new FetchError(fetchRes.status, fetchRes.statusText));
-  }
-  catch (e) {
-    return new FetchResult(decoder(new Uint8Array()), undefined, (e instanceof Error) ? e : new Error());
-  }
-};
-
-/**
- * Make a POST request to a HTTP server
- * 
- * @param url - the URL to request
- * @param encoder - the encoder function from a generated protobuf definition
- * @param data - the payload
- * @param decoder - the decoder function from a generated protobuf definition 
- * @returns The decoded request in a FetchResult object
- * 
- * For example, requesting http://0.1.2.3:8080/test with a request message with typescript definition
- * of ReqPost that returns a proto message with typescript definition of ResPost:
- * 
- * ```vue
- * <!-- Note that in <script setup> tag, awaiting promises (the await keyword) is allowed -->
- * <script lang="ts" setup>
- * import { ReqPost, ResPost } from '~/types/proto/Post';
- * 
- * const url = 'http://0.1.2.3:8080/test';
- * const postData = {foo: "bar"}; // a ReqPost object
- * const result = await postAndDecode(url, ReqPost.encode, postData, ResPost.decode); // returns a Post object
- * console.log(result);
- * </script>
- * ```
- */
-export const postAndDecode = async <T, R>(
-  url: string, encoder: ((_t: T, _o?: Writer) => Writer), data: T, decoder: (byte: Uint8Array) => R): Promise<FetchResult<R>> => {
-  
-  try {
-    const fetchRes = await fetch(url, {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/x-protobuf",
-      },
-      body: encoder(data).finish()
-    })
-  
-    if (fetchRes.ok){
-      const blob = await fetchRes.blob();
-      const bytes = new Uint8Array(await blob.arrayBuffer());
-      return new FetchResult(decoder(bytes));
-    }
-  
-    return new FetchResult(decoder(new Uint8Array()), new FetchError(fetchRes.status, fetchRes.statusText));
-  }
-  catch (e) {
-    return new FetchResult(decoder(new Uint8Array()), undefined, (e instanceof Error) ? e : new Error());
-  }
-}
-
-/**
  * Get the full url for an api endpoint
  * 
  * @param endpoint The API endpoint (excluding /api/ root path)
  * @returns an url prefixed with API Hostname/api/
  */
-export const api = (endpoint: string): string => {
+const api = (endpoint: string): string => {
   const config = useRuntimeConfig();
   return urlJoin(config.public.apiHost, 'api', endpoint);
 };
 
+export class FetchRequest {
+  _dest: string;
+  _reqInit: RequestInit;
+  
+  constructor(destination: string) {
+    this._dest = destination;
+    this._reqInit = { credentials: "include" };
+    this.attachHeader({ "ngrok-skip-browser-warning": "*" });
+  }
+
+  static api(destination: string) {
+    return new FetchRequest(api(destination));
+  }
+
+  method(method: string): this {
+    this._reqInit.method = method;
+    return this;
+  }
+
+  get = () => this.method("GET");
+  post = () => this.method("POST");
+  delete = () => this.method("DELETE");
+
+  payload<T>(encoder: ((_t: T, _o?: Writer) => Writer), data: T): this {
+    this.attachHeader({
+      "Content-Type": "application/x-protobuf"
+    });
+    this._reqInit.body = encoder(data).finish();
+    return this;
+  }
+
+  attachHeader(headers: HeadersInit): this {
+    this._reqInit.headers = {...this._reqInit.headers, ...headers};
+    return this;
+  }
+  
+  async commitAndRecv<R>(decoder: (_b: Uint8Array) => R): Promise<FetchResult<R>> {
+    try {
+      const rawResult = await fetch(this._dest, this._reqInit);
+
+      if (!rawResult.ok){
+        return new FetchResult(rawResult ,<Optional<R>> undefined, new FetchError(rawResult.status, rawResult.statusText));
+      }
+
+      const blob = await rawResult.blob();
+      const bytes = new Uint8Array(await blob.arrayBuffer());
+      return new FetchResult(rawResult ,<Optional<R>> decoder(bytes));
+
+    }
+    catch (e) {
+      return new FetchResult(undefined ,<Optional<R>>undefined, undefined, e instanceof Error ? e : new Error("Unknown Error"));
+    }
+  }
+
+  async commit(): Promise<FetchResult<undefined>> {
+    try {
+      const rawResult = await fetch(this._dest, this._reqInit);
+
+      if (!rawResult.ok){
+        return new FetchResult(rawResult ,undefined, new FetchError(rawResult.status, rawResult.statusText));
+      }
+
+      return new FetchResult(rawResult ,undefined);
+
+    }
+    catch (e) {
+      return new FetchResult(undefined ,undefined, undefined, e instanceof Error ? e : new Error("Unknown Error"));
+    }
+  }
+}
+
 export class FetchResult<T> {
-  _result: T;
+  _result: Optional<T>;
   _httpError: Optional<FetchError>;
   _otherError: Optional<Error>;
+  _response: Optional<Response>;
 
-  constructor (result: T, httpError?: Optional<FetchError>, otherError?: Optional<Error>){
+  constructor (response?: Optional<Response>, result?: Optional<T>, httpError?: Optional<FetchError>, otherError?: Optional<Error>){
+    this._response = response;
     this._result = result;
     this._httpError = httpError;
     this._otherError = otherError;
   }
 
-  res(callback: (result: T) => void): this{
-    if (this._httpError === undefined && this._otherError === undefined) {
+  res(callback: (result: T) => void): this {
+    if (!this.isError() && this._result !== undefined) {
       callback(this._result);
     }
 
@@ -149,5 +131,9 @@ export class FetchResult<T> {
     }
 
     return this;
+  }
+
+  isError(): boolean {
+    return this._httpError !== undefined || this._otherError !== undefined;
   }
 }
