@@ -1,5 +1,4 @@
 import type { Optional } from "./Optional";
-import type { User as UserProto } from "./proto/User";
 
 export class User {
   id: number;
@@ -12,9 +11,5 @@ export class User {
     this.name = name;
     this.email = email;
     this.image = image;
-  }
-
-  static fromProto(user: UserProto){
-    return new User(user.id, user.username, user.email);
   }
 };

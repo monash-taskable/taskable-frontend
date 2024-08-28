@@ -29,6 +29,7 @@ export class FetchRequest {
   _dest: string;
   _reqInit: RequestInit;
   _csrfOverride: Optional<string>;
+  _protectedDefaultBehaviour: Boolean;
   static _csrf: Optional<string>
   
   constructor(destination: string) {
@@ -36,10 +37,17 @@ export class FetchRequest {
     this._reqInit = { credentials: "include" };
     this._csrfOverride;
     this.attachHeader({ "ngrok-skip-browser-warning": "*" });
+    this._protectedDefaultBehaviour = false;
   }
 
   static api(destination: string) {
     return new FetchRequest(api(destination));
+  }
+
+  static protectedAPI(destination: string) {
+    const req = new FetchRequest(api(destination));
+    req._protectedDefaultBehaviour = true;
+    return req;
   }
 
   static updateCsrf(csrf: string) {

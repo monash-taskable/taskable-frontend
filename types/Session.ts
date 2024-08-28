@@ -1,10 +1,15 @@
 import type { Optional } from "./Optional"
-import type { User } from "./User"
+
+export type Profile = {
+  id: number,
+  firstName: string,
+  lastName: string,
+}
 
 export type AppSession = {
-  user: Optional<User>;
+  profile: Optional<Profile>;
 }
 
 export const nullSession = (): AppSession => ({
-  user: undefined,
+  profile: undefined,
 });

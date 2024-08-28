@@ -2,7 +2,9 @@ import { defineStore } from 'pinia';
 import { FetchRequest } from '~/scripts/FetchTools';
 import type { AppState } from '~/types/AppState';
 import { GetCsrfResponse } from '~/types/proto/Auth';
+import { GetProfileResponse } from '~/types/proto/Profile';
 import { nullSession } from '~/types/Session';
+import { isAccentColor, isTheme } from '~/types/Theming';
 
 export const useAppStateStore = defineStore({
   id: 'appStateStore',
@@ -49,6 +51,22 @@ export const useAppStateStore = defineStore({
       const csrfProxy = await FetchRequest.api("/auth/get-csrf").commitAndRecv(GetCsrfResponse.decode);
       csrfProxy.res(csrfMessage => {
         FetchRequest.updateCsrf(csrfMessage.csrfToken);
+      })
+
+      // load profile
+      const appState = useAppStateStore();
+      const appConfig = useAppConfigStore();
+
+      const profileReq = await FetchRequest.protectedAPI("get-profile").commitAndRecv(GetProfileResponse.decode);
+      profileReq.res(profilePrt => {
+        appState.session.profile = {
+          id: profilePrt.id,
+          firstName: profilePrt.firstName,
+          lastName: profilePrt.lastName,
+        };
+
+        appConfig.accent = isAccentColor(profilePrt.color) ? profilePrt.color : "blue";
+        appConfig.theme = isTheme(profilePrt.theme) ? profilePrt.theme : "light";
       })
     }
   }
