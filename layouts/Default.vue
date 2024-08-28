@@ -59,7 +59,7 @@
               <IconButton :tabindex="1005.3" @click="navToAbout" :caption="$t('header.btn.about')"
                 icon="fluent:info-20-regular" />
               <IconButton :tabindex="1005.4" :caption="$t('header.btn.signOut')" :styles="{ colorPreset: 'dangerous' }"
-                icon="fluent:arrow-exit-20-filled" @click="signOut" />
+                icon="fluent:arrow-exit-20-regular" @click="signOut" />
             </div>
           </TitleDropdown>
         </nav>
