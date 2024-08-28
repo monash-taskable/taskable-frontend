@@ -48,13 +48,13 @@ const appState = useAppStateStore();
 openSignInLoadingDialog();
 
 onMounted(async ()=>{
+  if (await appState.validateSession()){
+    location.href = "/";
+    return
+  }
   setTimeout(async () => {
     useDialogs().closeAllDialogs();
   }, 200);
-  if (await appState.validateSession()){
-    navigateTo("/");
-    return
-  }
   setTimeout(() => openSigninDialog(), 400);
 })
 </script>
