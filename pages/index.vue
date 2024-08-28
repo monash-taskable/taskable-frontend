@@ -2,7 +2,7 @@
   <div class="page-root">
     <div class="menu">
       <div class="greeting">
-        {{ $t('home.welcomeBack') }} <span>{{ userName }}</span>
+        {{ $t('home.welcomeBack') }} <span>{{ getName(appState) }}</span>
       </div>
       <div class="row">
         <TitleButton 
@@ -35,16 +35,26 @@
 </template>
 
 <script lang="ts" setup>
+import type { AppState } from "~/types/AppState";
 import type { ButtonStyle } from "~/types/ButtonStyle";
-
-// placeholder values
-const userName = "John Smith";
 
 definePageMeta({
   layout: "default"
 })
 
 const t = useI18n();
+const appState = useAppStateStore();
+
+// name
+const getName = (state: AppState) => {
+  if (state.session.profile === undefined){
+    return "";
+  }
+  
+  const {firstName, lastName} = state.session.profile;
+
+  return [firstName, lastName].join(" ").trim();
+}
 
 // button style
 const buttonStyle: ButtonStyle = {

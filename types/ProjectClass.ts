@@ -1,9 +1,10 @@
 export type ProjectClass = {
-  class_id: number,
+  classId: number,
   name: string,
   description: string,
-  created_at?: Date,
+  createdAt: Date,
   archived: boolean,
+  role: string,
   projects: Project[]
 }
 
@@ -22,5 +23,5 @@ export type Project = {
 }
 
 export type ProjectClassStore = {
-  projectClasses: ProjectClass[],
+  projectClasses: {[key: number]: ProjectClass},
 }

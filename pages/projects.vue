@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <ProjectClassList :project-class="projCls" v-for="[_, projCls] in Object.entries(projectClassRef.projectClasses.value)" />
     <ProjectClassList :project-class="personalProjects" personal/>
     <div class="new-section">
       <IconButton @click="openCreateClassForm" icon="fluent:people-community-add-20-regular" :caption="$t('projects.newClass')" :styles="{colorPreset: 'accent', size: 'small'}" />
@@ -8,8 +9,11 @@
 </template>
 
 <script lang="ts" setup>
-import { defaultClose, quickAlert, type Dialog } from '~/types/Dialog';
+import { FetchRequest } from '~/scripts/FetchTools';
+import { getCurrentGMTDateTime } from '~/scripts/Utils';
+import { defaultClose, type Dialog } from '~/types/Dialog';
 import type { ProjectClass } from '~/types/ProjectClass';
+import { CreateClassRequest, GetClassResponse } from '~/types/proto/ProjectClass';
 
 const t = useI18n();
 
@@ -19,11 +23,17 @@ const dialogControl = useDialogs();
 // project classes
 const personalProjects: ProjectClass = {
   archived: false,
-  class_id: -1,
+  classId: -1,
   projects: [],
   description: "",
-  name: ""
+  name: "",
+  createdAt: new Date(),
+  role: "owner"
 }
+
+
+const projectClassStore = useProjectClassStore();
+const projectClassRef = storeToRefs(projectClassStore);
 
 // create class
 const openCreateClassForm = () => dialogControl.closeAllWithTypeThenOpen({
@@ -45,12 +55,36 @@ const openCreateClassForm = () => dialogControl.closeAllWithTypeThenOpen({
       captionI18n: true,
       icon: "fluent:checkmark-20-regular",
       style: {colorPreset: "accent-strong"},
-      action: (_: Dialog<{}>, emt?: any) => emt && quickAlert(`Name: ${emt}`),
+      action: (d: Dialog<{}>, emt?: any) => {
+        emt = emt as string;
+        if (emt === ""){
+          return;
+        }
+
+        // create class call
+        const createClassReq = FetchRequest.protectedAPI("create-class")
+          .post()
+          .payload(CreateClassRequest.encode, {
+            classDesc: "",
+            className: emt,
+            timestamp: getCurrentGMTDateTime(),
+          })
+          .commitAndRecv(GetClassResponse.decode);
+
+        createClassReq.then(req => req.res(projectClassStore.createClassCallback));
+        
+        useDialogs().closeDialog(d.id);
+      },
       expanding: false,
     }
   ],
   payload: {}
 });
+
+onMounted(async () => {
+  projectClassStore.cleanupLocalClasses();
+  await projectClassStore.loadClasses();
+})
 
 </script>
 

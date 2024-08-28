@@ -17,3 +17,33 @@
  * @returns A function that checks whether a value belongs to T
  */
 export const isOfType = <T>(typeDef: readonly T[]) => (val: any): val is T => typeDef.includes(val);
+
+export const getCurrentGMTDateTime = () => {
+  const now = new Date();
+
+  // Get the parts of the date
+  const year = now.getUTCFullYear();
+  const month = String(now.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(now.getUTCDate()).padStart(2, '0');
+  const hours = String(now.getUTCHours()).padStart(2, '0');
+  const minutes = String(now.getUTCMinutes()).padStart(2, '0');
+
+  // Format the date and time as 'YYYY-MM-DD HH:MM'
+  return `${year}-${month}-${day} ${hours}:${minutes}`;
+}
+
+export const stringToDate = (dateString: string) => {
+  // Split the date and time components
+  const [datePart, timePart] = dateString.split('T');
+
+  // Split the date into year, month, and day
+  const [year, month, day] = datePart.split('-').map(Number);
+
+  // Split the time into hours and minutes
+  const [hours, minutes] = timePart.split(':').map(Number);
+
+  // Create a Date object in UTC
+  const date = new Date(Date.UTC(year, month - 1, day, hours, minutes));
+
+  return date;
+}

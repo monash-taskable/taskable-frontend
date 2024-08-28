@@ -74,13 +74,17 @@ onMounted(async ()=>{
     LoginExchangeRequest.encode,
     {authorizationCode: code},
   ).overrideCsrf(token).commitAndRecv(LoginExchangeResponse.decode);
-
+  if (tokenExchange.otherErr(error).httpErr(error).isError()){
+    return;
+  }
+  
   // set global csrf
   tokenExchange.res(csrfMessage => {
-    console.log(csrfMessage.csrfToken);
     FetchRequest.updateCsrf(csrfMessage.csrfToken);
     location.href = "/";
   })
+
+  appState.validateSession();
 })
 </script>
 

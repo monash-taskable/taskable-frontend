@@ -46,12 +46,12 @@
   
           <!-- User Menu -->
           <IconButton :tabindex="1005" :id="_userMenuId" @click="_showUserMenu" :styles="navBtnStyle"
-            icon="fluent:person-20-regular" :caption="getUsername(appState.session)" />
+            icon="fluent:person-20-regular" :caption="getUsername(appState.session.value.profile)" />
           <TitleDropdown :id="_userMenuId" :button="_userMenu" click-away :show="_userMenuRef" @hide="_hideUserMenu">
             <template #tab>
               <IconButton :tabindex="1005.1" @click="_hideUserMenu"
                 :styles="{ ...navBtnStyle, backgroundColor: 'var(--layer-background)' }" icon="fluent:person-20-regular"
-                caption="John Smith" />
+                :caption="getUsername(appState.session.value.profile)" />
             </template>
             <div class="dropdown-content user-menu">
               <IconButton :tabindex="1005.2" @click="navToProfile" :caption="$t('header.btn.profile')"
@@ -127,7 +127,7 @@ const getUsername = (profile: Optional<Profile>): string => {
   }
 
   const {firstName, lastName} = profile;
-  [firstName, lastName].join(" ")
+  return [firstName, lastName].join(" ").trim();
 };
 
 // notification menu

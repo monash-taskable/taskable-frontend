@@ -36,7 +36,6 @@ export class FetchRequest {
     this._dest = destination;
     this._reqInit = { credentials: "include" };
     this._csrfOverride;
-    this.attachHeader({ "ngrok-skip-browser-warning": "*" });
     this._protectedDefaultBehaviour = false;
   }
 
