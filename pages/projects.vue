@@ -29,7 +29,7 @@ const personalProjects: ProjectClass = {
   description: "",
   name: "",
   createdAt: new Date(),
-  role: "Owner"
+  role: "Student"
 }
 
 

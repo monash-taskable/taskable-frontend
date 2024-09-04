@@ -16,13 +16,13 @@
             v-if="actionIsUsable('template-add', props.projectClass.role)" 
             :styles="{...buttonStyle, size: 'small'}" 
             expanding :expanded="false" 
-            @click="openCreateProject('Template')"
+            @click="openCreateProject('Template', props.personal, props.projectClass.classId)"
             icon="fluent:stack-add-20-regular"/>
           <IconButton 
             v-if="actionIsUsable('add', props.projectClass.role)" 
             :styles="{...buttonStyle, size: 'small'}" 
             expanding :expanded="false"
-            @click="openCreateProject('Project')"
+            @click="openCreateProject('Project', props.personal, props.projectClass.classId)"
             icon="fluent:add-circle-20-regular"/>
         </div>
       </div>
@@ -68,7 +68,7 @@ const buttonStyle: ButtonStyle = {colorPreset: "accent"};
 
 // New Project Template
 const dialogControl = useDialogs();
-const openCreateProject = (template: string) => dialogControl.closeAllWithTypeThenOpen({
+const openCreateProject = (template: string, personal: boolean, classId: number) => dialogControl.closeAllWithTypeThenOpen({
   width: "450px",
   height: "fit-content",
   title: `projects.new${template}.title`,
@@ -90,7 +90,8 @@ const openCreateProject = (template: string) => dialogControl.closeAllWithTypeTh
     }
   ],
   payload: {
-    template: template === "Template"
+    template: template === "Template",
+    personal, classId
   }
 });
 </script>

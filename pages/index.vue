@@ -22,6 +22,7 @@
           icon="fluent:add-square-20-regular"
           :styles="buttonStyle"
           :description="$t('home.newProjDesc')"
+          @click="openCreateProject"
           :caption="$t('home.newProj')"/>
         <TitleButton
           icon="fluent:person-square-20-regular"
@@ -37,6 +38,7 @@
 <script lang="ts" setup>
 import type { AppState } from "~/types/AppState";
 import type { ButtonStyle } from "~/types/ButtonStyle";
+import { defaultClose, quickAlert } from "~/types/Dialog";
 
 definePageMeta({
   layout: "default"
@@ -69,6 +71,36 @@ useAppStateStore().hideTitle();
 const navTo = (path: string) => async () => await navigateTo(path);
 const navToSettings = navTo("/settings");
 const navToProjects = navTo("/projects");
+
+// create personal project
+const dialogControl = useDialogs();
+const openCreateProject = () => dialogControl.closeAllWithTypeThenOpen({
+  width: "450px",
+  height: "fit-content",
+  title: `projects.newProject.title`,
+  titleI18n: true,
+  dialogType: "createProjectTemplate",
+  close: {
+    ...defaultClose,
+    caption: `projects.newProject.cancel`, 
+    style: {colorPreset: "strong"}
+  },
+  actionsRight: [
+    {
+      caption: `projects.newProject.confirm`,
+      captionI18n: true,
+      icon: "fluent:checkmark-20-regular",
+      style: {colorPreset: "accent-strong"},
+      action: (_, x) => quickAlert(x),
+      expanding: false,
+    }
+  ],
+  payload: {
+    template: false,
+    personal: true,
+    classId: "",
+  }
+});
 
 </script>
 

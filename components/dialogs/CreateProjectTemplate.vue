@@ -20,7 +20,11 @@ import type { Dialog } from '~/types/Dialog';
 const t = useI18n();
 
 const props = defineProps({
-  context: {type: Object as PropType<Dialog<{template: boolean}>>, required: true},
+  context: {type: Object as PropType<Dialog<{
+    template: boolean,
+    personal: boolean,
+    classId: number,
+  }>>, required: true},
 });
 
 // val check
