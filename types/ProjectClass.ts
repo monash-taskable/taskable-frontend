@@ -11,6 +11,7 @@ export type ProjectClass = {
 
 export type Template = {
   template_id: number,
+  name: string,
   description: string,
   project_class?: ProjectClass,
   archived: boolean
@@ -18,6 +19,7 @@ export type Template = {
 
 export type Project = {
   project_id: number,
+  name: string,
   description: string,
   template_id?: Template,
   archived: boolean

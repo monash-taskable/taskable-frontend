@@ -28,10 +28,14 @@
       </div>
     </div>
     <div class="project-list">
-      <ProjectButton template caption="hello world"/>
-      <ProjectButton template caption="hello world"/>
-      <ProjectButton caption="hello world"/>
-      <ProjectButton caption="hello world"/>
+      <ProjectButton 
+        v-for="template in props.projectClass.templates" 
+        template :caption="template.name"
+        @click="navToTemplate(template.template_id)"/>
+      <ProjectButton 
+        v-for="project in props.projectClass.projects" 
+        :caption="project.name"
+        @click="navToProj(project.project_id)"/>
     </div>
   </div>
 </template>
@@ -94,6 +98,10 @@ const openCreateProject = (template: string, personal: boolean, classId: number)
     personal, classId
   }
 });
+
+// nav
+const navToProj = (id: number) => navigateTo(`/projects/${id}`);
+const navToTemplate = (id: number) => navigateTo(`/projects/template/${id}`);
 </script>
 
 <style lang="scss" scoped>

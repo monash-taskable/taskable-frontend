@@ -24,7 +24,14 @@ const dialogControl = useDialogs();
 const personalProjects: ProjectClass = {
   archived: false,
   classId: -1,
-  projects: [],
+  projects: [
+    {
+      archived: false,
+      name: "awa",
+      description: "",
+      project_id: 1987
+    }
+  ],
   templates: [],
   description: "",
   name: "",
