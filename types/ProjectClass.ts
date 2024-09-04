@@ -4,8 +4,9 @@ export type ProjectClass = {
   description: string,
   createdAt: Date,
   archived: boolean,
-  role: string,
-  projects: Project[]
+  role: OwnershipRole,
+  projects: Project[],
+  templates: Template[],
 }
 
 export type Template = {
@@ -25,3 +26,5 @@ export type Project = {
 export type ProjectClassStore = {
   projectClasses: {[key: number]: ProjectClass},
 }
+
+export type OwnershipRole = "Student" | "Tutor" | "Admin" | "Owner"

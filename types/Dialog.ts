@@ -9,6 +9,7 @@ const dialogTypes = [
   "signIn",
   "signInLoading",
   "signInError",
+  "createProjectTemplate",
 ] as const;
 export type DialogType = typeof dialogTypes[number];
 export const isOfDialog = isOfType(dialogTypes);

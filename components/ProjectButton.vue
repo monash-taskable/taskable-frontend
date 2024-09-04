@@ -7,7 +7,7 @@
       @keyup="onKeyUp" @keydown="()=>{}"
       @click="_onClick"
       >
-    <Icon :name="icon"/>
+    <Icon :name="getIcon(props.template)"/>
     <span tabindex="-1" @click="onClick" class="caption">
       {{ caption }}
     </span>
@@ -15,15 +15,15 @@
 </template>
 
 <script lang="ts" setup>
-import type { PropType } from 'vue';
 import { buttonStyle, presets, type ButtonStyle } from '~/types/ButtonStyle';
 
 const props = defineProps({
-  icon: {type: String, default: "fluent:clover-20-regular"},
+  // icon: {type: String, default: "fluent:clover-20-regular"},
+  template: {type: Boolean, required: false, default: false},
   expanded: {type: Boolean, required: false, default: undefined},
   expanding: {type: Boolean, default: false},
   caption: {type: String},
-  styles: {type: Object as PropType<ButtonStyle>, required: false},
+  styles: {type: Object, required: false},
   tabindex: {type: Number, required: false},
   maintainClick: {type: Boolean, default: false},
   id: {type: String, required:false, default: undefined},
@@ -51,6 +51,8 @@ const expand = () => { expandedState.value = (props.expanded === undefined) ? tr
 const collapse = () => { expandedState.value = (props.expanded === undefined) ? initExpandedState : props.expanded; };
 
 // getters
+const getIcon = (template: boolean) => template ? "fluent:stack-20-filled" : "fluent:clover-20-regular";
+
 const getClass = (
   expanded: boolean, expanding: boolean,
   enter: boolean, focus: boolean, 

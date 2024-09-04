@@ -7,10 +7,31 @@
           {{ props.personal ? $t("projects.personal") : props.projectClass.name }}
         </h3>
         <div class="controls">
-          <IconButton :styles="{...buttonStyle, size: 'small'}" expanding :caption="$t('projects.newTemplate')" icon="fluent:collections-add-20-regular"/>
-          <IconButton :styles="{...buttonStyle, size: 'small'}" expanding :caption="$t('projects.newProject')" icon="fluent:add-circle-20-regular"/>
+          <IconButton 
+            v-if="actionIsUsable('edit', props.projectClass.role)" 
+            :styles="{...buttonStyle, size: 'small'}" 
+            expanding :expanded="false" 
+            icon="fluent:edit-20-regular"/>
+          <IconButton 
+            v-if="actionIsUsable('template-add', props.projectClass.role)" 
+            :styles="{...buttonStyle, size: 'small'}" 
+            expanding :expanded="false" 
+            @click="openCreateProject('Template')"
+            icon="fluent:stack-add-20-regular"/>
+          <IconButton 
+            v-if="actionIsUsable('add', props.projectClass.role)" 
+            :styles="{...buttonStyle, size: 'small'}" 
+            expanding :expanded="false"
+            @click="openCreateProject('Project')"
+            icon="fluent:add-circle-20-regular"/>
         </div>
       </div>
+    </div>
+    <div class="project-list">
+      <ProjectButton template caption="hello world"/>
+      <ProjectButton template caption="hello world"/>
+      <ProjectButton caption="hello world"/>
+      <ProjectButton caption="hello world"/>
     </div>
   </div>
 </template>
@@ -18,14 +39,60 @@
 <script lang="ts" setup>
 import type { PropType } from 'vue';
 import type { ButtonStyle } from '~/types/ButtonStyle';
-import type { ProjectClass } from '~/types/ProjectClass';
+import { defaultClose, quickAlert } from '~/types/Dialog';
+import type { OwnershipRole, ProjectClass } from '~/types/ProjectClass';
 
 const props = defineProps({
   projectClass: {type: Object as PropType<ProjectClass>, required: true},
   personal: {type: Boolean, default: false},
 });
 
-const buttonStyle: ButtonStyle = {colorPreset: "background"};
+const actionIsUsable = (action: string, role: OwnershipRole) => {
+  if (role === "Owner") return true;
+  if (role === "Admin") return true;
+
+  if (role === "Student"){
+    if (action === "add") return true;
+    return false;
+  }
+
+  if (role === "Tutor"){
+    if (action === "template-add") return true;
+    if (action === "edit") return true;
+  }
+  
+  return false;
+}
+
+const buttonStyle: ButtonStyle = {colorPreset: "accent"};
+
+// New Project Template
+const dialogControl = useDialogs();
+const openCreateProject = (template: string) => dialogControl.closeAllWithTypeThenOpen({
+  width: "450px",
+  height: "fit-content",
+  title: `projects.new${template}.title`,
+  titleI18n: true,
+  dialogType: "createProjectTemplate",
+  close: {
+    ...defaultClose,
+    caption: `projects.new${template}.cancel`, 
+    style: {colorPreset: "strong"}
+  },
+  actionsRight: [
+    {
+      caption: `projects.new${template}.confirm`,
+      captionI18n: true,
+      icon: "fluent:checkmark-20-regular",
+      style: {colorPreset: "accent-strong"},
+      action: (_, x) => quickAlert(x),
+      expanding: false,
+    }
+  ],
+  payload: {
+    template: template === "Template"
+  }
+});
 </script>
 
 <style lang="scss" scoped>
@@ -50,9 +117,18 @@ const buttonStyle: ButtonStyle = {colorPreset: "background"};
   }
 }
 
+.project-list {
+  @include flex-col;
+  @include flex-cross(stretch);
+
+  background: var(--layer-background);
+  padding: $space-medium;
+  padding-top: 0;
+}
+
 
 h3 {
-  @include typemix-label;
+  @include typemix-label(var(--accent-strong));
   @include flex-row;
   @include flex-main(flex-start);
 

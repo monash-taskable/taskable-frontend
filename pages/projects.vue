@@ -25,10 +25,11 @@ const personalProjects: ProjectClass = {
   archived: false,
   classId: -1,
   projects: [],
+  templates: [],
   description: "",
   name: "",
   createdAt: new Date(),
-  role: "owner"
+  role: "Owner"
 }
 
 
@@ -37,8 +38,6 @@ const projectClassRef = storeToRefs(projectClassStore);
 
 // create class
 const openCreateClassForm = () => dialogControl.closeAllWithTypeThenOpen({
-  x: 100,
-  y: 100,
   width: "350px",
   height: "fit-content",
   title: "projects.newClass.title",
