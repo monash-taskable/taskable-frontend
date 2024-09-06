@@ -34,9 +34,14 @@ const personalProjects: ProjectClass = {
   ],
   templates: [],
   description: "",
-  name: "",
+  name: "<CLASS-PERSONAL>",
   createdAt: new Date(),
-  role: "Student"
+  role: "Owner",
+  members: [
+    {id: 2, name: "1 John Smith", role: 'Student'},
+    {id: 3, name: "3 Jane Doe", role: 'Admin'},
+    {id: 6, name: "2 Jane Doe", role: 'Student'},
+  ]
 }
 
 
@@ -52,12 +57,12 @@ const openCreateClassForm = () => dialogControl.closeAllWithTypeThenOpen({
   dialogType: "createClass",
   close: {
     ...defaultClose,
-    caption: "projects.newClass.cancel", 
+    caption: "dialogCommon.cancel", 
     style: {colorPreset: "strong"}
   },
   actionsRight: [
     {
-      caption: "projects.newClass.confirm",
+      caption: "dialogCommon.confirm",
       captionI18n: true,
       icon: "fluent:checkmark-20-regular",
       style: {colorPreset: "accent-strong"},
@@ -131,6 +136,7 @@ onMounted(async () => {
   @media only screen and (max-width: 700px) {
     @include flex-col;
     @include flex-cross(stretch);
+    @include flex-main(flex-start);
   }
 }
 </style>

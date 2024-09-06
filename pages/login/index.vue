@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts" setup>
-import type {ButtonStyle } from '~/types/ButtonStyle';
+import type {ButtonStyle } from '~/types/Button';
 
 definePageMeta({ layout: "empty" });
 

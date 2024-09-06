@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts" setup>
-import { buttonStyle, presets, type ButtonStyle } from '~/types/ButtonStyle';
+import { buttonStyle, presets, type ButtonStyle } from '~/types/Button';
 
 // @ts-ignore
 const props = defineProps({

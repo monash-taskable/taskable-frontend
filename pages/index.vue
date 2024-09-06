@@ -37,7 +37,7 @@
 
 <script lang="ts" setup>
 import type { AppState } from "~/types/AppState";
-import type { ButtonStyle } from "~/types/ButtonStyle";
+import type { ButtonStyle } from "~/types/Button";
 import { defaultClose, quickAlert } from "~/types/Dialog";
 
 definePageMeta({
@@ -82,12 +82,12 @@ const openCreateProject = () => dialogControl.closeAllWithTypeThenOpen({
   dialogType: "createProjectTemplate",
   close: {
     ...defaultClose,
-    caption: `projects.newProject.cancel`, 
+    caption: `dialogCommon.cancel`, 
     style: {colorPreset: "strong"}
   },
   actionsRight: [
     {
-      caption: `projects.newProject.confirm`,
+      caption: `dialogCommon.confirm`,
       captionI18n: true,
       icon: "fluent:checkmark-20-regular",
       style: {colorPreset: "accent-strong"},

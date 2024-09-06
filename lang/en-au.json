@@ -69,24 +69,32 @@
   "projects.newClass.cannotBeEmpty": "Class name cannot be empty.",
   "projects.newClass.name": "Class Name",
   "projects.newClass.description": "Class Description",
-  "projects.newClass.confirm": "Confirm",
-  "projects.newClass.cancel": "Cancel",
   "projects.newProject.title": "Create Project",
   "projects.newProject.instruction": "Create a project by entering a project name below, and select 'Confirm'",
   "projects.newProject.cannotBeEmpty": "Project name cannot be empty.",
   "projects.newProject.name": "Project Name",
   "projects.newProject.description": "Project Description",
-  "projects.newProject.confirm": "Confirm",
-  "projects.newProject.cancel": "Cancel",
   "projects.newTemplate.title": "Create Template",
   "projects.newTemplate.instruction": "Create a template by entering a template name below, and select 'Confirm'",
   "projects.newTemplate.cannotBeEmpty": "Template name cannot be empty.",
   "projects.newTemplate.name": "Template Name",
   "projects.newTemplate.description": "Template Description",
-  "projects.newTemplate.confirm": "Confirm",
-  "projects.newTemplate.cancel": "Cancel",
-
+  "projects.editClass.title": "Edit Class",
+  "projects.editClass.className": "Class Name",
+  "projects.editClass.cannotBeEmpty": "Class name cannot be empty.",
+  "projects.editClass.members": "Class Members",
+  "projects.editClass.addMember": "Add Member",
+  "projects.editClass.memberName": "Name",
+  "projects.editClass.memberRole": "Role",
+  
+  "tableCommon.search": "Search",
+  "tableCommon.selected": "%s selected",
+  
   "dialogCommon.close": "Close",
+  "dialogCommon.confirm": "Confirm",
+  "dialogCommon.cancel": "Cancel",
   "dialogError.somethingWentWrong": "Something Went Wrong",
-  "dialogError.sessionExpired": "User Credentials Expired"
+  "dialogError.sessionExpired": "User Credentials Expired",
+  
+  "_": ""
 }

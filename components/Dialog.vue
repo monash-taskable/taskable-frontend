@@ -48,6 +48,7 @@
     <DialogsSignInLoading @emit="updateEmit" v-if="context.dialogType === 'signInLoading'" :context="props.context"/>
     <DialogsSignInError @emit="updateEmit" v-if="context.dialogType === 'signInError'" :context="props.context"/>
     <DialogsCreateProjectTemplate @emit="updateEmit" v-if="context.dialogType === 'createProjectTemplate'" :context="props.context"/>
+    <DialogsEditClass @emit="updateEmit" v-if="context.dialogType === 'editClass'" :context="props.context"/>
   </div>
 </template>
 

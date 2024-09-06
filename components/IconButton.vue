@@ -16,7 +16,7 @@
 
 <script lang="ts" setup>
 import type { PropType } from 'vue';
-import { buttonStyle, presets, type ButtonStyle } from '~/types/ButtonStyle';
+import { buttonStyle, presets, type ButtonStyle } from '~/types/Button';
 
 const props = defineProps({
   icon: {type: String, default: "fluent:clover-20-regular"},
@@ -177,7 +177,7 @@ button {
   }
 
   &:not(.expanded) .caption {
-    width: 0px; 
+    width: 0px;
   }
 
   &:not(.expanded) {

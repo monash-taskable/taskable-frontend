@@ -8,7 +8,13 @@
         <Icon v-if="props.icon !== undefined" :name="props.icon"/>
         {{ placeholder }}
       </div>
-      <input @change="updateText" v-model="value" @focusout="unfocus" @focusin="focus" />
+      <input 
+        :id="`input_${id}`"
+        @change="updateText"
+        v-model="value" 
+        @focusout="unfocus"
+        @focusin="focus"
+        />
     </div>
     <div v-show="props.error" :style="getStyle(props.styles)" class="error-msg">
       {{ errorMessages }}
@@ -17,6 +23,7 @@
 </template>
 
 <script lang="ts" setup>
+import { v7 } from 'uuid';
 import type { PropType } from 'vue';
 import { inputStyle, presets, type InputStyle } from '~/types/InputStyle';
 import type { Optional } from '~/types/Optional';
@@ -27,15 +34,33 @@ const props = defineProps({
   errorMessages: {type: String, default: "", required: false},
   icon: {type: String, required: false, default: ""},
   placeholder: {type: String, default: ""},
+  focused: {type: Boolean, default: false},
+  value: {type: String, default: ""},
 });
 
+// autofocus
+const id = ref(v7());
+onMounted(()=>{
+  if (props.focused) {
+    document.getElementById(`input_${id.value}`)?.focus();
+  }
+  value.value = props.value;
+})
+
 // focus and filled logic
-const focusFlag = ref(false);
-const focus = () => { focusFlag.value = true; }
-const unfocus = () => { focusFlag.value = false; };
+const emitChange = defineEmits(["change", "focusin", "focusout"]);
+
+const focusFlag = ref(props.focused);
+const focus = () => {
+  focusFlag.value = true;
+  emitChange("focusin");
+}
+const unfocus = () => {
+  focusFlag.value = false;
+  emitChange("focusout");
+};
 
 const value = ref("");
-const emitChange = defineEmits(["change"]);
 const clsSwitcher = (test: Optional<any>, val: string): string => {
   if (test !== undefined) return val;
   return "";

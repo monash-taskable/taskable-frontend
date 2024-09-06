@@ -31,7 +31,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { ButtonStyle } from '~/types/ButtonStyle';
+import type { ButtonStyle } from '~/types/Button';
 import type { Optional } from '~/types/Optional';
 import type { Theme } from '~/types/Theming';
 

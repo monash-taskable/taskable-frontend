@@ -10,6 +10,7 @@
           <IconButton 
             v-if="actionIsUsable('edit', props.projectClass.role)" 
             :styles="{...buttonStyle, size: 'small'}" 
+            @click="openEditClass(props.projectClass)"
             expanding :expanded="false" 
             icon="fluent:edit-20-regular"/>
           <IconButton 
@@ -42,7 +43,7 @@
 
 <script lang="ts" setup>
 import type { PropType } from 'vue';
-import type { ButtonStyle } from '~/types/ButtonStyle';
+import type { ButtonStyle } from '~/types/Button';
 import { defaultClose, quickAlert } from '~/types/Dialog';
 import type { OwnershipRole, ProjectClass } from '~/types/ProjectClass';
 
@@ -80,12 +81,12 @@ const openCreateProject = (template: string, personal: boolean, classId: number)
   dialogType: "createProjectTemplate",
   close: {
     ...defaultClose,
-    caption: `projects.new${template}.cancel`, 
+    caption: `dialogCommon.cancel`, 
     style: {colorPreset: "strong"}
   },
   actionsRight: [
     {
-      caption: `projects.new${template}.confirm`,
+      caption: `dialogCommon.confirm`,
       captionI18n: true,
       icon: "fluent:checkmark-20-regular",
       style: {colorPreset: "accent-strong"},
@@ -94,9 +95,35 @@ const openCreateProject = (template: string, personal: boolean, classId: number)
     }
   ],
   payload: {
+    personal, 
     template: template === "Template",
-    personal, classId
+    classId,
   }
+});
+
+// edit class
+const openEditClass = (projectClass: ProjectClass) => dialogControl.closeAllWithTypeThenOpen({
+  width: "650px",
+  height: "fit-content",
+  title: `projects.editClass.title`,
+  titleI18n: true,
+  dialogType: "editClass",
+  close: {
+    ...defaultClose,
+    caption: `dialogCommon.cancel`, 
+    style: {colorPreset: "strong"}
+  },
+  actionsRight: [
+    {
+      caption: `dialogCommon.confirm`,
+      captionI18n: true,
+      icon: "fluent:checkmark-20-regular",
+      style: {colorPreset: "accent-strong"},
+      action: (_, x) => quickAlert(x),
+      expanding: false,
+    }
+  ],
+  payload: { projectClass }
 });
 
 // nav

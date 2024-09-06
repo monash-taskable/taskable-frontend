@@ -72,7 +72,7 @@
 
 <script lang="ts" setup>
 import { sprintf } from 'sprintf-js';
-import { buttonStyle } from '~/types/ButtonStyle';
+import { buttonStyle } from '~/types/Button';
 import type { Optional } from '~/types/Optional';
 import type { Profile } from '~/types/Session';
 

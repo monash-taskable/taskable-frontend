@@ -14,7 +14,7 @@
 
 <script lang="ts" setup>
 import type { PropType } from 'vue';
-import type { ButtonStyle } from '~/types/ButtonStyle';
+import type { ButtonStyle } from '~/types/Button';
 import type { Dialog } from '~/types/Dialog';
 
 const t = useI18n();
