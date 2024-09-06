@@ -1,5 +1,5 @@
 import { isOfType } from "~/scripts/Utils";
-import type { ButtonStyle } from "./ButtonStyle";
+import type { ButtonStyle } from "./Button";
 import type { Optional } from "./Optional";
 
 const dialogTypes = [
@@ -10,6 +10,7 @@ const dialogTypes = [
   "signInLoading",
   "signInError",
   "createProjectTemplate",
+  "editClass",
 ] as const;
 export type DialogType = typeof dialogTypes[number];
 export const isOfDialog = isOfType(dialogTypes);

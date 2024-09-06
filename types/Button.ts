@@ -9,6 +9,16 @@ export type ButtonStyle = {
   size?: ButtonSize,
 };
 
+export type ButtonProps = {
+  style: ButtonStyle,
+  label: string,
+  labelI18n: boolean,
+  expanding?: boolean,
+  expanded?: boolean,
+  icon: string,
+  inputIcon?: string,
+}
+
 export type ButtonSize = 
   | "large" 
   | "medium" 

@@ -1,3 +1,5 @@
+import type { Optional } from "~/types/Optional";
+
 /**
  * Tests if a value is of type T, where type T is some literal type
  * 
@@ -46,4 +48,18 @@ export const stringToDate = (dateString: string) => {
   const date = new Date(Date.UTC(year, month - 1, day, hours, minutes));
 
   return date;
+}
+
+export const findInList = <T, V>(list: T[], predicate: (t: T) => boolean, extractor: (t: T) => V): Optional<V> => {
+  for (const item of list) {
+    if (predicate(item)) return extractor(item);
+  }
+  return undefined;
+}
+
+export const listRemove = <T>(list: T[], item: T) => {
+  const index = list.indexOf(item);
+  if (index > -1) { // only splice array when item is found
+    list.splice(index, 1); // 2nd parameter means remove one item only
+  }
 }

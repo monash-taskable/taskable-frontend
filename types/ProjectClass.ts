@@ -7,6 +7,13 @@ export type ProjectClass = {
   role: OwnershipRole,
   projects: Project[],
   templates: Template[],
+  members: Member[]
+}
+
+export type Member = {
+  id: number,
+  name: string,
+  role: OwnershipRole
 }
 
 export type Template = {
@@ -14,7 +21,7 @@ export type Template = {
   name: string,
   description: string,
   project_class?: ProjectClass,
-  archived: boolean
+  archived: boolean,
 }
 
 export type Project = {
@@ -22,7 +29,7 @@ export type Project = {
   name: string,
   description: string,
   template_id?: Template,
-  archived: boolean
+  archived: boolean,
 }
 
 export type ProjectClassStore = {
