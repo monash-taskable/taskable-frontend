@@ -67,14 +67,25 @@ const selectedActions: SelectedAction[] = [
   {
     action: console.log,
     button: {
+      icon: "fluent:person-edit-20-regular",
+      label: "",
+      labelI18n: false,
+      expanding: true,
+      expanded: false,
+      style: {colorPreset: "strong"}
+    }
+  },
+  {
+    action: console.log,
+    button: {
       icon: "fluent:delete-20-regular",
       label: "",
       labelI18n: false,
       expanding: true,
       expanded: false,
-      style: {colorPreset: 'dangerous'},
+      style: {colorPreset: "strong"}
     }
-  }
+  },
 ];
 </script>
 

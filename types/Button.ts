@@ -10,7 +10,7 @@ export type ButtonStyle = {
 };
 
 export type ButtonProps = {
-  style: ButtonStyle,
+  style?: ButtonStyle,
   label: string,
   labelI18n: boolean,
   expanding?: boolean,
