@@ -25,6 +25,7 @@
       >
         <template v-slot:actions>
           <IconButton
+            @click="addMember"
             icon="fluent:add-20-regular"
             :caption="$t('projects.editClass.addMember')"
             :styles="{colorPreset: 'accent-strong'}" />
@@ -36,8 +37,10 @@
 
 <script lang="ts" setup>
 import type { PropType } from 'vue';
+import { FetchRequest } from '~/scripts/FetchTools';
 import type { Dialog } from '~/types/Dialog';
 import type { Member, ProjectClass } from '~/types/ProjectClass';
+import { AddMemberRequest, UpdateMemberRoleRequest } from '~/types/proto/ProjectClass';
 import { defaultSearch, type SelectedAction } from '~/types/Table';
 
 const t = useI18n();
@@ -64,8 +67,24 @@ const emitValue = (v: string) => {
 
 // list selected actions
 const selectedActions: SelectedAction[] = [
-  {
-    action: console.log,
+  { // edit role
+    action: (members: Member[]) => {
+      const projectClass = useProjectClassStore();
+      const classId = props.context.payload.projectClass.classId;
+      if (!(classId in projectClass.projectClasses)){
+        return;
+      }
+      // const mids = members.filter(_m => _m.role !== "OWNER").map(m => m.id);
+      const mids = members.map(m => m.id);
+      mids.forEach(id => {
+        FetchRequest.protectedAPI(`/classes/${classId}/members/${id}/update-role`).payload(
+          UpdateMemberRoleRequest.encode,
+          {
+            role: prompt() ?? "STUDENT"
+          }
+        ).post().commit();
+      })
+    },
     button: {
       icon: "fluent:person-edit-20-regular",
       label: "",
@@ -75,8 +94,22 @@ const selectedActions: SelectedAction[] = [
       style: {colorPreset: "strong"}
     }
   },
-  {
-    action: console.log,
+  { // delete user
+    action: (members: Member[]) => {
+      const projectClass = useProjectClassStore();
+      const classId = props.context.payload.projectClass.classId;
+      if (!(classId in projectClass.projectClasses)){
+        return;
+      }
+      const mids = members.filter(_m => _m.role !== "OWNER").map(m => m.id);
+      mids.forEach(id => {
+        console.log(`/classes/${classId}/members/${id}/delete`);
+        FetchRequest.protectedAPI(`/classes/${classId}/members/${id}/delete`).delete().commit();
+      })
+      projectClass.projectClasses[classId].members = projectClass.projectClasses[classId].members.filter(
+        (_m: Member) => !mids.includes(_m.id)
+      )
+    },
     button: {
       icon: "fluent:delete-20-regular",
       label: "",
@@ -87,6 +120,24 @@ const selectedActions: SelectedAction[] = [
     }
   },
 ];
+
+const projectClass = useProjectClassStore();
+
+// add member button
+const classId = props.context.payload.projectClass.classId;
+const addMember = async () => {
+  const addMemReq = await FetchRequest.protectedAPI(`/classes/${classId}/members/add`).post().payload(AddMemberRequest.encode, {
+    memberId: parseInt(prompt() ?? "0"),
+  }).commit();
+  if (!addMemReq.isError()){
+    projectClass.loadMembers(classId);
+  }
+}
+
+// update members
+onMounted(() => {
+  projectClass.loadMembers(props.context.payload.projectClass.classId);
+})
 </script>
 
 <style scoped lang="scss">

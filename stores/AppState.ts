@@ -57,12 +57,13 @@ export const useAppStateStore = defineStore({
       const appState = useAppStateStore();
       const appConfig = useAppConfigStore();
 
-      const profileReq = await FetchRequest.protectedAPI("get-profile").commitAndRecv(GetProfileResponse.decode);
+      const profileReq = await FetchRequest.protectedAPI("/user/get-profile").commitAndRecv(GetProfileResponse.decode);
       profileReq.res(profilePrt => {
         appState.session.profile = {
           id: profilePrt.id,
           firstName: profilePrt.firstName,
           lastName: profilePrt.lastName,
+          email: profilePrt.email
         };
 
         appConfig.accent = isAccentColor(profilePrt.color) ? profilePrt.color : "blue";

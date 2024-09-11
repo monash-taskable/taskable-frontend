@@ -18,3 +18,27 @@ message GetClassResponse {
   bool archived = 5;
   string created_at = 6;
 }
+
+message AddMemberRequest {
+  int32 member_id = 1;
+}
+
+message GetMembersResponse {
+  repeated ClassroomMember class_members= 1;
+}
+message ClassroomMember {
+  int32 id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string role = 4;
+}
+
+message UpdateMemberRoleRequest {
+  string role = 1;
+}
+
+message UpdateClassRequest {
+  string class_name = 1;
+  string class_desc = 2;
+  bool archived = 3;
+}

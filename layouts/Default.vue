@@ -154,14 +154,14 @@ const navToProfile = navTo("/profile");
 // session
 const authFlag = ref(false);
 onMounted(async () => {
-  authFlag.value = true;
-  // if (await appStateStore.validateSession()){
-  //   authFlag.value = true;
-  //   await appStateStore.initSessionAndCsrf();
-  // }
-  // else {
-  //   navigateTo("/login");
-  // }
+  // authFlag.value = true;
+  if (await appStateStore.validateSession()){
+    authFlag.value = true;
+    await appStateStore.initSessionAndCsrf();
+  }
+  else {
+    navigateTo("/login");
+  }
 })
 
 </script>

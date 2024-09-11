@@ -36,12 +36,8 @@ const personalProjects: ProjectClass = {
   description: "",
   name: "<CLASS-PERSONAL>",
   createdAt: new Date(),
-  role: "Owner",
-  members: [
-    {id: 2, name: "1 John Smith", role: 'Student'},
-    {id: 3, name: "3 Jane Doe", role: 'Admin'},
-    {id: 6, name: "2 Jane Doe", role: 'Student'},
-  ]
+  role: "STUDENT",
+  members: []
 }
 
 
@@ -73,7 +69,7 @@ const openCreateClassForm = () => dialogControl.closeAllWithTypeThenOpen({
         }
 
         // create class call
-        const createClassReq = FetchRequest.protectedAPI("create-class")
+        const createClassReq = FetchRequest.protectedAPI("/classes/create")
           .post()
           .payload(CreateClassRequest.encode, {
             classDesc: "",

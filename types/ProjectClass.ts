@@ -1,3 +1,5 @@
+import { isOfType } from "~/scripts/Utils"
+
 export type ProjectClass = {
   classId: number,
   name: string,
@@ -36,4 +38,6 @@ export type ProjectClassStore = {
   projectClasses: {[key: number]: ProjectClass},
 }
 
-export type OwnershipRole = "Student" | "Tutor" | "Admin" | "Owner"
+const roles = ["STUDENT", "TUTOR", "ADMIN", "OWNER"] as const;
+export type OwnershipRole = typeof roles[number];
+export const isRole = isOfType(roles);

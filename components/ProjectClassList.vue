@@ -53,15 +53,15 @@ const props = defineProps({
 });
 
 const actionIsUsable = (action: string, role: OwnershipRole) => {
-  if (role === "Owner") return true;
-  if (role === "Admin") return true;
+  if (role === "OWNER") return true;
+  if (role === "ADMIN") return true;
 
-  if (role === "Student"){
+  if (role === "STUDENT"){
     if (action === "add") return true;
     return false;
   }
 
-  if (role === "Tutor"){
+  if (role === "TUTOR"){
     if (action === "template-add") return true;
     if (action === "edit") return true;
   }
