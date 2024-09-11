@@ -1,5 +1,9 @@
 <template>
   <div id="theme-provider" :class="classes(appConfigRef.theme.value, appConfigRef.accent.value)">
+    <DialogManager/>
+    <NuxtLayout>
+      <NuxtPage/>
+    </NuxtLayout>
   </div>
 </template>
 
@@ -16,5 +20,23 @@ const classes = (theme: Theme, accent: AccentColor) => `theme--${theme} color--$
 body {
   padding: 0;
   margin: 0;
+  overflow-x: hidden;
+}
+
+* {
+  font-family: "IBM Plex Sans", sans-serif;
+}
+</style>
+
+<style lang="scss" scoped>
+.icon-test{
+  color: green;
+  font-size: 40px;
+}
+
+#theme-provider {
+  width: 100vw;
+  height: 100vh;
+  background: var(--background);
 }
 </style>

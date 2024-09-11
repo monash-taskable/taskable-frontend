@@ -1,0 +1,15 @@
+// constant spacing, reference point is 16px
+$space-extra-small: 0.375rem; // 3px
+$space-small: 0.5rem; // 8px
+$space-medium: 0.625rem; // 10px
+$space-medium-large: 1rem; // 16px
+$space-large: 1.25rem; // 20px
+$space-extra: 2rem; // 32px
+
+$space-small-splitting: $space-small + 0.3125rem; // + 5px
+$space-medium-splitting: $space-medium + 0.625rem; // + 10px
+$space-large-splitting: $space-large + 0.625rem; // + 10px
+
+$icon-size-small: 1.2rem;
+$icon-size-medium: 1.5rem;
+$icon-size-large: 2rem;

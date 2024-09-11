@@ -1,8 +1,19 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
+
+  runtimeConfig: {
+    public: {
+      oAuthLinkGoogle: process.env.GOOGLE_OAUTH_URL,
+      apiHost: process.env.API_HOST
+    }
+  },
+
   modules: [
-    ['@pinia/nuxt', {autoImports: 'defineStore'}],
+    "@nuxt/icon",
+    ['@pinia/nuxt', {
+      autoImports: 'defineStore'
+    }],
     ["@nuxtjs/i18n", {
       locales: [
         {
@@ -15,8 +26,11 @@ export default defineNuxtConfig({
       defaultLocale: 'en-au'
     }],
   ],
+  
   imports: {
     dirs: ['stores']
   },
-  css: ['assets/styles/Main.scss']
+
+  css: ['assets/styles/Main.scss'],
+  compatibilityDate: '2024-07-08',
 })

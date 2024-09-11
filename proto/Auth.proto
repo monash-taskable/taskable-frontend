@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+message LoginExchangeRequest {
+  string authorization_code = 1;
+}
+
+message LoginExchangeResponse {
+  string csrf_token = 1;
+}
+
+message GetCsrfResponse {
+  string csrf_token = 1;
+}

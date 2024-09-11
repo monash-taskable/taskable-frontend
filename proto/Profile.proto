@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+message GetProfileResponse {
+  int32 id = 1;
+  string last_name = 2;
+  string first_name = 3;
+  string email = 4;
+  string color = 5;
+  string theme = 6;
+  string language = 7;
+}
+
+message UpdateProfileRequest {
+  optional string color = 1;
+  optional string theme = 2;
+  optional string language = 3;
+}

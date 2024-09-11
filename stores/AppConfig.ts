@@ -6,7 +6,7 @@ export const useAppConfigStore = defineStore({
   id: 'appConfigStore',
   state: (): AppConfig => ({
     theme: "light",
-    accent: "blue",
+    accent: "green"
   }),
   actions: {
     setTheme(theme: Theme){
