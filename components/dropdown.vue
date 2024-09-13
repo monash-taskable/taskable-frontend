@@ -2,10 +2,12 @@
   <select :tabindex="tabindex"
       :class="getClass(enterFlag, focusFlag, props.styles)"
       :style="getStyle(props.styles)" :id="id"
+      v-model="value"
       @focusout="onFocusOut" @keyup="onKeyUp" @keydown="()=>{}"
       @click="_onClick"
-      @change="_onClick"
+      @change="emitChange"
       >
+      <!-- <option selected v-if="loading"/> -->
       <slot/>
   </select>
 </template>
@@ -18,22 +20,29 @@ const props = defineProps({
   styles: {type: Object as PropType<ButtonStyle>, required: false},
   tabindex: {type: Number, required: false},
   id: {type: String, required:false, default: undefined},
+  selected: {type: String, required: false, default: undefined},
 })
+
+// loading holder
+const loading = ref(true);
+onMounted(() => loading.value = false);
 
 // interaction logic
 const enterFlag = ref(false);
 const focusFlag = ref(false);
-const emitClick = defineEmits(["click", "change"]);
+const emitEvent = defineEmits(["click", "change"]);
 const onKeyUp = () => { focusFlag.value = true; };
 const onFocusOut = () => {
   enterFlag.value = false;
   focusFlag.value = false;
 }
 const _onClick = () => {
-  emitClick("click");
+  emitEvent("click");
 }
-const _onChange = () => {
-  emitClick("change");
+
+const value = ref(props.selected)
+const emitChange = () => {
+  emitEvent("change", value.value)
 }
 
 // getters
@@ -92,6 +101,8 @@ const getStyle = (styles?: ButtonStyle): string => {
 
   return styleStr;
 }
+
+
 
 </script>
 
