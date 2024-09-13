@@ -154,7 +154,11 @@ const navToProfile = navTo("/profile");
 // session
 const authFlag = ref(false);
 onMounted(async () => {
-  // authFlag.value = true;
+  if (useRuntimeConfig().public.debug) {
+    authFlag.value = true;
+    return;
+  }
+
   if (await appStateStore.validateSession()){
     authFlag.value = true;
     await appStateStore.initSessionAndCsrf();

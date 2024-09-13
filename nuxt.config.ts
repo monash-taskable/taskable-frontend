@@ -5,7 +5,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       oAuthLinkGoogle: process.env.GOOGLE_OAUTH_URL,
-      apiHost: process.env.API_HOST
+      apiHost: process.env.API_HOST,
+      debug: process.env.DEBUG === "TRUE"
     }
   },
 

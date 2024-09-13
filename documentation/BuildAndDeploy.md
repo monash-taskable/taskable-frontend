@@ -16,6 +16,8 @@ The following environment variables should be set
 ```env
 GOOGLE_OAUTH_URL=<Google OAuth URL>
 API_HOST=<API Host Name>
+DEBUG=FALSE
 ```
 
 `API_HOST` should be something like `https://localhost:1234/`.
+`DEBUG` should be either "TRUE" or "FALSE". Any other value will be treated as "FALSE".
