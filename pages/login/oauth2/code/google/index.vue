@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts" setup>
-import { FetchError, FetchRequest } from '~/scripts/FetchTools';
+import { API, FetchError, FetchRequest } from '~/scripts/FetchTools';
 import type { Optional } from '~/types/Optional';
 import { GetCsrfResponse, LoginExchangeRequest, LoginExchangeResponse } from '~/types/proto/Auth';
 
@@ -63,14 +63,14 @@ onMounted(async ()=>{
   openSignInLoadingDialog();
 
   // get temp csrf token
-  const tempCsrfTokenFetch = await FetchRequest.api("/auth/get-temp-csrf").commitAndRecv(GetCsrfResponse.decode);
+  const tempCsrfTokenFetch = await FetchRequest.api(API.auth.getTempCsrf).commitAndRecv(GetCsrfResponse.decode);
   let token = "";
   if (tempCsrfTokenFetch._result !== undefined){
     token = tempCsrfTokenFetch._result.csrfToken;
   }
 
   // try sign in
-  const tokenExchange = await FetchRequest.api("/auth/login-exchange").post().payload(
+  const tokenExchange = await FetchRequest.api(API.auth.loginExchange).post().payload(
     LoginExchangeRequest.encode,
     {authorizationCode: code},
   ).overrideCsrf(token).commitAndRecv(LoginExchangeResponse.decode);

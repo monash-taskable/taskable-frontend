@@ -65,3 +65,7 @@ export const cycleToggle = (curr: TableToggleType): TableToggleType => {
 export type TableToggleChangeEvent = {
   toggle: TableToggleType
 }
+
+export type OnSelectEvent<T> = {
+  selected: T[]
+}

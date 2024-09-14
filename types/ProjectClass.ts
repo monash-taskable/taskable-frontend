@@ -1,4 +1,4 @@
-import { isOfType } from "~/scripts/Utils"
+import { is, isOfType } from "~/scripts/Utils"
 
 export type ProjectClass = {
   classId: number,
@@ -38,6 +38,40 @@ export type ProjectClassStore = {
   projectClasses: {[key: number]: ProjectClass},
 }
 
-const roles = ["STUDENT", "TUTOR", "ADMIN", "OWNER"] as const;
-export type OwnershipRole = typeof roles[number];
-export const isRole = isOfType(roles);
+export const ownershipRoles = ["STUDENT", "TUTOR", "ADMIN", "OWNER"] as const;
+export type OwnershipRole = typeof ownershipRoles[number];
+export const isRole = isOfType(ownershipRoles);
+export const checkPrecedence = (role1: OwnershipRole, role2: OwnershipRole) =>
+  ownershipRoles.findIndex(is(role1)) >= ownershipRoles.findIndex(is(role2));
+
+
+
+/// DEBUG Project Class
+export const debugProjectClass: ProjectClass = {
+  archived: false,
+  classId: -1,
+  projects: [
+    {
+      archived: false,
+      name: "Debug Project",
+      description: "",
+      project_id: 1987
+    }
+  ],
+  templates: [
+    {
+      archived: false,
+      description: "",
+      name: "Debug Template",
+      template_id: 1234
+    }
+  ],
+  description: "",
+  name: "<CLASS-DEBUG>",
+  createdAt: new Date(),
+  role: "ADMIN",
+  members: [
+    {id: 1, name: "John Port II", role: "OWNER"},
+    {id: 2, name: "John Port III", role: "STUDENT"},
+  ]
+}

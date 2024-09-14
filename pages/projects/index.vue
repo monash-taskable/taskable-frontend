@@ -2,6 +2,7 @@
   <div class="container">
     <ProjectClassList :project-class="projCls" v-for="[_, projCls] in Object.entries(projectClassRef.projectClasses.value)" />
     <ProjectClassList :project-class="personalProjects" personal/>
+    <ProjectClassList v-if="useRuntimeConfig().public.debug" :project-class="debugProjectClass"/>
     <div class="new-section">
       <IconButton @click="openCreateClassForm" icon="fluent:people-community-add-20-regular" :caption="$t('projects.newClass')" :styles="{colorPreset: 'accent', size: 'small'}" />
     </div>
@@ -12,7 +13,7 @@
 import { FetchRequest } from '~/scripts/FetchTools';
 import { getCurrentGMTDateTime } from '~/scripts/Utils';
 import { defaultClose, type Dialog } from '~/types/Dialog';
-import type { ProjectClass } from '~/types/ProjectClass';
+import { debugProjectClass, type ProjectClass } from '~/types/ProjectClass';
 import { CreateClassRequest, GetClassResponse } from '~/types/proto/ProjectClass';
 
 const t = useI18n();
@@ -39,6 +40,7 @@ const personalProjects: ProjectClass = {
   role: "STUDENT",
   members: []
 }
+
 
 
 const projectClassStore = useProjectClassStore();

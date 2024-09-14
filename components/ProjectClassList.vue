@@ -109,20 +109,12 @@ const openEditClass = (projectClass: ProjectClass) => dialogControl.closeAllWith
   titleI18n: true,
   dialogType: "editClass",
   close: {
-    ...defaultClose,
-    caption: `dialogCommon.cancel`, 
-    style: {colorPreset: "strong"}
+    caption: `dialogCommon.confirm`,
+    captionI18n: true,
+    icon: "fluent:checkmark-20-regular",
+    style: {colorPreset: "accent-strong"},
+    expanding: true,
   },
-  actionsRight: [
-    {
-      caption: `dialogCommon.confirm`,
-      captionI18n: true,
-      icon: "fluent:checkmark-20-regular",
-      style: {colorPreset: "accent-strong"},
-      action: (_, x) => quickAlert(x),
-      expanding: false,
-    }
-  ],
   payload: { projectClass }
 });
 

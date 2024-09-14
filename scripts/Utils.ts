@@ -63,3 +63,17 @@ export const listRemove = <T>(list: T[], item: T) => {
     list.splice(index, 1); // 2nd parameter means remove one item only
   }
 }
+
+// some useful FP stuff
+
+export const is = <T>(value: T) => (another: any) => value === another
+
+export const boolAnd = (x: any, y: any) => x && y;
+export const boolOr = (x: any, y: any) => x || y;
+export const boolNot = (x: any) => !x;
+export const isTruthy = (x: any) => !!x;
+export const isFalsy = boolNot;
+
+export const same = <T>(list: T[]) => list.length < 2 ? true : list.reduce((x, y) => x === y, list[0] === list[1]);
+export const allOf = <T>(list: T[], predicate: (x:T) => boolean) => list.map(predicate).reduce(boolAnd);
+export const anyOf = <T>(list: T[], predicate: (x:T) => boolean) => !allOf(list.map(predicate), isFalsy);

@@ -1,16 +1,29 @@
 <template>
   <div class="page-root">
-    <Dropdown :styles="{colorPreset: 'accent-strong'}">
-      <option value="0">hello</option>
-      <option selected value="1">world</option>
+    <Dropdown selected="world2" @change="_change" v-model="val" :styles="{colorPreset: 'accent-strong'}">
+      <option value="hello1">hello</option>
+      <option value="world2">world</option>
     </Dropdown>
+
+    <button @click="debug">Debug</button>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { FetchRequest } from '~/scripts/FetchTools';
+
 definePageMeta({
   layout: "empty",
 })
+
+const debug = async () =>{
+  await useAppStateStore().initSessionAndCsrf();
+  await FetchRequest.protectedAPI("/classes/12345").commit();
+}
+
+const val = ref("");
+const _change = () => console.log(val.value);
+
 </script>
 
 <style lang="scss" scoped>

@@ -4,8 +4,8 @@
       v-if="props.title || props.description"
       :title="props.title" :description="props.description" />
     <div class="actions">
-      <div v-show="checked.length" class="left">
-        <div class="left-action-list">
+      <div v-show="selectable" class="left">
+        <div v-show="checked.length" class="left-action-list">
           <IconButton
             v-for="action in props.selectedActions"
             :caption="action.button.labelI18n ? 
@@ -95,6 +95,10 @@ const props = defineProps({
 const mapToRows = <T>(items: T[], serialize: (t: T) => {[k: string]: string}, identify: (t: T, i: number) => number) => 
   items.map(getRow(serialize, identify));
 
+
+const emitEvent = defineEmits(["select"]);
+
+
 // search logic
 const searchFlag = ref(false);
 const searchVal = ref("");
@@ -132,21 +136,26 @@ const sort = <T>(mode: TableSortDirection, field: string, rows: TableRow<T>[]): 
 const checked: Ref<number[]> = ref([]);
 const updateSelected = (id: number, toggle: TableToggleType) => {
   const state = toggle === "Checked";
-  
+
   if (state && !checked.value.includes(id)) {
     checked.value.push(id);
   }
   else if (!state && checked.value.includes(id)){
     listRemove(checked.value, id);
   }
+
+  emitEvent("select", {selected: props.items.filter((i, idx) => checked.value.includes(props.identify(i, idx)))});
 }
 const updateAllSelected = ({toggle}: TableToggleChangeEvent) => {
   if (toggle === "Checked") {
     checked.value = props.items.map(props.identify);
+    emitEvent("select", {selected: props.items.map(x=>x)});
   }
   else {
     checked.value = [];
+    emitEvent("select", {selected: []});
   }
+  
 }
 
 // getters

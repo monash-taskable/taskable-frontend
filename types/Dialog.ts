@@ -11,6 +11,9 @@ const dialogTypes = [
   "signInError",
   "createProjectTemplate",
   "editClass",
+  "updateMemberRole",
+  "searchUser",
+  "batchMemberAdd"
 ] as const;
 export type DialogType = typeof dialogTypes[number];
 export const isOfDialog = isOfType(dialogTypes);
@@ -84,15 +87,23 @@ export const quickAlert = (message: string, title?: string) => useDialogs().open
   y: 120,
 })
 
-export const quickError = (message: string, title?: string, icon?: string) => useDialogs().closeAllWithTypeThenOpen({
-  title: title ?? "dialogError.somethingWentWrong",
-  icon: icon ?? "fluent:error-circle-20-regular",
-  dialogType: "error",
-  width: "400px",
-  titleI18n: true,
-  payload: message,
-  style: {
-    titleBackground: "var(--dangerous-weak)",
-    titleColor: "var(--dangerous-strong)",
-  },
-})
+export const quickError = (message: string, title?: string, icon?: string, titleI18n?: boolean, messageI18n?: boolean) => 
+  useDialogs().closeAllWithTypeThenOpen({
+    title: title ?? "dialogError.somethingWentWrong",
+    icon: icon ?? "fluent:error-circle-20-regular",
+    dialogType: "error",
+    width: "400px",
+    titleI18n: titleI18n ?? true,
+    payload: { 
+      message,
+      i18n: messageI18n ?? false,
+    },
+    close: {
+      ...defaultClose,
+      style: {colorPreset: "dangerous-strong"}
+    },
+    style: {
+      titleBackground: "var(--dangerous-weak)",
+      titleColor: "var(--dangerous-strong)",
+    },
+  })

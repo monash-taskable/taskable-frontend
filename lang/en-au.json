@@ -86,6 +86,30 @@
   "projects.editClass.addMember": "Add Member",
   "projects.editClass.memberName": "Name",
   "projects.editClass.memberRole": "Role",
+  "projects.editClass.updateRole": "Update Member Roles",
+  "projects.editClass.selectARole": "Select a role",
+  "projects.editClass.updateRoleNotAllowed": "You don't have permission to modify the role of one or more of the selected members. \n\nThis includes yourself, you cannot assign yourself to a different role.",
+  "projects.editClass.searchAndAddUser": "Add user to class",
+  "projects.editClass.actions": "Classroom Actions",
+  "projects.editClass.deleteClass": "Delete",
+  "projects.editClass.archiveClass": "Archive",
+  "projects.editClass.unarchive": "Unarchive",
+
+  "dialogs.searchUser.filterBy": "Filter by...",
+  "dialogs.searchUser.email": "Email",
+  "dialogs.searchUser.firstName": "First Name",
+  "dialogs.searchUser.lastName": "Last Name",
+  "dialogs.searchUser.result": "Result",
+  "dialogs.searchUser.search": "Search",
+  "dialogs.searchUser.notFilled": "At least one field needs to be filled",
+
+  "dialogs.batchMemberAdd.instruction": "Enter the emails you wish to invite, where each line is a new email:",
+  "dialogs.batchMemberAdd.invalidEmail": "Invalid Emails",
+
+  "role.owner": "Owner",
+  "role.admin": "Admin",
+  "role.tutor": "Tutor",
+  "role.student": "Student",
   
   "tableCommon.search": "Search",
   "tableCommon.selected": "%s selected",
@@ -94,6 +118,7 @@
   "dialogCommon.confirm": "Confirm",
   "dialogCommon.cancel": "Cancel",
   "dialogError.somethingWentWrong": "Something Went Wrong",
+  "dialogError.alert": "Alert",
   "dialogError.sessionExpired": "User Credentials Expired",
   
   "_": ""

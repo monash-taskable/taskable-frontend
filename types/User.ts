@@ -1,15 +1,20 @@
 import type { Optional } from "./Optional";
+import type { AccentColor, Theme } from "./Theming";
 
-export class User {
-  id: number;
-  name: string;
-  email: string;
-  image: Optional<string>;
+export type SimpleUser = {
+  id: number,
+  info: BasicUserInfo,
+}
 
-  constructor (id: number, name: string, email: string, image?: string){
-    this.id = id;
-    this.name = name;
-    this.email = email;
-    this.image = image;
-  }
-};
+export type BasicUserInfo = {
+  firstName: string,
+  lastName: string,
+  email: string,
+}
+
+export type UserSettings = {
+  color: AccentColor,
+  theme: Theme,
+  language: string,
+}
+

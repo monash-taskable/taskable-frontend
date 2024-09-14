@@ -57,17 +57,17 @@ export const useAppStateStore = defineStore({
       const appState = useAppStateStore();
       const appConfig = useAppConfigStore();
 
-      const profileReq = await FetchRequest.protectedAPI("/user/get-profile").commitAndRecv(GetProfileResponse.decode);
+      const profileReq = await FetchRequest.protectedAPI("/users/get-profile").commitAndRecv(GetProfileResponse.decode);
       profileReq.res(profilePrt => {
         appState.session.profile = {
-          id: profilePrt.id,
-          firstName: profilePrt.firstName,
-          lastName: profilePrt.lastName,
-          email: profilePrt.email
+          id: profilePrt.user!.id,
+          firstName: profilePrt.user!.basicInfo!.firstName,
+          lastName: profilePrt.user!.basicInfo!.lastName,
+          email: profilePrt.user!.basicInfo!.email
         };
 
-        appConfig.accent = isAccentColor(profilePrt.color) ? profilePrt.color : "blue";
-        appConfig.theme = isTheme(profilePrt.theme) ? profilePrt.theme : "light";
+        appConfig.accent = isAccentColor(profilePrt.user!.userSettings!.color) ? profilePrt.user!.userSettings!.color : "blue";
+        appConfig.theme = isTheme(profilePrt.user!.userSettings!.theme) ? profilePrt.user!.userSettings!.theme : "light";
       })
     }
   }

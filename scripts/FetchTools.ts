@@ -125,9 +125,18 @@ export class FetchRequest {
 }
 
 export class FetchResult<T> {
+  /**
+   * The decoded protobuf result if applicable
+   */
   _result: Optional<T>;
+
+
   _httpError: Optional<FetchError>;
   _otherError: Optional<Error>;
+
+  /**
+   * The actual response object returned by fetchAPI
+   */
   _response: Optional<Response>;
 
   constructor (response?: Optional<Response>, result?: Optional<T>, httpError?: Optional<FetchError>, otherError?: Optional<Error>){
@@ -173,3 +182,10 @@ export class FetchResult<T> {
     return this._httpError !== undefined || this._otherError !== undefined;
   }
 }
+
+export const API = {
+  auth: {
+    getTempCsrf: "/auth/get-temp-csrf",
+    loginExchange: "/auth/login-exchange",
+  }
+} as const;

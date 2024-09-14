@@ -1,5 +1,15 @@
 syntax = "proto3";
 
+import "proto/Profile.proto";
+
+message Classroom {
+  int32 id = 1;
+  string name = 2;
+  string description = 3;
+  string created_at = 4;
+  bool archived = 5;
+}
+
 message CreateClassRequest {
   string class_name = 1;
   string class_desc = 2;
@@ -11,26 +21,26 @@ message GetClassesResponse {
 }
 
 message GetClassResponse {
-  int32 id = 1;
-  string class_name = 2;
-  string class_desc = 3;
-  string role = 4;
-  bool archived = 5;
-  string created_at = 6;
+  Classroom classroom = 1;
+  string role = 2;
 }
 
-message AddMemberRequest {
-  int32 member_id = 1;
+message AddMembersRequest {
+  repeated string user_emails = 1;
+}
+
+message AddMembersResponse {
+  repeated string invalid_emails = 1;
 }
 
 message GetMembersResponse {
   repeated ClassroomMember class_members= 1;
 }
+
 message ClassroomMember {
   int32 id = 1;
-  string first_name = 2;
-  string last_name = 3;
-  string role = 4;
+  string role = 2;
+  BasicInfo basic_info = 3;
 }
 
 message UpdateMemberRoleRequest {

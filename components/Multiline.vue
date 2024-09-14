@@ -1,20 +1,21 @@
 <template>
   <div>
     <div
-      class="field" 
+      class="field"
       :class="getClass(props.styles, focusFlag, value, props.error, props.icon !== '')"
       :style="getStyle(props.styles)">
       <div class="placeholder">
         <Icon v-if="props.icon !== undefined" :name="props.icon"/>
         {{ placeholder }}
       </div>
-      <input 
+      <textarea
         :id="`input_${id}`"
         @change="updateText"
         v-model="value" 
         @focusout="unfocus"
         @focusin="focus"
         @keydown="_onKeyDown"
+        @keyup="updateText"
         />
     </div>
     <div v-show="props.error" :style="getStyle(props.styles)" class="error-msg">
@@ -75,8 +76,8 @@ const styleSwitcher = (test: Optional<any>, varName: string): string => {
 const model = defineModel({type: String});
 
 const updateText = () => {
-  emitEvent("change", value.value)
   model.value = value.value;
+  emitEvent("change", value.value)
 }
 
 const _onKeyDown = (e: KeyboardEvent) => emitEvent("keydown", e);
@@ -129,6 +130,7 @@ const getStyle = (style: InputStyle) => {
 
   position: relative;
   display: inline-block;
+  width: 100%;
 
   .placeholder{
     @include flex-row;
@@ -140,10 +142,11 @@ const getStyle = (style: InputStyle) => {
     pointer-events: none;
   }
     
-  input {
+  textarea {
     @include typemix-label;
     z-index: 2005;
     position: relative;
+    resize: none;
   }
 }
 
@@ -151,7 +154,7 @@ const getStyle = (style: InputStyle) => {
 .field {
   background: var(--bg);
   
-  input {
+  textarea {
     background: transparent;
     border: 0;
     border-radius: 0;
@@ -188,17 +191,17 @@ const getStyle = (style: InputStyle) => {
 // sizes
 .field {
   &.small {
-    input, .placeholder { padding: $space-small; }
+    textarea, .placeholder { padding: $space-small; }
     .placeholder { gap: $space-small; }
   }
 
   &.medium {
-    input, .placeholder { padding: $space-medium; }
+    textarea, .placeholder { padding: $space-medium; }
     .placeholder { gap: $space-small; }
   }
 
   &.large {
-    input, .placeholder { padding: $space-large; }
+    textarea, .placeholder { padding: $space-large; }
     .placeholder { gap: $space-medium; }
   }
 }
@@ -217,7 +220,7 @@ const getStyle = (style: InputStyle) => {
 
   &.placeholder-color .placeholder { color: var(--placeholder-color) }
 
-  &.padding input { padding: var(--padding); }
+  &.padding textarea { padding: var(--padding); }
 
   &.width { width: var(--width); }
 
