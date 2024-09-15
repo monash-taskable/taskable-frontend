@@ -53,7 +53,9 @@
             <template #tab>
               <IconButton :tabindex="1005.1" @click="_hideUserMenu"
                 :styles="{ ...navBtnStyle, backgroundColor: 'var(--layer-background)' }" icon="fluent:person-20-regular"
-                :caption="getUsername(appState.session.value.profile)" />
+                :caption="getUsername(appState.session.value.profile)">
+                <Skeleton v-show="appStateStore.sessionLoading"/>
+              </IconButton>
             </template>
             <div class="dropdown-content user-menu">
               <IconButton :tabindex="1005.2" @click="navToProfile" :caption="$t('header.btn.profile')"
