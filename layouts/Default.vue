@@ -46,7 +46,9 @@
   
           <!-- User Menu -->
           <IconButton :tabindex="1005" :id="_userMenuId" @click="_showUserMenu" :styles="navBtnStyle"
-            icon="fluent:person-20-regular" :caption="getUsername(appState.session.value.profile)" />
+            icon="fluent:person-20-regular" :caption="getUsername(appState.session.value.profile)">
+            <Skeleton v-show="appStateStore.sessionLoading"/>
+          </IconButton>
           <TitleDropdown :id="_userMenuId" :button="_userMenu" click-away :show="_userMenuRef" @hide="_hideUserMenu">
             <template #tab>
               <IconButton :tabindex="1005.1" @click="_hideUserMenu"
@@ -76,7 +78,6 @@
 import { sprintf } from 'sprintf-js';
 import { buttonStyle } from '~/types/Button';
 import type { Optional } from '~/types/Optional';
-import type { Profile } from '~/types/Session';
 
 const t = useI18n();
 const conf = useRuntimeConfig();
