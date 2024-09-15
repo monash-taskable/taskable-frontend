@@ -55,6 +55,8 @@ export const useProjectClassStore = defineStore({
       }
     },
     async deleteMembersFromClass(classId: number, members: Member[]){
+      if (!(classId in this.projectClasses)) return[];
+
       const mids = members.filter(_m => _m.role !== "OWNER").map(m => m.id);
       mids.forEach(id => {
         console.log(`/classes/${classId}/members/${id}/delete`);
@@ -65,6 +67,8 @@ export const useProjectClassStore = defineStore({
       )
     },
     async addMembersToClass(classId: number, emails: string[]): Promise<string[]>{
+      if (!(classId in this.projectClasses)) return [];
+
       const memberAddReq = await FetchRequest
       .protectedAPI(`/classes/${classId}/members/add`)
       .post()
@@ -80,6 +84,8 @@ export const useProjectClassStore = defineStore({
       return result;
     },
     async updateClassMembersRole(classId: number, members: Member[], role: OwnershipRole){
+      if (!(classId in this.projectClasses)) return;
+
       for (const member of members) {
         const req = await FetchRequest
           .protectedAPI(`/classes/${classId}/members/${member.id}/update-role`)
@@ -95,21 +101,23 @@ export const useProjectClassStore = defineStore({
       this.loadMembers(classId);
     },
     async deleteClass(classId: number){
+      if (!(classId in this.projectClasses)) return;
       const req = await FetchRequest.protectedAPI(`/classes/${classId}/delete`).delete().commit();
       if (!req.isError()){
         delete this.projectClasses[classId];
       }
     },
     async updateClass(classId: number, className?: string, archived?: boolean){
+      if (!(classId in this.projectClasses)) return;
       if (className === undefined && archived === undefined) return;
       
       const req = await FetchRequest
         .protectedAPI(`/classes/${classId}/update`)
         .post()
         .payload(UpdateClassRequest.encode, {
-          archived: archived ?? this.projectClasses[classId].archived,
-          classDesc: "", 
-          className: className ?? ""})
+          archived, className,
+          classDesc: undefined,
+        })
         .commit();
 
       if (!req.isError()){

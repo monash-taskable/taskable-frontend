@@ -81,7 +81,7 @@
   "projects.newTemplate.name": "Template Name",
   "projects.newTemplate.description": "Template Description",
   "projects.editClass.title": "Edit Class",
-  "projects.editClass.className": "Class Name",
+  "projects.editClass.nowEditing": "You are now editing ",
   "projects.editClass.cannotBeEmpty": "Class name cannot be empty.",
   "projects.editClass.members": "Class Members",
   "projects.editClass.addMember": "Add Member",

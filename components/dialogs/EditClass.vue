@@ -1,14 +1,9 @@
 <template>
   <div class="body">
     <div class="group">
-      <h3>{{ $t('projects.editClass.className') }}</h3>
-      <div class="text-input">
-        <TextInput
-          v-model="nameVal"
-          :value="props.context.payload.projectClass.name"
-          :styles="{colorPreset: 'layer', width: '100%'}"
-          @change="emitValue" :error-messages="$t('projects.editClass.cannotBeEmpty')"/>
-      </div>
+      <span>{{ $t('projects.editClass.nowEditing') }}</span>
+      <span v-if="props.context.payload.projectClass.role !== 'OWNER'">{{ props.context.payload.projectClass.name }}</span>
+      <EditableField v-else :loading="updating" :value="props.context.payload.projectClass.name" inline @change="updateClassName"/>
     </div>
     <div class="group">
       <h3>{{ $t('projects.editClass.members') }}</h3>
@@ -75,8 +70,6 @@ const searchBy = defaultSearch((search: string) => (member: any): boolean => {
   const searchString = [String(tMember.id), tMember.name, tMember.role].join("\n");
   return searchString.includes(search);
 })
-
-const nameVal = ref("");
 
 // emit
 const emit = defineEmits(["emit"]);
@@ -203,8 +196,16 @@ const deleteClass = async () => {
 }
 
 // set archive
-const archiveClass = async () => await classStore.updateClass(classId, "", true);
-const unarchiveClass = async () => await classStore.updateClass(classId, "", false);
+const archiveClass = async () => await classStore.updateClass(classId, undefined, true);
+const unarchiveClass = async () => await classStore.updateClass(classId, undefined, false);
+
+// updateClassName
+const updating = ref(false);
+const updateClassName = async (newName: string) => {
+  updating.value = true;
+  await classStore.updateClass(classId, newName);
+  updating.value = false;
+}
 
 </script>
 
@@ -223,7 +224,7 @@ const unarchiveClass = async () => await classStore.updateClass(classId, "", fal
 }
 
 .group {
-  h3 {
+  h3, span {
     @include typemix-label;
     margin: 0;
     margin-bottom: $space-small;
