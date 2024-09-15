@@ -1,6 +1,10 @@
 import { defineStore } from 'pinia'
-import type { AppConfig } from '~/types/AppConfig'
 import type { AccentColor, Theme } from '~/types/Theming';
+
+export type AppConfig = {
+  theme: Theme,
+  accent: AccentColor
+};
 
 export const useAppConfigStore = defineStore({
   id: 'appConfigStore',

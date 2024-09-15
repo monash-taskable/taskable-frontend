@@ -1,10 +1,38 @@
 import { defineStore } from 'pinia';
 import { API, FetchRequest } from '~/scripts/FetchTools';
-import type { AppState } from '~/types/AppState';
 import { GetCsrfResponse, LoginExchangeResponse } from '~/types/proto/Auth';
 import { GetProfileResponse } from '~/types/proto/Profile';
-import { nullSession } from '~/types/Session';
 import { isAccentColor, isTheme } from '~/types/Theming';
+import { isOfType } from "~/scripts/Utils";
+import type { Optional } from '~/types/Optional';
+
+export type Profile = {
+  id: number,
+  firstName: string,
+  lastName: string,
+  email: string,
+}
+
+export type AppSession = {
+  profile: Optional<Profile>;
+}
+
+export const nullSession = (): AppSession => ({
+  profile: undefined,
+});
+
+export type AppState = {
+  showingTitle: boolean
+  title: string,
+  titleI18n: boolean,
+  titleHasIcon: boolean,
+  titleIcon: Optional<string>,
+  session: AppSession
+};
+
+const oAuthProvider = ["Google"] as const;
+export type OAuthProvider = typeof oAuthProvider[number];
+export const isOAuthProvider = isOfType(oAuthProvider);
 
 export const useAppStateStore = defineStore({
   id: 'appStateStore',
