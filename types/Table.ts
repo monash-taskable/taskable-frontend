@@ -2,7 +2,7 @@ import type { ButtonProps, ButtonStyle } from "./Button";
 
 export type SelectedAction = {
   button: ButtonProps,
-  action: <T>(selected: T[]) => void,
+  action: (selected: any[]) => void,
 }
 
 export type SearchProp = {

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
-import { FetchRequest } from '~/scripts/FetchTools';
+import { API, FetchRequest } from '~/scripts/FetchTools';
 import type { AppState } from '~/types/AppState';
-import { GetCsrfResponse } from '~/types/proto/Auth';
+import { GetCsrfResponse, LoginExchangeResponse } from '~/types/proto/Auth';
 import { GetProfileResponse } from '~/types/proto/Profile';
 import { nullSession } from '~/types/Session';
 import { isAccentColor, isTheme } from '~/types/Theming';
@@ -31,7 +31,7 @@ export const useAppStateStore = defineStore({
       this.session = nullSession();
     },
     async signOut() {
-      FetchRequest.api("/auth/logout").delete().commit();
+      API.auth.logout().commit();
       this.clearSession();
     },
     async validateSession() {
@@ -39,7 +39,7 @@ export const useAppStateStore = defineStore({
         this.clearSession();
         return false;
       }
-      const testRes = await FetchRequest.api("/auth/verify").commit();
+      const testRes = await API.auth.verify().commit();
       if (testRes.isError()){
         this.clearSession();
         return false;
@@ -48,7 +48,7 @@ export const useAppStateStore = defineStore({
     },
     async initSessionAndCsrf() {
       // get csrf
-      const csrfProxy = await FetchRequest.api("/auth/get-csrf").commitAndRecv(GetCsrfResponse.decode);
+      const csrfProxy = await API.auth.getCSRF().commitAndRecv(GetCsrfResponse.decode);
       csrfProxy.res(csrfMessage => {
         FetchRequest.updateCsrf(csrfMessage.csrfToken);
       })
@@ -57,7 +57,7 @@ export const useAppStateStore = defineStore({
       const appState = useAppStateStore();
       const appConfig = useAppConfigStore();
 
-      const profileReq = await FetchRequest.protectedAPI("/users/get-profile").commitAndRecv(GetProfileResponse.decode);
+      const profileReq = await API.auth.getProfile().commitAndRecv(GetProfileResponse.decode);
       profileReq.res(profilePrt => {
         appState.session.profile = {
           id: profilePrt.user!.id,
@@ -69,6 +69,27 @@ export const useAppStateStore = defineStore({
         appConfig.accent = isAccentColor(profilePrt.user!.userSettings!.color) ? profilePrt.user!.userSettings!.color : "blue";
         appConfig.theme = isTheme(profilePrt.user!.userSettings!.theme) ? profilePrt.user!.userSettings!.theme : "light";
       })
+    },
+    async signIn(code: string) {
+      // get temp csrf token
+      const tempCsrfTokenFetch = await API.auth.getTempCsrf().commitAndRecv(GetCsrfResponse.decode);
+      let token = "";
+      if (tempCsrfTokenFetch._result !== undefined){
+        token = tempCsrfTokenFetch._result.csrfToken;
+      }
+
+      // try sign in
+      const tokenExchange = await API.auth.loginExchange(code, token).commitAndRecv(LoginExchangeResponse.decode);
+      if (tokenExchange.isError()){
+        return false;
+      }
+
+      // set global csrf
+      tokenExchange.res(csrfMessage => {
+        FetchRequest.updateCsrf(csrfMessage.csrfToken);
+      })
+
+      return !tokenExchange.isError();
     }
   }
 })

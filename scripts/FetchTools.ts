@@ -1,6 +1,9 @@
 import type { Writer } from "protobufjs";
 import urlJoin from "url-join";
 import type { Optional } from "~/types/Optional";
+import type { OwnershipRole } from "~/types/ProjectClass";
+import { LoginExchangeRequest } from "~/types/proto/Auth";
+import { AddMembersRequest } from "~/types/proto/ProjectClass";
 
 export class FetchError extends Error {
   code: number;
@@ -185,7 +188,12 @@ export class FetchResult<T> {
 
 export const API = {
   auth: {
-    getTempCsrf: "/auth/get-temp-csrf",
-    loginExchange: "/auth/login-exchange",
-  }
+    getTempCsrf: () => FetchRequest.api("/auth/get-temp-csrf"),
+    loginExchange: (authCode: string, csrf: string) => FetchRequest.api("/auth/login-exchange").post().payload(LoginExchangeRequest.encode, {authorizationCode: authCode}).overrideCsrf(csrf),
+    logout: () => FetchRequest.protectedAPI("/auth/logout").delete(),
+    verify: () => FetchRequest.protectedAPI("/auth/verify"),
+    getCSRF: () => FetchRequest.protectedAPI("/auth/get-csrf"),
+    getProfile: () => FetchRequest.protectedAPI("/users/get-profile"),
+    updateProfile: () => FetchRequest.protectedAPI("/users/update-profile"),
+  },
 } as const;

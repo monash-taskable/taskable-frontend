@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia'
 import { FetchRequest } from '~/scripts/FetchTools'
 import { stringToDate } from '~/scripts/Utils'
-import { isRole, type ProjectClassStore } from '~/types/ProjectClass'
-import { GetClassesResponse, GetClassResponse, GetMembersResponse } from '~/types/proto/ProjectClass'
+import { isRole, type Member, type OwnershipRole, type ProjectClassStore } from '~/types/ProjectClass'
+import { AddMembersRequest, AddMembersResponse, GetClassesResponse, GetClassResponse, GetMembersResponse, UpdateMemberRoleRequest } from '~/types/proto/ProjectClass'
 
 export const useProjectClassStore = defineStore({
   id: 'projectClassStore',
@@ -53,6 +53,46 @@ export const useProjectClassStore = defineStore({
           role: (isRole(memberProto.role)) ? memberProto.role : "STUDENT",
         }))
       }
+    },
+    async deleteMembersFromClass(classId: number, members: Member[]){
+      const mids = members.filter(_m => _m.role !== "OWNER").map(m => m.id);
+      mids.forEach(id => {
+        console.log(`/classes/${classId}/members/${id}/delete`);
+        FetchRequest.protectedAPI(`/classes/${classId}/members/${id}/delete`).delete().commit();
+      })
+      this.projectClasses[classId].members = this.projectClasses[classId].members.filter(
+        (_m: Member) => !mids.includes(_m.id)
+      )
+    },
+    async addMembersToClass(classId: number, emails: string[]): Promise<string[]>{
+      const memberAddReq = await FetchRequest
+      .protectedAPI(`/classes/${classId}/members/add`)
+      .post()
+      .payload(AddMembersRequest.encode, {userEmails: emails})
+      .commitAndRecv(AddMembersResponse.decode);
+
+      await this.loadMembers(classId);
+      let result: string[] = [];
+      memberAddReq.res(({invalidEmails}) => {
+        result = invalidEmails;
+      });
+
+      return result;
+    },
+    async updateClassMembersRole(classId: number, members: Member[], role: OwnershipRole){
+      for (const member of members) {
+        const req = await FetchRequest
+          .protectedAPI(`/classes/${classId}/members/${member.id}/update-role`)
+          .payload(UpdateMemberRoleRequest.encode, { role })
+          .post()
+          .commit();
+        
+        if (req.isError()) continue;
+        if (req._response && (await req._response.text()) !== "true") continue;
+    
+      }
+      
+      this.loadMembers(classId);
     }
   },
 })

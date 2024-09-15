@@ -36,7 +36,7 @@
       <h3>{{ $t('projects.editClass.actions') }}</h3>
       <div class="actions">
         <IconButton icon="fluent:delete-20-regular" :caption="$t('projects.editClass.deleteClass')" :styles="{colorPreset: 'dangerous-strong'}"/>
-        <IconButton v-if="!props.context.payload.projectClass.archived" icon="fluent:archive-arrow-back-20-regular" :caption="$t('projects.editClass.unarchive')" :styles="{colorPreset: 'strong', backgroundColor:'var(--layer-background)'}"/>
+        <IconButton v-if="props.context.payload.projectClass.archived" icon="fluent:archive-arrow-back-20-regular" :caption="$t('projects.editClass.unarchive')" :styles="{colorPreset: 'strong', backgroundColor:'var(--layer-background)'}"/>
         <IconButton v-else icon="fluent:archive-20-regular" :caption="$t('projects.editClass.archiveClass')" :styles="{colorPreset: 'strong', backgroundColor:'var(--layer-background)'}"/>
       </div>
     </div>
@@ -45,11 +45,9 @@
 
 <script lang="ts" setup>
 import type { PropType } from 'vue';
-import { FetchRequest } from '~/scripts/FetchTools';
 import { anyOf, same } from '~/scripts/Utils';
 import { defaultClose, quickError, type Dialog } from '~/types/Dialog';
 import { checkPrecedence, type Member, type ProjectClass } from '~/types/ProjectClass';
-import { AddMembersRequest, AddMembersResponse } from '~/types/proto/ProjectClass';
 import { defaultSearch, type SelectedAction } from '~/types/Table';
 
 const t = useI18n();
@@ -75,14 +73,15 @@ const emitValue = (v: string) => {
 };
 
 const dialogs = useDialogs();
+const classStore = useProjectClassStore();
+
 
 // list selected actions
 const selectedActions: SelectedAction[] = [
   { // edit role
     action: (members: Member[]) => {
-      const projectClass = useProjectClassStore();
       const classId = props.context.payload.projectClass.classId;
-      if (!useRuntimeConfig().public.debug && !(classId in projectClass.projectClasses)) return;
+      if (!useRuntimeConfig().public.debug && !(classId in classStore.projectClasses)) return;
       if (members.length < 1) return;
 
       const roles = members.map(m => m.role)
@@ -123,20 +122,11 @@ const selectedActions: SelectedAction[] = [
   },
   { // delete user
     action: (members: Member[]) => {
-      const projectClass = useProjectClassStore();
       const classId = props.context.payload.projectClass.classId;
-      if (!(classId in projectClass.projectClasses)){
+      if (!(classId in classStore.projectClasses)){
         return;
       }
-      const mids = members.filter(_m => _m.role !== "OWNER").map(m => m.id);
-      mids.forEach(id => {
-        console.log(`/classes/${classId}/members/${id}/delete`);
-        FetchRequest.protectedAPI(`/classes/${classId}/members/${id}/delete`).delete().commit();
-      })
-      projectClass.projectClasses[classId].members = projectClass.projectClasses[classId].members.filter(
-        (_m: Member) => !mids.includes(_m.id)
-      )
-      projectClass.loadMembers(classId);
+      classStore.deleteMembersFromClass(classId, members);
     },
     button: {
       icon: "fluent:delete-20-regular",
@@ -149,7 +139,6 @@ const selectedActions: SelectedAction[] = [
   },
 ];
 
-const projectClass = useProjectClassStore();
 
 // add member button
 const classId = props.context.payload.projectClass.classId;
@@ -172,19 +161,18 @@ const addMember = async () => {
       expanding: true,
       action: async (c, s: string) => {
         const emails = s.split("\n").filter(Boolean).map(x => x.trim());
-        const memberAddReq = await FetchRequest
-          .protectedAPI(`/classes/${classId}/members/add`)
-          .post()
-          .payload(AddMembersRequest.encode, {userEmails: emails})
-          .commitAndRecv(AddMembersResponse.decode);
-
-        await projectClass.loadMembers(classId);
-        memberAddReq.res(({invalidEmails}) => {
+        
+        if (emails.length === 0) {
           dialogs.closeDialog(c.id);
-          if (invalidEmails.length === 0) return;
+          return;
+        }
 
-          quickError(invalidEmails.map(x => `* ${x}`).join("\n"), 'dialogs.batchMemberAdd.invalidEmail');
-        });
+        const invalidEmails = await classStore.addMembersToClass(classId, emails);
+
+        dialogs.closeDialog(c.id);
+        
+        if (invalidEmails.length === 0) return;
+        quickError(invalidEmails.map(x => `* ${x}`).join("\n"), 'dialogs.batchMemberAdd.invalidEmail');
       }
     }]
   })
@@ -193,7 +181,7 @@ const addMember = async () => {
 
 // update members
 onMounted(() => {
-  projectClass.loadMembers(props.context.payload.projectClass.classId);
+  classStore.loadMembers(props.context.payload.projectClass.classId);
 })
 </script>
 

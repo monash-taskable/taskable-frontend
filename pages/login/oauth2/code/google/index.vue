@@ -29,13 +29,13 @@ const openSignInLoadingDialog = () => {
 };
 
 const appState = useAppStateStore();
-const error = (error: FetchError | Error) => {
+const error = () => {
   dialogs.closeAllDialogs();
   // timeout is for ux
   setTimeout(()=>{
     dialogs.openDialog({
       dialogType: "signInError",
-      payload: error,
+      payload: undefined,
       title: "dialogError.somethingWentWrong",
       titleI18n: true,
       width: "350px",
@@ -48,43 +48,28 @@ const error = (error: FetchError | Error) => {
 }
 
 onMounted(async ()=>{
+
   dialogs.closeAllDialogs();
-  
   const route = useRoute();
 
   // check if error
   const code = route.query.code as Optional<string>;
   if (route.query.error || code === undefined) {
     dialogFlag.value = true;
-    error(new Error());
+    error();
     return;
   }
 
   openSignInLoadingDialog();
-
-  // get temp csrf token
-  const tempCsrfTokenFetch = await FetchRequest.api(API.auth.getTempCsrf).commitAndRecv(GetCsrfResponse.decode);
-  let token = "";
-  if (tempCsrfTokenFetch._result !== undefined){
-    token = tempCsrfTokenFetch._result.csrfToken;
-  }
-
-  // try sign in
-  const tokenExchange = await FetchRequest.api(API.auth.loginExchange).post().payload(
-    LoginExchangeRequest.encode,
-    {authorizationCode: code},
-  ).overrideCsrf(token).commitAndRecv(LoginExchangeResponse.decode);
-  if (tokenExchange.otherErr(error).httpErr(error).isError()){
-    return;
-  }
   
-  // set global csrf
-  tokenExchange.res(csrfMessage => {
-    FetchRequest.updateCsrf(csrfMessage.csrfToken);
+  const appState = useAppStateStore();
+  if (await appState.signIn(code)) {
     location.href = "/";
-  })
+  }
+  else {
+    error();
+  }
 
-  appState.validateSession();
 })
 </script>
 

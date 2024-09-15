@@ -17,11 +17,9 @@
 
 <script lang="ts" setup>
 import type { PropType } from 'vue';
-import { FetchRequest } from '~/scripts/FetchTools';
 import type { Dialog } from '~/types/Dialog';
 import type { Optional } from '~/types/Optional';
 import { checkPrecedence, ownershipRoles, type Member, type OwnershipRole } from '~/types/ProjectClass';
-import { UpdateMemberRoleRequest } from '~/types/proto/ProjectClass';
 
 const t = useI18n();
 
@@ -39,27 +37,12 @@ const { currRole, members, classId, selfRole } = props.context.payload;
 const roles = ownershipRoles.filter(r => !checkPrecedence(r, selfRole));
 
 const projectClasses = useProjectClassStore();
-const dialogs = useDialogs();
 
 const changingRole = ref(false);
 const onRoleChange = async (role: OwnershipRole) => {
-  if (!(classId in projectClasses.projectClasses))
-  
+  if (!(classId in projectClasses.projectClasses)) return;
   changingRole.value = true;
-
-  for (const member of members) {
-    const req = await FetchRequest
-      .protectedAPI(`/classes/${classId}/members/${member.id}/update-role`)
-      .payload(UpdateMemberRoleRequest.encode, { role })
-      .post()
-      .commit();
-    
-    if (req.isError()) continue;
-    if (req._response && (await req._response.text()) !== "true") continue;
-
-  }
-  
-  projectClasses.loadMembers(classId);
+  await projectClasses.updateClassMembersRole(classId, members, role);
   changingRole.value = false;
 }
 

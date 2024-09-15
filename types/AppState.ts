@@ -1,6 +1,5 @@
 import { isOfType } from "~/scripts/Utils";
 import type { Optional } from "./Optional";
-import type { User } from "./User";
 import type { AppSession } from "./Session";
 
 export type AppState = {
