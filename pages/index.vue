@@ -2,7 +2,9 @@
   <div class="page-root">
     <div class="menu">
       <div class="greeting">
-        {{ $t('home.welcomeBack') }} <span>{{ getName(appState) }}</span>
+        {{ $t('home.welcomeBack') }} 
+        <span>{{ getName(appState) }}</span>
+        <Skeleton width="15rem" v-show="appState.sessionLoading" size="title"/>
       </div>
       <div class="row">
         <TitleButton 
@@ -36,7 +38,6 @@
 </template>
 
 <script lang="ts" setup>
-import type { AppState } from "~/types/AppState";
 import type { ButtonStyle } from "~/types/Button";
 import { defaultClose, quickAlert } from "~/types/Dialog";
 
@@ -139,9 +140,9 @@ const openCreateProject = () => dialogControl.closeAllWithTypeThenOpen({
 }
 
 .greeting {
-  padding-bottom: $space-medium;
   @include typemix-title;
 
+  padding-bottom: $space-medium;
   span { color: var(--accent-strong); }
 }
 </style>

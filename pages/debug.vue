@@ -1,12 +1,10 @@
 <template>
   <div class="page-root">
-
+    <Skeleton size="title"/>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { FetchRequest } from '~/scripts/FetchTools';
-
 definePageMeta({
   layout: "empty",
 })
@@ -20,7 +18,7 @@ definePageMeta({
   @include flex-row;
   @include flex-main(center);
   @include flex-cross(center);
-  
+
   height: 80vh;
   width: 100vw;
 }

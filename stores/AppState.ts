@@ -27,7 +27,8 @@ export type AppState = {
   titleI18n: boolean,
   titleHasIcon: boolean,
   titleIcon: Optional<string>,
-  session: AppSession
+  session: AppSession,
+  sessionLoading: boolean
 };
 
 const oAuthProvider = ["Google"] as const;
@@ -43,6 +44,7 @@ export const useAppStateStore = defineStore({
     titleHasIcon: true,
     titleIcon: undefined,
     session: nullSession(),
+    sessionLoading: true,
   }),
   actions: {
     hideTitle(){
@@ -57,6 +59,7 @@ export const useAppStateStore = defineStore({
     },
     clearSession (){
       this.session = nullSession();
+      this.sessionLoading = true;
     },
     async signOut() {
       API.auth.logout().commit();
@@ -82,17 +85,17 @@ export const useAppStateStore = defineStore({
       })
 
       // load profile
-      const appState = useAppStateStore();
       const appConfig = useAppConfigStore();
 
       const profileReq = await API.auth.getProfile().commitAndRecv(GetProfileResponse.decode);
       profileReq.res(profilePrt => {
-        appState.session.profile = {
+        this.session.profile = {
           id: profilePrt.user!.id,
           firstName: profilePrt.user!.basicInfo!.firstName,
           lastName: profilePrt.user!.basicInfo!.lastName,
           email: profilePrt.user!.basicInfo!.email
         };
+        this.sessionLoading = false;
 
         appConfig.accent = isAccentColor(profilePrt.user!.userSettings!.color) ? profilePrt.user!.userSettings!.color : "blue";
         appConfig.theme = isTheme(profilePrt.user!.userSettings!.theme) ? profilePrt.user!.userSettings!.theme : "light";

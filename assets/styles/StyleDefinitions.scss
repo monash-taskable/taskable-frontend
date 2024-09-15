@@ -87,8 +87,6 @@
   --gnr-magenta100: #833969;
 
   // functional
-  --popup-overlay: rgba(57, 57, 57, 0.1);
-  --float-color: rgba(0, 0, 0, 0.05);
   --outline: #0D8CE9;
 }
 
@@ -103,12 +101,21 @@
     --foreground: var(--g80);
     --foreground-weak: var(--g50);
     --foreground-disabled: var(--g30);
+    --skeleton-base: #d3d3d384;
+    --skeleton-pulse: linear-gradient(90deg,
+                                    rgba(224, 224, 224, 0) 0%,
+                                    rgba(206, 206, 206, 0.8) 50%,
+                                    rgba(224, 224, 224, 0) 100%);
 
     // functional colours
     --dangerous-strong: var(--gnr-red100);
     --dangerous-intermediate: var(--gnr-red60);
     --dangerous-interact: var(--gnr-red20);
     --dangerous-weak: var(--gnr-red10);
+
+    // functional
+    --popup-overlay: rgba(57, 57, 57, 0.1);
+    --float-color: rgba(0, 0, 0, 0.05);
 
     &.color--orange,
     & .theme-override.color--orange {
@@ -169,6 +176,12 @@
     // functional
     --popup-overlay: rgba(255, 255, 255, 0.167);
     --float-color: rgba(255, 255, 255, 0.05);
+
+    --skeleton-base: #46464673;
+    --skeleton-pulse: linear-gradient(90deg, 
+                                    rgba(46, 46, 46, 0) 0%, 
+                                    rgba(74, 74, 74, 0.8) 50%,
+                                    rgba(46, 46, 46, 0) 100%);
 
     &.color--orange,
     & .theme-override.color--orange {
