@@ -7,6 +7,7 @@
   "header.btn.profile": "View Profile",
   "header.btn.about": "About Monash Taskable",
   "header.btn.signOut": "Sign Out",
+  "header.btn.debug": "Debug",
   "header.noti.newNotification": "New Notifications (%s)",
 
   "datetime.today": "Today",
