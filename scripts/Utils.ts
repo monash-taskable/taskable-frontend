@@ -77,3 +77,5 @@ export const isFalsy = boolNot;
 export const same = <T>(list: T[]) => list.length < 2 ? true : list.reduce((x, y) => x === y, list[0] === list[1]);
 export const allOf = <T>(list: T[], predicate: (x:T) => boolean) => list.map(predicate).reduce(boolAnd);
 export const anyOf = <T>(list: T[], predicate: (x:T) => boolean) => !allOf(list.map(predicate), isFalsy);
+export const max = (list: number[]) => list.reduce((x, y) => x > y ? x : y);
+export const min = (list: number[]) => list.reduce((x, y) => x < y ? x : y);

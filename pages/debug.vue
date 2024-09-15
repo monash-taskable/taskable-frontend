@@ -1,6 +1,10 @@
 <template>
   <div class="page-root">
-    <Skeleton size="title"/>
+    <div>
+      <span>1</span>
+      <EditableField inline v-model="x" value="hi" @change="chg"/>
+      <span>2</span>
+    </div>
   </div>
 </template>
 
@@ -9,13 +13,16 @@ definePageMeta({
   layout: "empty",
 })
 
+const x = ref("hola");
+const chg = () => console.log(x.value);
+
 </script>
 
 <style lang="scss" scoped>
 @import "/assets/styles/constants/Flex.scss";
 
 .page-root{
-  @include flex-row;
+  @include flex-col;
   @include flex-main(center);
   @include flex-cross(center);
 

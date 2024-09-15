@@ -10,6 +10,7 @@
     <Icon :name="icon"/>
     <span tabindex="-1" @click="onClick" class="caption">
       {{ caption }}
+      <slot/>
     </span>
   </button>
 </template>
