@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { FetchRequest } from '~/scripts/FetchTools'
 import { stringToDate } from '~/scripts/Utils'
 import { isRole, type Member, type OwnershipRole, type ProjectClassStore } from '~/types/ProjectClass'
-import { AddMembersRequest, AddMembersResponse, GetClassesResponse, GetClassResponse, GetMembersResponse, UpdateMemberRoleRequest } from '~/types/proto/ProjectClass'
+import { AddMembersRequest, AddMembersResponse, GetClassesResponse, GetClassResponse, GetMembersResponse, UpdateClassRequest, UpdateMemberRoleRequest } from '~/types/proto/ProjectClass'
 
 export const useProjectClassStore = defineStore({
   id: 'projectClassStore',
@@ -93,6 +93,29 @@ export const useProjectClassStore = defineStore({
       }
       
       this.loadMembers(classId);
-    }
+    },
+    async deleteClass(classId: number){
+      const req = await FetchRequest.protectedAPI(`/classes/${classId}/delete`).delete().commit();
+      if (!req.isError()){
+        delete this.projectClasses[classId];
+      }
+    },
+    async updateClass(classId: number, className?: string, archived?: boolean){
+      if (className === undefined && archived === undefined) return;
+      
+      const req = await FetchRequest
+        .protectedAPI(`/classes/${classId}/update`)
+        .post()
+        .payload(UpdateClassRequest.encode, {
+          archived: archived ?? this.projectClasses[classId].archived,
+          classDesc: "", 
+          className: className ?? ""})
+        .commit();
+
+      if (!req.isError()){
+        if(className) this.projectClasses[classId].name = className;
+        if(archived) this.projectClasses[classId].archived = archived;
+      }
+    },
   },
 })

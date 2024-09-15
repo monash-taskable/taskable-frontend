@@ -4,10 +4,10 @@
       <h3>{{ $t('projects.editClass.className') }}</h3>
       <div class="text-input">
         <TextInput
-        v-model="nameVal"
-        :value="props.context.payload.projectClass.name"
-        :styles="{colorPreset: 'layer', width: '100%'}"
-        @change="emitValue" :error-messages="$t('projects.editClass.cannotBeEmpty')"/>
+          v-model="nameVal"
+          :value="props.context.payload.projectClass.name"
+          :styles="{colorPreset: 'layer', width: '100%'}"
+          @change="emitValue" :error-messages="$t('projects.editClass.cannotBeEmpty')"/>
       </div>
     </div>
     <div class="group">
@@ -35,9 +35,21 @@
     <div v-if="props.context.payload.projectClass.role === 'OWNER'" class="group">
       <h3>{{ $t('projects.editClass.actions') }}</h3>
       <div class="actions">
-        <IconButton icon="fluent:delete-20-regular" :caption="$t('projects.editClass.deleteClass')" :styles="{colorPreset: 'dangerous-strong'}"/>
-        <IconButton v-if="props.context.payload.projectClass.archived" icon="fluent:archive-arrow-back-20-regular" :caption="$t('projects.editClass.unarchive')" :styles="{colorPreset: 'strong', backgroundColor:'var(--layer-background)'}"/>
-        <IconButton v-else icon="fluent:archive-20-regular" :caption="$t('projects.editClass.archiveClass')" :styles="{colorPreset: 'strong', backgroundColor:'var(--layer-background)'}"/>
+        <IconButton
+          @click="deleteClass"
+          icon="fluent:delete-20-regular"
+          :caption="$t('projects.editClass.deleteClass')" 
+          :styles="{colorPreset: 'dangerous-strong'}"/>
+        <IconButton v-if="props.context.payload.projectClass.archived" 
+          icon="fluent:archive-arrow-back-20-regular" 
+          :caption="$t('projects.editClass.unarchive')" 
+          :styles="{colorPreset: 'strong', backgroundColor:'var(--layer-background)'}"
+          @click="unarchiveClass"/>
+        <IconButton v-else
+          icon="fluent:archive-20-regular" 
+          :caption="$t('projects.editClass.archiveClass')" 
+          :styles="{colorPreset: 'strong', backgroundColor:'var(--layer-background)'}"
+          @click="archiveClass"/>
       </div>
     </div>
   </div>
@@ -179,10 +191,21 @@ const addMember = async () => {
   
 }
 
-// update members
+// load members
 onMounted(() => {
   classStore.loadMembers(props.context.payload.projectClass.classId);
 })
+
+// delete class
+const deleteClass = async () => {
+  await classStore.deleteClass(classId);
+  dialogs.closeDialog(props.context.id);
+}
+
+// set archive
+const archiveClass = async () => await classStore.updateClass(classId, "", true);
+const unarchiveClass = async () => await classStore.updateClass(classId, "", false);
+
 </script>
 
 <style scoped lang="scss">
