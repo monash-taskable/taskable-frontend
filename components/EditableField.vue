@@ -1,8 +1,8 @@
 <template>
   <!-- Field -->
   <span @focusout="editDone"
-    tabindex="-1" class="editing"
-    :style="getFieldStyle(editing)">
+    tabindex="-1" class="fieldEdit"
+    :class="getFieldEditClass(editing)">
     <input
       :class="getFieldClass(size, inline)"
       :tabindex="editing ? 0 : -1"
@@ -41,6 +41,7 @@ const props = defineProps({
 // interaction flag
 const emits = defineEmits(["change"])
 const fieldValue = ref("");
+const backup = ref("");
 const model = defineModel({type: String});
 const editing = ref(false);
 const focused = ref(false);
@@ -51,7 +52,7 @@ const tagKeyUp = ({key}: KeyboardEvent) => {
 }
 const fieldKeyUp = ({key}: KeyboardEvent) => {
   if (key === "Escape"){
-    editing.value = false;
+    editAbort();
   }
   
   if (key === "Enter" && editing.value){
@@ -64,6 +65,8 @@ const unfocus = () => {
 const edit = () => {
   if (props.loading) return;
 
+  backup.value = fieldValue.value;
+
   editing.value = true;
   // @ts-ignore
   field.value.focus();
@@ -71,14 +74,16 @@ const edit = () => {
   field.value.select();
 }
 const editDone = () => {
-  if (fieldValue.value.length === 0){
-    editing.value = false;
-    return;
-  }
+  if (fieldValue.value.length === 0) editAbort();
 
   editing.value = false;
   focused.value = false;
   emits("change", fieldValue.value);
+}
+const editAbort = () => {
+  editing.value = false;
+  focused.value = false;
+  fieldValue.value = backup.value;
 }
 const updateModel = () => {
   model.value = fieldValue.value;
@@ -97,7 +102,9 @@ const getFieldClass = (size: string, inline: boolean) => [
   size,
 ].join(" ");
 
-const getFieldStyle = (editing: boolean) => editing ? `width: ${min([max([fieldValue.value.length, 1]), 20])}ch` : "width: 0px; height: 0px; margin: 0;";
+const getFieldStyle = (editing: boolean) => editing ? `width: ${min([max([fieldValue.value.length, 1]), 20])}ch; height: auto;` : "";
+
+const getFieldEditClass = (editing: boolean) => editing ? "editing" : "";
 
 // default value
 onMounted(() => {
@@ -117,7 +124,7 @@ onMounted(() => {
   @include defmix-focusable;
   
   display: inline-block;
-  text-decoration: underline;
+  text-decoration: underline 1px var(--accent-intermediate) dashed;
   user-select: none;
   cursor: pointer;
   
@@ -141,11 +148,51 @@ input {
   font-size: calc($typesize-default - 0.15rem);
   color: var(--accent-strong);
   font-family: 'IBM Plex Mono', monospace;
-  padding: 0;
-  background: var(--accent-weak);
+  background: transparent;
   border: 0;
   outline: none;
+  width: 0px;
+  height: 0px;
+  margin: 0;
+  border: 0;
+  z-index: 2051;
+  position: relative;
 }
+
+.fieldEdit {
+  font-family: 'IBM Plex Mono', monospace;
+  z-index: 2050;
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+  
+  &.editing {
+    width: auto;
+    height: auto;
+    margin-right: 2px;
+
+    &::before {
+      z-index: 2040;
+      left: -2px;
+      top: -2px;
+      position: absolute;
+      content: '';
+      background: var(--accent-weak);
+      width: 100%;
+      height: 100%;
+      padding: 2px 0;
+      border: 1px dotted var(--accent-strong);
+
+    }
+    &:has(.inline)::before { 
+      width: calc(100% - $space-extra-small);
+      left: 2px;
+    }
+  }
+
+}
+
 
 .title {
   & input, & {
