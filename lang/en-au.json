@@ -99,6 +99,18 @@
   "projects.editClass.archiveClass": "Archive",
   "projects.editClass.unarchive": "Unarchive",
 
+  "projectView.invalidProject": "Error occurred while retrieving this project. Either you don't have permission, or the project doesn't exist.",
+  "projectView.backToProjects": "Back to projects",
+
+  "projectView.page.overview": "Project Overview",
+  "projectView.page.members": "Members",
+  "projectView.page.options": "Project Options",
+  "projectView.page.tasks": "Tasks and Schedules",
+  "projectView.page.announcements": "Announcements",
+  "projectView.page.meetings": "Meetings",
+  "projectView.page.discussion": "Discussion",
+  "projectView.page.sharedFiles": "Shared Files",
+
   "dialogs.searchUser.filterBy": "Filter by...",
   "dialogs.searchUser.email": "Email",
   "dialogs.searchUser.firstName": "First Name",

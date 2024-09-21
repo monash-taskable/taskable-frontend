@@ -64,6 +64,9 @@ export const listRemove = <T>(list: T[], item: T) => {
   }
 }
 
+export const isNumericChar = (c: string) => c >= '0' && c <= '9';
+export const isNumericString = (s: string) => allOf(s.split(''), isNumericChar);
+
 // some useful FP stuff
 
 export const is = <T>(value: T) => (another: any) => value === another

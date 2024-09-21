@@ -15,6 +15,7 @@ const dialogTypes = [
   "searchUser",
   "batchMemberAdd",
   "sessionError",
+  "projectError"
 ] as const;
 export type DialogType = typeof dialogTypes[number];
 export const isOfDialog = isOfType(dialogTypes);
@@ -88,7 +89,7 @@ export const quickAlert = (message: string, title?: string) => useDialogs().open
   y: 120,
 })
 
-export const quickError = (message: string, title?: string, icon?: string, titleI18n?: boolean, messageI18n?: boolean) => 
+export const quickError = (message: string, title?: string, icon?: string, titleI18n?: boolean, messageI18n?: boolean, ) => 
   useDialogs().closeAllWithTypeThenOpen({
     title: title ?? "dialogError.somethingWentWrong",
     icon: icon ?? "fluent:error-circle-20-regular",

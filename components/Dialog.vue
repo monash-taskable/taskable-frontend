@@ -51,8 +51,9 @@
     <DialogsEditClass @emit="updateEmit" v-if="context.dialogType === 'editClass'" :context="props.context"/>
     <DialogsUpdateMemberRole @emit="updateEmit" v-if="context.dialogType === 'updateMemberRole'" :context="props.context"/>
     <DialogsSearchUser @emit="updateEmit" v-if="context.dialogType === 'searchUser'" :context="props.context"/>
-    <BatchMemberAdd @emit="updateEmit" v-if="context.dialogType === 'batchMemberAdd'" :context="props.context"/>
-    <SessionError @emit="updateEmit" v-if="context.dialogType === 'sessionError'" :context="props.context"/>
+    <DialogsBatchMemberAdd @emit="updateEmit" v-if="context.dialogType === 'batchMemberAdd'" :context="props.context"/>
+    <DialogsSessionError @emit="updateEmit" v-if="context.dialogType === 'sessionError'" :context="props.context"/>
+    <DialogsProjectError @emit="updateEmit" v-if="context.dialogType === 'projectError'" :context="props.context"/>
   </div>
 </template>
 

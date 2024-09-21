@@ -8,7 +8,7 @@
 // update state
 const state = useAppStateStore();
 onMounted(()=>{
-  state.setProjectPage("announcements");
+  state.setProjectPage("sharedFiles");
 });
 </script>
 

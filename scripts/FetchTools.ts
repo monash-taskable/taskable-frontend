@@ -108,7 +108,8 @@ export class FetchRequest {
         this._protectedDefaultBehaviour &&
         !rawResult.ok &&
         rawResult.status === 403 &&
-        !await useAppStateStore().validateSession()
+        !await useAppStateStore().validateSession() &&
+        !useRuntimeConfig().public.debug
       ){
         const dialogs = useDialogs();
         dialogs.closeAllDialogs();

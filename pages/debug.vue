@@ -1,6 +1,6 @@
 <template>
   <div class="page-root">
-    <IconButton caption="error" @click="x" :styles="{colorPreset:'accent-strong'}"/>
+    <ProjectNavigation :project-id="1234" selected="1"/>
   </div>
 </template>
 
@@ -23,9 +23,11 @@ const x = () => useDialogs().closeAllWithTypeThenOpen({
 .page-root{
   @include flex-col;
   @include flex-main(center);
-  @include flex-cross(center);
+  @include flex-cross(flex-start);
 
   height: 80vh;
   width: 100vw;
+
+  background: var(--background);
 }
 </style>

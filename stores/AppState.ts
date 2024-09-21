@@ -28,7 +28,9 @@ export type AppState = {
   titleHasIcon: boolean,
   titleIcon: Optional<string>,
   session: AppSession,
-  sessionLoading: boolean
+  sessionLoading: boolean,
+  projectId: Optional<number>,
+  projectPage: Optional<string>,
 };
 
 const oAuthProvider = ["Google"] as const;
@@ -45,6 +47,8 @@ export const useAppStateStore = defineStore({
     titleIcon: undefined,
     session: nullSession(),
     sessionLoading: true,
+    projectId: undefined,
+    projectPage: undefined,
   }),
   actions: {
     hideTitle(){
@@ -60,6 +64,12 @@ export const useAppStateStore = defineStore({
     clearSession (){
       this.session = nullSession();
       this.sessionLoading = true;
+    },
+    setProject (projectId: number) {
+      this.projectId = projectId;
+    },
+    setProjectPage(projectPage: string) {
+      this.projectPage = projectPage;
     },
     async signOut() {
       API.auth.logout().commit();
