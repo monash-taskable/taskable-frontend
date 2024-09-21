@@ -32,7 +32,9 @@
       <div class="option row row-center">
         <h4> {{ $t("settings.locale") }} </h4>
         <div>
-          
+          <Dropdown @change="setLocale" :selected="locale">
+            <option v-for="[langCode, langName] in Object.entries(languageNames)" :value="langCode">{{ langName }}</option>
+          </Dropdown>
         </div>
       </div>
     </div>
@@ -41,6 +43,8 @@
 
 <script lang="ts" setup>
 const t = useI18n();
+const { locale, setLocale } = useI18n();
+console.log(locale.value);
 useAppStateStore().setTitle("settings.title", true, true, "fluent:settings-20-regular");
 </script>
 

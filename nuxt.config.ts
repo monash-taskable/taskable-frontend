@@ -20,11 +20,16 @@ export default defineNuxtConfig({
         {
           code: 'en-au',
           file: 'en-au.json'
-        }
+        },
+        {
+          code: 'zh-tw',
+          file: 'zh-tw.json'
+        },
       ],
       lazy: true,
       langDir: 'lang',
-      defaultLocale: 'en-au'
+      defaultLocale: 'en-au',
+      strategy: "no_prefix"
     }],
   ],
   
