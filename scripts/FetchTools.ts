@@ -1,9 +1,7 @@
 import type { Writer } from "protobufjs";
 import urlJoin from "url-join";
 import type { Optional } from "~/types/Optional";
-import type { OwnershipRole } from "~/types/ProjectClass";
 import { LoginExchangeRequest } from "~/types/proto/Auth";
-import { AddMembersRequest } from "~/types/proto/ProjectClass";
 
 export class FetchError extends Error {
   code: number;
@@ -85,25 +83,14 @@ export class FetchRequest {
   }
   
   async commitAndRecv<R>(decoder: (_b: Uint8Array) => R): Promise<FetchResult<R>> {
-    try {
-      if (FetchRequest._csrf !== undefined && this._csrfOverride === undefined) {
-        this.attachHeader({ "X-XSRF-TOKEN": FetchRequest._csrf });
-      }
-
-      const rawResult = await fetch(this._dest, this._reqInit);
-
-      if (!rawResult.ok){
-        return new FetchResult(rawResult ,<Optional<R>> undefined, new FetchError(rawResult.status, rawResult.statusText));
-      }
-
-      const blob = await rawResult.blob();
-      const bytes = new Uint8Array(await blob.arrayBuffer());
-      return new FetchResult(rawResult ,<Optional<R>> decoder(bytes));
-
+    const req = await this.commit();
+    if (req._response === undefined){
+      return new FetchResult(req._response, <Optional<R>>req._result, req._httpError, req._otherError);
     }
-    catch (e) {
-      return new FetchResult(undefined ,<Optional<R>>undefined, undefined, e instanceof Error ? e : new Error("Unknown Error"));
-    }
+
+    const blob = await req._response.blob()
+    const bytes = new Uint8Array(await blob.arrayBuffer());
+    return new FetchResult(req._response ,<Optional<R>> decoder(bytes));
   }
 
   async commit(): Promise<FetchResult<undefined>> {
@@ -114,10 +101,35 @@ export class FetchRequest {
 
       const rawResult = await fetch(this._dest, this._reqInit);
 
-      if (!rawResult.ok){
+      console.log("fetch: " + this._dest);
+
+      // if error, try verify (when protectedDefaultBehaviour)
+      if (
+        this._protectedDefaultBehaviour &&
+        !rawResult.ok &&
+        rawResult.status === 403 &&
+        !await useAppStateStore().validateSession()
+      ){
+        const dialogs = useDialogs();
+        dialogs.closeAllDialogs();
+        dialogs.openDialog({
+          dialogType: "sessionError",
+          payload: undefined,
+          width: "300px",
+          title: "signin.sessionError",
+          titleI18n: true,
+          style: {
+            titleBackground: "var(--dangerous-weak)",
+            titleColor: "var(--dangerous-strong)",
+          },
+          icon: "fluent:error-circle-20-regular",
+        }, false)
+      }
+      
+      if (!rawResult.ok) {
         return new FetchResult(rawResult ,undefined, new FetchError(rawResult.status, rawResult.statusText));
       }
-
+      
       return new FetchResult(rawResult ,undefined);
 
     }
@@ -190,9 +202,9 @@ export const API = {
   auth: {
     getTempCsrf: () => FetchRequest.api("/auth/get-temp-csrf"),
     loginExchange: (authCode: string, csrf: string) => FetchRequest.api("/auth/login-exchange").post().payload(LoginExchangeRequest.encode, {authorizationCode: authCode}).overrideCsrf(csrf),
-    logout: () => FetchRequest.protectedAPI("/auth/logout").delete(),
-    verify: () => FetchRequest.protectedAPI("/auth/verify"),
-    getCSRF: () => FetchRequest.protectedAPI("/auth/get-csrf"),
+    logout: () => FetchRequest.api("/auth/logout").delete(),
+    verify: () => FetchRequest.api("/auth/verify"),
+    getCSRF: () => FetchRequest.api("/auth/get-csrf"),
     getProfile: () => FetchRequest.protectedAPI("/users/get-profile"),
     updateProfile: () => FetchRequest.protectedAPI("/users/update-profile"),
   },

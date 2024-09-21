@@ -141,8 +141,11 @@ const openCreateProject = () => dialogControl.closeAllWithTypeThenOpen({
 
 .greeting {
   @include typemix-title;
+  @include flex-cross(center);
 
+  display: inline-flex;
   padding-bottom: $space-medium;
+  gap: $space-extra-small;
   span { color: var(--accent-strong); }
 }
 </style>

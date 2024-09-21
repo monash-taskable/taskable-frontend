@@ -1,10 +1,6 @@
 <template>
   <div class="page-root">
-    <div>
-      <span>1</span>
-      <EditableField inline v-model="x" value="hi" @change="chg"/>
-      <span>2</span>
-    </div>
+    <IconButton caption="error" @click="x" :styles="{colorPreset:'accent-strong'}"/>
   </div>
 </template>
 
@@ -13,9 +9,12 @@ definePageMeta({
   layout: "empty",
 })
 
-const x = ref("hola");
-const chg = () => console.log(x.value);
-
+const x = () => useDialogs().closeAllWithTypeThenOpen({
+  dialogType: "sessionError",
+  title: "x",
+  width: "122",
+  payload: undefined,
+})
 </script>
 
 <style lang="scss" scoped>

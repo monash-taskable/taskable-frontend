@@ -49,6 +49,9 @@
   "signin.loading": "Signing in...",
   "signin.error": "Error occurred when signing in. If this continues to happen, please contact administrator.",
   "signin.retry": "Try Again",
+  "signin.sessionError": "Session Expired",
+  "signin.sessionErrorDesc": "Your session has expired. Please sign in again.",
+  "signin.signIn": "Sign In",
   
   "settings.title": "App Settings",
   "settings.appearance": "Appearance Options",

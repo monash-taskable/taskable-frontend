@@ -52,6 +52,7 @@
     <DialogsUpdateMemberRole @emit="updateEmit" v-if="context.dialogType === 'updateMemberRole'" :context="props.context"/>
     <DialogsSearchUser @emit="updateEmit" v-if="context.dialogType === 'searchUser'" :context="props.context"/>
     <BatchMemberAdd @emit="updateEmit" v-if="context.dialogType === 'batchMemberAdd'" :context="props.context"/>
+    <SessionError @emit="updateEmit" v-if="context.dialogType === 'sessionError'" :context="props.context"/>
   </div>
 </template>
 
@@ -60,6 +61,7 @@ import { type PropType } from 'vue';
 import type { Dialog } from '~/types/Dialog';
 import type { Optional } from '~/types/Optional';
 import BatchMemberAdd from './dialogs/BatchMemberAdd.vue';
+import SessionError from './dialogs/SessionError.vue';
 
 const t = useI18n();
 

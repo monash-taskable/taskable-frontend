@@ -13,7 +13,8 @@ const dialogTypes = [
   "editClass",
   "updateMemberRole",
   "searchUser",
-  "batchMemberAdd"
+  "batchMemberAdd",
+  "sessionError",
 ] as const;
 export type DialogType = typeof dialogTypes[number];
 export const isOfDialog = isOfType(dialogTypes);
