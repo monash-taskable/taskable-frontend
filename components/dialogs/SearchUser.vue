@@ -37,15 +37,11 @@
 </template>
 
 <script lang="ts" setup>
-import type { ButtonProps } from '~/types/Button';
 import { type Dialog } from '~/types/Dialog';
 import type { InputStyle } from '~/types/InputStyle';
 import type { SearchUserResponse } from '~/types/proto/Profile';
 import type { OnSelectEvent } from '~/types/Table';
 import type { SimpleUser } from '~/types/User';
-
-const t = useI18n();
-
 
 const props = defineProps({
   context: {type: Object as PropType<Dialog<{filter: (x: SimpleUser) => boolean}>>, required: true},

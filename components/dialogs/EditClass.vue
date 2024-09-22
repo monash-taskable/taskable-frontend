@@ -57,8 +57,6 @@ import { defaultClose, quickError, type Dialog } from '~/types/Dialog';
 import { checkPrecedence, type Member, type ProjectClass } from '~/types/ProjectClass';
 import { defaultSearch, type SelectedAction } from '~/types/Table';
 
-const t = useI18n();
-
 const props = defineProps({
   context: {type: Object as PropType<Dialog<{
     projectClass: ProjectClass,

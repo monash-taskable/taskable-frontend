@@ -17,8 +17,6 @@
 import type { PropType } from 'vue';
 import type { Dialog } from '~/types/Dialog';
 
-const t = useI18n();
-
 const props = defineProps({
   context: {type: Object as PropType<Dialog<{
     template: boolean,

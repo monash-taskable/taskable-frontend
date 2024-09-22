@@ -16,8 +16,6 @@ import { defaultClose, type Dialog } from '~/types/Dialog';
 import { debugProjectClass, type ProjectClass } from '~/types/ProjectClass';
 import { CreateClassRequest, GetClassResponse } from '~/types/proto/ProjectClass';
 
-const t = useI18n();
-
 useAppStateStore().setTitle("projects.title", true, true);
 const dialogControl = useDialogs();
 

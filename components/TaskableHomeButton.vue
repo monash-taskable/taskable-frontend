@@ -8,7 +8,6 @@
 </template>
 
 <script lang="ts" setup>
-const t = useI18n();
 const props = defineProps({ tabindex: { type: Number, required: false } });
 
 const getClass = (enter: boolean, focus: boolean): string => {

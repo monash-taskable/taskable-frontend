@@ -61,10 +61,6 @@
 import { type PropType } from 'vue';
 import type { Dialog } from '~/types/Dialog';
 import type { Optional } from '~/types/Optional';
-import BatchMemberAdd from './dialogs/BatchMemberAdd.vue';
-import SessionError from './dialogs/SessionError.vue';
-
-const t = useI18n();
 
 const props = defineProps({
   context: {type: Object as PropType<Dialog<any>>, required: true},

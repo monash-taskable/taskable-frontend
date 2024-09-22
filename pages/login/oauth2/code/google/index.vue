@@ -11,7 +11,6 @@ import { GetCsrfResponse, LoginExchangeRequest, LoginExchangeResponse } from '~/
 
 definePageMeta({ layout: "empty" });
 
-const t = useI18n();
 const getClass = (dialog: boolean) => dialog ? "filtered" : "";
 
 // sign in dialog

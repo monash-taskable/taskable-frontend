@@ -44,8 +44,6 @@
 <script lang="ts" setup>
 import urlJoin from 'url-join';
 
-const t = useI18n();
-
 const getIcon = (icon: string, selected: boolean) => icon + (selected ? "filled" : "regular");
 
 const props = defineProps({

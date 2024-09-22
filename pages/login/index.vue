@@ -10,8 +10,6 @@ import type {ButtonStyle } from '~/types/Button';
 
 definePageMeta({ layout: "empty" });
 
-const t = useI18n();
-
 const buttonStyle: ButtonStyle = {
   colorPreset: "layer",
   size: "large"

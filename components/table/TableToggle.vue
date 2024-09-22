@@ -15,8 +15,6 @@
 import type { PropType } from 'vue';
 import {cycleToggle, type TableToggleChangeEvent, type TableToggleType } from '~/types/Table';
 
-const t = useI18n();
-
 const props = defineProps({
   toggle: {type: String as PropType<TableToggleType>, required: true},
   hoverable: {type: Boolean, default: false},

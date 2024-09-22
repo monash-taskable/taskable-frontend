@@ -18,7 +18,6 @@
 import type { PropType } from 'vue';
 import { cycleSort, type TableColumn, type TableSortChangeEvent, type TableSortDirection } from '~/types/Table';
 
-const t = useI18n();
 
 const props = defineProps({
   column: {type: Object as PropType<TableColumn>, required: true},

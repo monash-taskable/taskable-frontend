@@ -97,7 +97,6 @@ import { sprintf } from 'sprintf-js';
 import { buttonStyle } from '~/types/Button';
 import type { Optional } from '~/types/Optional';
 
-const t = useI18n();
 const conf = useRuntimeConfig();
 const notificationCount = ref(30);
 const navBtnStyle = buttonStyle({ colorPreset: 'layer' });

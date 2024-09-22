@@ -21,7 +21,6 @@ import type { Dialog } from '~/types/Dialog';
 import type { Optional } from '~/types/Optional';
 import { checkPrecedence, ownershipRoles, type Member, type OwnershipRole } from '~/types/ProjectClass';
 
-const t = useI18n();
 
 const props = defineProps({
   context: {type: Object as PropType<Dialog<{

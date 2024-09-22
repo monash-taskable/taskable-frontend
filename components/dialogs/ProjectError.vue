@@ -25,9 +25,6 @@ const tryAgain = () => {
   useDialogs().closeAllDialogs();
   navigateTo("/projects");
 }
-
-const t = useI18n();
-
 </script>
 
 <style scoped lang="scss">

@@ -13,8 +13,6 @@ const props = defineProps({
   context: {type: Object as PropType<Dialog<undefined>>, required: true},
 });
 
-const t = useI18n();
-
 </script>
 
 <style scoped lang="scss">
