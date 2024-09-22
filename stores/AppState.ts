@@ -31,6 +31,7 @@ export type AppState = {
   sessionLoading: boolean,
   projectId: Optional<number>,
   projectPage: Optional<string>,
+  projectMenuState: Boolean,
 };
 
 const oAuthProvider = ["Google"] as const;
@@ -49,6 +50,7 @@ export const useAppStateStore = defineStore({
     sessionLoading: true,
     projectId: undefined,
     projectPage: undefined,
+    projectMenuState: false,
   }),
   actions: {
     hideTitle(){
@@ -60,6 +62,11 @@ export const useAppStateStore = defineStore({
       this.titleI18n = isI18n ?? true;
       this.titleHasIcon = titleHasIcon ?? true;
       this.titleIcon = titleIcon;
+      this.projectMenuState = false;
+    },
+    setProjectTitle(title: string) {
+      this.setTitle(title, false, true, "fluent:clover-20-regular");
+      this.projectMenuState = true;
     },
     clearSession (){
       this.session = nullSession();

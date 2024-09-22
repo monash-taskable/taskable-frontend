@@ -2,9 +2,9 @@
   <div class="container">
     <ProjectClassList :project-class="projCls" v-for="[_, projCls] in Object.entries(projectClassRef.projectClasses.value)" />
     <ProjectClassList :project-class="personalProjects" personal/>
-    <ProjectClassList v-if="useRuntimeConfig().public.debug" :project-class="debugProjectClass"/>
     <div class="new-section">
       <IconButton @click="openCreateClassForm" icon="fluent:people-community-add-20-regular" :caption="$t('projects.newClass')" :styles="{colorPreset: 'accent', size: 'small'}" />
+      <IconButton v-if="useRuntimeConfig().public.debug" @click="addDebugClass" icon="fluent:bug-20-regular" :caption="$t('projects.addDebugClass')" :styles="{colorPreset: 'accent', size: 'small'}" />
     </div>
   </div>
 </template>
@@ -41,10 +41,11 @@ const personalProjects: ProjectClass = {
   members: []
 }
 
-
-
 const projectClassStore = useProjectClassStore();
 const projectClassRef = storeToRefs(projectClassStore);
+
+const addDebugClass = () => projectClassStore.setLocalClass(debugProjectClass);
+
 
 // create class
 const openCreateClassForm = () => dialogControl.closeAllWithTypeThenOpen({

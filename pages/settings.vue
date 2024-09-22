@@ -42,9 +42,7 @@
 </template>
 
 <script lang="ts" setup>
-const t = useI18n();
 const { locale, setLocale } = useI18n();
-console.log(locale.value);
 useAppStateStore().setTitle("settings.title", true, true, "fluent:settings-20-regular");
 </script>
 

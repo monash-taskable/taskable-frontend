@@ -14,7 +14,6 @@ const stateRef = storeToRefs(appState);
 onMounted(() => {
   const route = useRoute();
   const id = route.params.id.toString().trim();
-  console.log("IJD#O", Number.isNaN(id));
   if (id === '' || !isNumericString(id)) {
     useDialogs().closeAllWithTypeThenOpen({
       title: "dialogError.somethingWentWrong",
@@ -30,7 +29,9 @@ onMounted(() => {
     }, false);
     return;
   }
-  appState.setProject(Number(route.params.id));
+
+  appState.setProject(Number(id));
+  appState.setProjectTitle("Debug");
 })
 </script>
 

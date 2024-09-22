@@ -60,6 +60,10 @@
   "settings.general": "General Options",
   "settings.locale": "Language",
 
+  "profile.title": "Profile",
+
+  "about.title": "About",
+
   "projects.title": "All Projects",
   "projects.noProjects": "There are no projects. Start by creating one!",
   "projects.newProject": "Create Project",
@@ -68,6 +72,7 @@
   "projects.personal": "Personal Projects",
   "projects.personalDesc": "All of your projects that doesn't belong to any classes",
   "projects.newClass": "Create Class",
+  "projects.addDebugClass": "Add Debug Class",
   "projects.newClass.title": "Create Class",
   "projects.newClass.instruction": "Create a class by entering a class name below, and select 'Confirm'",
   "projects.newClass.cannotBeEmpty": "Class name cannot be empty.",

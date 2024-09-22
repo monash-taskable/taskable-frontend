@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { FetchRequest } from '~/scripts/FetchTools'
 import { stringToDate } from '~/scripts/Utils'
-import { isRole, type Member, type OwnershipRole, type ProjectClassStore } from '~/types/ProjectClass'
+import { isRole, type Member, type OwnershipRole, type ProjectClass, type ProjectClassStore } from '~/types/ProjectClass'
 import { AddMembersRequest, AddMembersResponse, GetClassesResponse, GetClassResponse, GetMembersResponse, UpdateClassRequest, UpdateMemberRoleRequest } from '~/types/proto/ProjectClass'
 
 export const useProjectClassStore = defineStore({
@@ -53,6 +53,14 @@ export const useProjectClassStore = defineStore({
           role: (isRole(memberProto.role)) ? memberProto.role : "STUDENT",
         }))
       }
+    },
+    getLocalClass(classId: number) {
+      FetchRequest.api("hi").commit();
+      // console.log("hi");
+      // return this.projectClasses[classId];
+    },
+    setLocalClass(projCls: ProjectClass) {
+      this.projectClasses[projCls.classId] = projCls;
     },
     async deleteMembersFromClass(classId: number, members: Member[]){
       if (!(classId in this.projectClasses)) return[];

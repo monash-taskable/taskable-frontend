@@ -7,10 +7,26 @@
           
           <IconButton
             v-if="appState.showingTitle.value"
+            @click="_openProjectMenu"
+            :id="_projMenuId"
             :tabindex="1002"
             :styles="navBtnStyle"
             :icon="appState.titleIcon.value"
             :caption="appState.titleI18n ? $t(appState.title.value) : appState.title.value" />
+          <TitleDropdown :id="_projMenuId" :button="_projMenu" click-away :show="_projMenuRef" @hide="_hideProjMenu">
+            <template #tab>
+              <IconButton
+                v-if="appState.showingTitle.value"
+                @click="_hideProjMenu"
+                id="page-title-btn"
+                :tabindex="1002.1"
+                :styles="{...navBtnStyle, backgroundColor: 'var(--layer-background)'}"
+                :icon="appState.titleIcon.value"
+                :caption="appState.titleI18n ? $t(appState.title.value) : appState.title.value" />
+            </template>
+            <div class="dropdown-content">
+            </div>
+          </TitleDropdown>
         </nav>
         <nav>
           <!-- Notification Menu -->
@@ -145,6 +161,20 @@ const {
   elem: _notiMenu,
   id: _notiMenuId
 } = _constructExpandingDropdown(ref(false), ref(undefined), "navbtn-notimenu");
+
+
+// project menu
+const {
+  hideDropdown: _hideProjMenu,
+  showDropdown: _showProjMenu,
+  expandedRef: _projExpanded,
+  ref: _projMenuRef,
+  elem: _projMenu,
+  id: _projMenuId
+} = _constructExpandingDropdown(ref(false), ref(undefined), "page-title-btn");
+const _openProjectMenu = () => {
+  if (appStateStore.projectMenuState) _showProjMenu();
+}
 
 
 // static nav links
