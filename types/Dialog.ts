@@ -1,6 +1,7 @@
 import { isOfType } from "~/scripts/Utils";
 import type { ButtonStyle } from "./Button";
 import type { Optional } from "./Optional";
+import { useNuxt } from "nuxt/kit";
 
 const dialogTypes = [
   "alert",
@@ -32,7 +33,6 @@ export type DialogStyle = {
 export type DialogInit<T> = {
   title: string,
   icon?: string,
-  titleI18n?: boolean,
   style?: DialogStyle,
   dialogType: DialogType
   width: string,
@@ -49,7 +49,6 @@ export type Dialog<T> = {
   id: string,
   icon?: string,
   title: string,
-  titleI18n: boolean,
   style?: DialogStyle,
   dialogType: DialogType
   width: string,
@@ -64,41 +63,38 @@ export type Dialog<T> = {
 
 export type DialogAction = {
   caption: string
-  captionI18n: boolean,
   style: ButtonStyle,
   icon: string,
   expanding: boolean,
+  expanded?: boolean,
   action?: (context: Dialog<any>, emitted: any) => void,
 }
 
-export const defaultClose: DialogAction = {
-  caption: "dialogCommon.close",
-  captionI18n: true,
+export const defaultClose: DialogAction = ({
+  caption: "",
   icon: "fluent:dismiss-20-regular",
   style: {colorPreset: 'strong'},
   expanding: true,
-};
+  expanded: false,
+});
 
 export const quickAlert = (message: string, title?: string) => useDialogs().openDialog({
   title: title ?? "Alert",
   dialogType: 'alert',
   payload: message,
-  titleI18n: false,
   width: "300px",
   x: 120,
   y: 120,
 })
 
-export const quickError = (message: string, title?: string, icon?: string, titleI18n?: boolean, messageI18n?: boolean, ) => 
+export const quickError = (message: string, title: string, icon?: string) => 
   useDialogs().closeAllWithTypeThenOpen({
-    title: title ?? "dialogError.somethingWentWrong",
+    title: title,
     icon: icon ?? "fluent:error-circle-20-regular",
     dialogType: "error",
     width: "400px",
-    titleI18n: titleI18n ?? true,
     payload: { 
       message,
-      i18n: messageI18n ?? false,
     },
     close: {
       ...defaultClose,

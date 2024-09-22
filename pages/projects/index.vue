@@ -16,7 +16,9 @@ import { defaultClose, type Dialog } from '~/types/Dialog';
 import { debugProjectClass, type ProjectClass } from '~/types/ProjectClass';
 import { CreateClassRequest, GetClassResponse } from '~/types/proto/ProjectClass';
 
-useAppStateStore().setTitle("projects.title", true, true);
+const {t} = useI18n();
+
+useAppStateStore().setTitle(t("projects.title"), true);
 const dialogControl = useDialogs();
 
 // project classes
@@ -49,19 +51,17 @@ const addDebugClass = () => projectClassStore.setLocalClass(debugProjectClass);
 const openCreateClassForm = () => dialogControl.closeAllWithTypeThenOpen({
   width: "350px",
   height: "fit-content",
-  title: "projects.newClass.title",
-  titleI18n: true,
+  title: t("projects.newClass.title"),
   dialogType: "createClass",
   close: {
     ...defaultClose,
-    caption: "dialogCommon.cancel", 
+    caption: t("dialogCommon.cancel"), 
     style: {colorPreset: "strong"}
   },
   actionsRight: [
     {
-      caption: "dialogCommon.confirm",
-      captionI18n: true,
-      icon: "fluent:checkmark-20-regular",
+      caption: t("dialogCommon.confirm"),
+      icon: t("fluent:checkmark-20-regular"),
       style: {colorPreset: "accent-strong"},
       action: (d: Dialog<{}>, emt?: any) => {
         emt = emt as string;

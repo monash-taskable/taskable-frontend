@@ -12,7 +12,7 @@
             :tabindex="1002"
             :styles="navBtnStyle"
             :icon="appState.titleIcon.value"
-            :caption="appState.titleI18n ? $t(appState.title.value) : appState.title.value" />
+            :caption="appState.title.value" />
           <TitleDropdown :id="_projMenuId" :button="_projMenu" click-away :show="_projMenuRef" @hide="_hideProjMenu">
             <template #tab>
               <IconButton
@@ -22,7 +22,7 @@
                 :tabindex="1002.1"
                 :styles="{...navBtnStyle, backgroundColor: 'var(--layer-background)'}"
                 :icon="appState.titleIcon.value"
-                :caption="appState.titleI18n ? $t(appState.title.value) : appState.title.value" />
+                :caption="appState.title.value" />
             </template>
             <div class="dropdown-content">
             </div>

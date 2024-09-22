@@ -25,9 +25,9 @@
         @select="onSelect"
         :items="result"
         :columns="[
-          {key: 'firstName', label: 'dialogs.searchUser.firstName', labelI18n: true, order: 0, flex: 2},
-          {key: 'lastName', label: 'dialogs.searchUser.lastName', labelI18n: true, order: 1, flex: 2},
-          {key: 'email', label: 'dialogs.searchUser.email', labelI18n: true, order: 2, flex: 3},
+          {key: 'firstName', label: 'dialogs.searchUser.firstName', order: 0, flex: 2},
+          {key: 'lastName', label: 'dialogs.searchUser.lastName', order: 1, flex: 2},
+          {key: 'email', label: 'dialogs.searchUser.email', order: 2, flex: 3},
         ]"
         :serialize="serializeResult"
         :identify="identifyResult"
@@ -56,7 +56,6 @@ const fltLastName = ref("");
 
 const validateSearch = () => {
   if (`${fltEmail.value}${fltFirstName.value}${fltLastName.value}`.trim() === ""){
-    // quickError('dialogs.searchUser.notFilled', undefined, undefined, undefined, true);
     return false;
   }
   

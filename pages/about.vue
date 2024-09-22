@@ -5,7 +5,8 @@
 </template>
 
 <script lang="ts" setup>
-useAppStateStore().setTitle("about.title", true, true, "fluent:info-20-regular");
+const {t} = useI18n();
+useAppStateStore().setTitle(t("about.title"), true, "fluent:info-20-regular");
 </script>
 
 <style>

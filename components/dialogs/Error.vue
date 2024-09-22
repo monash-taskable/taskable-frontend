@@ -1,7 +1,7 @@
 <template>
   <div class="dialog-body">
     <div class="error-body">
-      <VueMarkdown :source="i18n ? $t(message) : message"/>
+      <VueMarkdown :source="message"/>
     </div>
   </div>
 </template>
@@ -13,12 +13,11 @@ import type { Dialog } from '~/types/Dialog';
 
 const props = defineProps({
   context: {type: Object as PropType<Dialog<{
-    message: string,
-    i18n: boolean
+    message: string
   }>>, required: true},
 });
 
-const { message, i18n } = props.context.payload;
+const { message } = props.context.payload;
 </script>
 
 <style scoped lang="scss">

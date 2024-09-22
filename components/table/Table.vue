@@ -8,8 +8,7 @@
         <div v-show="checked.length" class="left-action-list">
           <IconButton
             v-for="action in props.selectedActions"
-            :caption="action.button.labelI18n ? 
-              $t(action.button.label) : action.button.label"
+            :caption="action.button.label"
             :expanded="action.button.expanded"
             :expanding="action.button.expanding"
             :icon="action.button.icon"
@@ -26,8 +25,7 @@
         <IconButton
           v-if="props.search && !searchFlag"
           @click="searchOn"
-          :caption="props.search.button.labelI18n 
-            ? $t(props.search.button.label) : props.search.button.label"
+          :caption="props.search.button.label"
           :styles="props.search.button.style"
           :expanded="props.search.button.expanded"
           :expanding="props.search.button.expanding"
@@ -39,8 +37,7 @@
             :icon="props.search.button.inputIcon"
             @focusout="searchOff"
             v-model="searchVal"
-              :placeholder="props.search.button.labelI18n
-              ? $t(props.search.button.label) : props.search.button.label"/>
+              :placeholder="props.search.button.label"/>
         </div>
         <slot name="actions"/>
       </div>
@@ -175,7 +172,6 @@ const getRow = <T>(serialize: (t: T) => {[key: string]: string}, identify: (t: T
       cells: serialized.map(([key, value]: [string, string]): TableCell => ({
         flex: findInList(props.columns, c => c.key === key, c => c.flex) ?? 1,
         key, value,
-        valueI18n: false,
         order: findInList(props.columns, c => c.key === key, c => c.order) ?? 0,
       })).sort((x, y) => x.order < y.order ? -1 : 1)
     }

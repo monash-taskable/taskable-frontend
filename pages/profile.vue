@@ -7,8 +7,9 @@
 </template>
 
 <script lang="ts" setup>
+const {t} = useI18n();
 const x = useAppStateStore();
-useAppStateStore().setTitle("profile.title", true, true, "fluent:person-square-20-regular");
+useAppStateStore().setTitle(t("profile.title"), true, "fluent:person-square-20-regular");
 </script>
 
 <style>

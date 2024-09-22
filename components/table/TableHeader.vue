@@ -5,7 +5,7 @@
     :style="getStyle(props.column.flex ?? 1)" 
     :class="getClass(props.sorted !== 'Default', focusFlag)">
     <div class="label">
-      {{ props.column.labelI18n ? $t(props.column.label) : props.column.label }}
+      {{ props.column.label }}
     </div>
     <div class="icon">
       <Icon v-show="props.sorted === 'Ascending'" name="fluent:arrow-sort-down-lines-20-regular"/>

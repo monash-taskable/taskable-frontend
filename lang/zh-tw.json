@@ -122,20 +122,20 @@
   "dialogs.batchMemberAdd.instruction": "Enter the emails you wish to invite, where each line is a new email:",
   "dialogs.batchMemberAdd.invalidEmail": "Invalid Emails",
 
-  "role.owner": "Owner",
-  "role.admin": "Admin",
-  "role.tutor": "Tutor",
-  "role.student": "Student",
+  "role.owner": "擁有者",
+  "role.admin": "管理員",
+  "role.tutor": "教師",
+  "role.student": "學生",
   
-  "tableCommon.search": "Search",
-  "tableCommon.selected": "%s selected",
+  "tableCommon.search": "搜尋",
+  "tableCommon.selected": "已選擇 %s 則",
   
-  "dialogCommon.close": "Close",
-  "dialogCommon.confirm": "Confirm",
-  "dialogCommon.cancel": "Cancel",
-  "dialogError.somethingWentWrong": "Something Went Wrong",
-  "dialogError.alert": "Alert",
-  "dialogError.sessionExpired": "User Credentials Expired",
+  "dialogCommon.close": "關閉",
+  "dialogCommon.confirm": "確認",
+  "dialogCommon.cancel": "取消",
+  "dialogError.somethingWentWrong": "出錯",
+  "dialogError.alert": "資訊",
+  "dialogError.sessionExpired": "登入狀態已過期",
   
   "_": ""
 }

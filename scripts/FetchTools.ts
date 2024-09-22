@@ -101,8 +101,6 @@ export class FetchRequest {
 
       const rawResult = await fetch(this._dest, this._reqInit);
 
-      console.log("fetch: " + this._dest);
-
       // if error, try verify (when protectedDefaultBehaviour)
       if (
         this._protectedDefaultBehaviour &&
@@ -118,7 +116,6 @@ export class FetchRequest {
           payload: undefined,
           width: "300px",
           title: "signin.sessionError",
-          titleI18n: true,
           style: {
             titleBackground: "var(--dangerous-weak)",
             titleColor: "var(--dangerous-strong)",

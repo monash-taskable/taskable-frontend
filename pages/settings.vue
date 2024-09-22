@@ -42,8 +42,8 @@
 </template>
 
 <script lang="ts" setup>
-const { locale, setLocale } = useI18n();
-useAppStateStore().setTitle("settings.title", true, true, "fluent:settings-20-regular");
+const { locale, setLocale, t } = useI18n();
+useAppStateStore().setTitle(t("settings.title"), true, "fluent:settings-20-regular");
 </script>
 
 <style lang="scss" scoped>

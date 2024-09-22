@@ -6,7 +6,7 @@
         <span v-if="context.icon" class="title-icon">
           <Icon :name="context.icon"/>
         </span>
-        {{ (context.title === "@@UUID") ? context.id : (context.titleI18n ? $t(context.title) : context.title) }}
+        {{ (context.title === "@@UUID") ? context.id : context.title }}
       </div>
       <div class="right">
         <IconButton 
@@ -15,27 +15,22 @@
           :expanding="action.expanding"
           :styles="{...action.style, size: 'small'}"
           :icon="action.icon"
-          :caption="action.captionI18n
-            ? $t(action.caption)
-            : action.caption"/>
+          :caption="action.caption"/>
         <IconButton 
           v-if="context.close !== undefined"
           @click="closeDialog"
           :expanding="context.close.expanding"
+          :expanded="context.close.expanded"
           :styles="{...context.close.style, size: 'small'}"
           :icon="context.close.icon"
-          :caption="context.close.captionI18n
-            ? $t(context.close.caption)
-            : context.close.caption"/>
+          :caption="context.close.caption"/>
         <IconButton 
           v-for="action in context.actionsRight"
           @click="() => getClickEvent(props.context, emitted, action.action)"
           :expanding="action.expanding"
           :styles="{...action.style, size: 'small'}"
           :icon="action.icon"
-          :caption="action.captionI18n
-            ? $t(action.caption)
-            : action.caption"/>
+          :caption="action.caption"/>
       </div>
       <div class="left" @mousedown="dragOn" @mouseup="dragOff" @mousemove="onDrag" @mouseleave="dragOff"></div>
     </div>

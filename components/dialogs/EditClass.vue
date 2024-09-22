@@ -10,11 +10,11 @@
       <Table 
         action :search="searchBy" selectable 
         :columns="[
-          {key: 'name', label: 'projects.editClass.memberName', labelI18n: true, flex: 3, order: 0},
-          {key: 'role', label: 'projects.editClass.memberRole', labelI18n: true, flex: 1, order: 1},
+          {key: 'name', label: t('projects.editClass.memberName'), flex: 3, order: 0},
+          {key: 'role', label: t('projects.editClass.memberRole'), flex: 1, order: 1},
         ]"
         :items="props.context.payload.projectClass.members"
-        :serialize="(member: Member) => ({name: member.name, role: member.role})"
+        :serialize="(member: Member) => ({name: member.name, role: t(`role.${member.role.toLowerCase()}`)})"
         :identify="(member: Member) => member.id"
         :selected-actions="selectedActions"
       >
@@ -57,6 +57,8 @@ import { defaultClose, quickError, type Dialog } from '~/types/Dialog';
 import { checkPrecedence, type Member, type ProjectClass } from '~/types/ProjectClass';
 import { defaultSearch, type SelectedAction } from '~/types/Table';
 
+const {t} = useI18n();
+
 const props = defineProps({
   context: {type: Object as PropType<Dialog<{
     projectClass: ProjectClass,
@@ -95,19 +97,17 @@ const selectedActions: SelectedAction[] = [
       const precedenceErr = anyOf(roles, r => checkPrecedence(r, selfRole));
 
       if (precedenceErr){
-        quickError("projects.editClass.updateRoleNotAllowed", undefined, undefined, true, true);
+        quickError(t("projects.editClass.updateRoleNotAllowed"), t("dialogError.somethingWentWrong"));
         return;
       }
 
       dialogs.closeAllWithTypeThenOpen({
         dialogType: "updateMemberRole",
-        title: "projects.editClass.updateRole",
-        titleI18n: true,
+        title: t("projects.editClass.updateRole"),
         width: "350px",
         payload: { currRole, selfRole, members, classId},
         close: {
-          caption: `dialogCommon.confirm`,
-          captionI18n: true,
+          caption: t(`dialogCommon.confirm`),
           icon: "fluent:checkmark-20-regular",
           style: {colorPreset: "accent-strong"},
           expanding: true,
@@ -117,7 +117,6 @@ const selectedActions: SelectedAction[] = [
     button: {
       icon: "fluent:person-edit-20-regular",
       label: "",
-      labelI18n: false,
       expanding: true,
       expanded: false,
       style: {colorPreset: "strong"}
@@ -134,7 +133,6 @@ const selectedActions: SelectedAction[] = [
     button: {
       icon: "fluent:delete-20-regular",
       label: "",
-      labelI18n: false,
       expanding: true,
       expanded: false,
       style: {colorPreset: "strong"}
@@ -148,17 +146,15 @@ const classId = props.context.payload.projectClass.classId;
 const addMember = async () => {
   dialogs.closeAllWithTypeThenOpen({
     dialogType: "batchMemberAdd",
-    title: "projects.editClass.searchAndAddUser",
-    titleI18n: true,
+    title: t("projects.editClass.searchAndAddUser"),
     width: "550px",
     payload: {},
     close: {
       ...defaultClose,
-      caption: "dialogCommon.cancel"
+      caption: t("dialogCommon.cancel")
     },
     actionsRight: [{
       caption: `dialogCommon.confirm`,
-      captionI18n: true,
       icon: "fluent:checkmark-20-regular",
       style: {colorPreset: "accent-strong"},
       expanding: true,
@@ -175,7 +171,7 @@ const addMember = async () => {
         dialogs.closeDialog(c.id);
         
         if (invalidEmails.length === 0) return;
-        quickError(invalidEmails.map(x => `* ${x}`).join("\n"), 'dialogs.batchMemberAdd.invalidEmail');
+        quickError(invalidEmails.map(x => `* ${x}`).join("\n"), t('dialogs.batchMemberAdd.invalidEmail'));
       }
     }]
   })

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { v4 as uuid } from 'uuid'
-import { defaultClose, type Dialog, type DialogAction, type DialogController, type DialogInit, type DialogType } from '~/types/Dialog'
+import { type Dialog, type DialogAction, type DialogController, type DialogInit, type DialogType } from '~/types/Dialog'
 import type { Optional } from '~/types/Optional';
 
 export const useDialogs = defineStore({
@@ -16,9 +16,6 @@ export const useDialogs = defineStore({
       if (_closable && dialog.close !== undefined) {
         close = dialog.close;
       }
-      if (_closable && dialog.close === undefined) {
-        close = defaultClose;
-      }
 
       const id = uuid();
       this.dialogs[id] = {
@@ -28,7 +25,6 @@ export const useDialogs = defineStore({
         actionsRight: dialog.actionsRight ?? [],
         actionsLeft: dialog.actionsLeft ?? [],
         height: dialog.height ?? "max-content",
-        titleI18n: dialog.titleI18n ?? true,
       };
       return id;
     },
@@ -63,7 +59,6 @@ export const useDialogs = defineStore({
         actionsRight: dialog.actionsRight ?? [],
         actionsLeft: dialog.actionsLeft ?? [],
         height: dialog.height ?? "max-content",
-        titleI18n: dialog.titleI18n ?? true,
       };
     }
   }

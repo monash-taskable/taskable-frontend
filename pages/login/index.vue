@@ -24,7 +24,6 @@ const openSigninDialog = () => {
   dialogFlag.value = true;
   dialogs.closeAllWithTypeThenOpen({
     title: "taskable",
-    titleI18n: true,
     dialogType: "signIn",
     payload: undefined,
     width: "400px",
@@ -34,7 +33,6 @@ const openSignInLoadingDialog = () => {
   dialogFlag.value = true;
   return dialogs.getDialog(dialogs.closeAllWithTypeThenOpen({
     title: "taskable",
-    titleI18n: true,
     dialogType: "signInLoading",
     payload: undefined,
     width: "300px",

@@ -41,6 +41,8 @@
 import type { ButtonStyle } from "~/types/Button";
 import { defaultClose, quickAlert } from "~/types/Dialog";
 
+const { t } = useI18n();
+
 definePageMeta({
   layout: "default"
 })
@@ -77,19 +79,17 @@ const dialogControl = useDialogs();
 const openCreateProject = () => dialogControl.closeAllWithTypeThenOpen({
   width: "450px",
   height: "fit-content",
-  title: `projects.newProject.title`,
-  titleI18n: true,
+  title: t("projects.newProject.title"),
   dialogType: "createProjectTemplate",
   close: {
     ...defaultClose,
-    caption: `dialogCommon.cancel`, 
+    caption: t("dialogCommon.cancel"), 
     style: {colorPreset: "strong"}
   },
   actionsRight: [
     {
-      caption: `dialogCommon.confirm`,
-      captionI18n: true,
-      icon: "fluent:checkmark-20-regular",
+      caption: t("dialogCommon.confirm"),
+      icon: t("fluent:checkmark-20-regular"),
       style: {colorPreset: "accent-strong"},
       action: (_, x) => quickAlert(x),
       expanding: false,

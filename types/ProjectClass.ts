@@ -69,7 +69,7 @@ export const debugProjectClass: ProjectClass = {
   description: "",
   name: "<CLASS-DEBUG>",
   createdAt: new Date(),
-  role: "ADMIN",
+  role: "OWNER",
   members: [
     {id: 1, name: "John Port II", role: "OWNER"},
     {id: 2, name: "John Port III", role: "STUDENT"},

@@ -20,7 +20,6 @@ onMounted(() => {
       icon: "fluent:error-circle-20-regular",
       dialogType: "projectError",
       width: "400px",
-      titleI18n: true,
       payload: undefined,
       style: {
         titleBackground: "var(--dangerous-weak)",

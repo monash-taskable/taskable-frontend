@@ -24,7 +24,6 @@ export const nullSession = (): AppSession => ({
 export type AppState = {
   showingTitle: boolean
   title: string,
-  titleI18n: boolean,
   titleHasIcon: boolean,
   titleIcon: Optional<string>,
   session: AppSession,
@@ -43,7 +42,6 @@ export const useAppStateStore = defineStore({
   state: (): AppState => ({
     showingTitle: true,
     title: "",
-    titleI18n: true,
     titleHasIcon: true,
     titleIcon: undefined,
     session: nullSession(),
@@ -56,16 +54,15 @@ export const useAppStateStore = defineStore({
     hideTitle(){
       this.showingTitle = false;
     },
-    setTitle(title: string, isI18n?: boolean, titleHasIcon?: boolean, titleIcon?: string) {
+    setTitle(title: string, titleHasIcon?: boolean, titleIcon?: string) {
       this.showingTitle = true;
       this.title = title;
-      this.titleI18n = isI18n ?? true;
       this.titleHasIcon = titleHasIcon ?? true;
       this.titleIcon = titleIcon;
       this.projectMenuState = false;
     },
     setProjectTitle(title: string) {
-      this.setTitle(title, false, true, "fluent:clover-20-regular");
+      this.setTitle(title, false, "fluent:clover-20-regular");
       this.projectMenuState = true;
     },
     clearSession (){

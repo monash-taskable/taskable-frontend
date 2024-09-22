@@ -47,6 +47,8 @@ import type { ButtonStyle } from '~/types/Button';
 import { defaultClose, quickAlert } from '~/types/Dialog';
 import type { OwnershipRole, ProjectClass } from '~/types/ProjectClass';
 
+const {t} = useI18n();
+
 const props = defineProps({
   projectClass: {type: Object as PropType<ProjectClass>, required: true},
   personal: {type: Boolean, default: false},
@@ -75,19 +77,17 @@ const buttonStyle: ButtonStyle = {colorPreset: "accent"};
 const dialogControl = useDialogs();
 const openCreateProject = (template: string, personal: boolean, classId: number) => dialogControl.closeAllWithTypeThenOpen({
   width: "450px",
-  height: "fit-content",
-  title: `projects.new${template}.title`,
-  titleI18n: true,
+  height: t("fit-content"),
+  title: t(`projects.new${template}.title`),
   dialogType: "createProjectTemplate",
   close: {
     ...defaultClose,
-    caption: `dialogCommon.cancel`, 
+    caption: t(`dialogCommon.cancel`), 
     style: {colorPreset: "strong"}
   },
   actionsRight: [
     {
-      caption: `dialogCommon.confirm`,
-      captionI18n: true,
+      caption: t(`dialogCommon.confirm`),
       icon: "fluent:checkmark-20-regular",
       style: {colorPreset: "accent-strong"},
       action: (_, x) => quickAlert(x),
@@ -105,12 +105,10 @@ const openCreateProject = (template: string, personal: boolean, classId: number)
 const openEditClass = (projectClass: ProjectClass) => dialogControl.closeAllWithTypeThenOpen({
   width: "650px",
   height: "fit-content",
-  title: `projects.editClass.title`,
-  titleI18n: true,
+  title: t(`projects.editClass.title`),
   dialogType: "editClass",
   close: {
-    caption: `dialogCommon.confirm`,
-    captionI18n: true,
+    caption: t(`dialogCommon.confirm`),
     icon: "fluent:checkmark-20-regular",
     style: {colorPreset: "accent-strong"},
     expanding: true,
