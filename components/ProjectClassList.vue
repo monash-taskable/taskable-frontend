@@ -36,7 +36,7 @@
       <ProjectButton 
         v-for="project in props.projectClass.projects" 
         :caption="project.name"
-        @click="navToProj(project.project_id)"/>
+        @click="navToProj(project.project_id, props.projectClass.classId)"/>
     </div>
   </div>
 </template>
@@ -117,7 +117,7 @@ const openEditClass = (projectClass: ProjectClass) => dialogControl.closeAllWith
 });
 
 // nav
-const navToProj = (id: number) => navigateTo(`/projects/${id}`);
+const navToProj = (id: number, classId: number) => navigateTo(`/projects/${classId}/${id}`);
 const navToTemplate = (id: number) => navigateTo(`/projects/template/${id}`);
 </script>
 

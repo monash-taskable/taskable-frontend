@@ -39,6 +39,7 @@ export const useProjectClassStore = defineStore({
       delete this.projectClasses[classId];
       const getClass = await FetchRequest.protectedAPI(`/class/${classId}`).commitAndRecv(GetClassResponse.decode);
       getClass.res(this.createClassCallback);
+      await this.loadMembers(classId);
     },
     async loadMembers(classId: number){
       if (classId === -1 || !(classId in this.projectClasses)){

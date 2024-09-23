@@ -1,33 +1,76 @@
-import type { Member, OwnershipRole, ProjectMembers, ProjectStatus } from "~/types/ProjectClass";
+import { checkPrecedence, isRole } from "~/types/ProjectClass";
+import type { Member, ProjectMembers, ProjectStatus } from "~/types/ProjectClass";
+import { findInList, ident } from "./Utils";
 import { FetchRequest } from "./FetchTools";
+import { AddProjectMembersRequest, AddProjectMembersResponse, GetMembersResponse, GetProjectResponse } from "~/types/proto/ProjectClass";
 
-export const getProjectMembers = async (projectId: number): Promise<ProjectMembers> => {
-  // FetchRequest.protectedAPI(`projects/${projectId}/members`);
-  return [
-    {email: "jpor0000@student.monash.edu", id: 1, name: "john pork", role: "OWNER"},
-    {email: "jpor0001@student.monash.edu", id: 2, name: "john pork II", role: "STUDENT"},
-  ];
-}
+export const loadClassIfNotExist = async (classId: number) => {
+  const projectClasses = useProjectClassStore();
+  if (!(classId in projectClasses.projectClasses)) 
+    await projectClasses.loadClass(classId);
+};
 
-export const getProjectStatus = async (projectId: number): Promise<ProjectStatus> => {
-  return "Mutable";
-}
+export const getProjectMembers = async (projectId: number, classId: number): Promise<ProjectMembers> => {
+  const req = await FetchRequest
+    .protectedAPI(`/classes/${classId}/projects/${projectId}/members`)
+    .commitAndRecv(GetMembersResponse.decode);
+  
+  if (!req.isError() && req._result) {
+    return req._result.classMembers.map((m): Member => ({
+      id: m.id,
+      name: `${m.basicInfo!.firstName} ${m.basicInfo!.firstName}`.trim(),
+      email: m.basicInfo!.email,
+      role: isRole(m.role) ? m.role : "STUDENT",
+    }));
+  }
 
-export const getProjectManagers = async (projectId: number): Promise<ProjectMembers> => {
   return [];
 }
 
-export const modifyProjectMemberRole = async (projectId: number, members: Member[], role: OwnershipRole): Promise<void> => {
+// local
+export const getProjectStatus = async (classId: number): Promise<ProjectStatus> => {
+  const appState = useAppStateStore();
+  const projectClasses = useProjectClassStore();
+  await loadClassIfNotExist(classId);
+  
+  const role = findInList(
+    projectClasses.projectClasses[classId].members, 
+    m => m.id === appState.session.profile!.id, 
+    m => m.role);
+    
+    return checkPrecedence(role ?? "STUDENT", "ADMIN") ? "Mutable" : "Immutable";
+  }
+  
+  // local
+  export const getProjectManagers = async (classId: number): Promise<ProjectMembers> => {
+  const projectClasses = useProjectClassStore();
+  await loadClassIfNotExist(classId);
+
+  return projectClasses.projectClasses[classId].members.filter(m => checkPrecedence(m.role, "ADMIN"));
 }
 
-export const addProjectMember = async (projectId: number, emails: string[]): Promise<string[]> => {
+export const addProjectMember = async (projectId: number, classId: number, emails: string[]): Promise<string[]> => {
+  const req = await FetchRequest
+    .protectedAPI(`/classes/${classId}/projects/${projectId}/members/add`)
+    .post()
+    .payload(AddProjectMembersRequest.encode, { emails })
+    .commitAndRecv(AddProjectMembersResponse.decode);
+
+  if (!req.isError() && req._result) { return req._result.invalidEmails }
   return [];
 }
 
-export const removeProjectMember = async (projectId: number, members: Member[]): Promise<void> => {
+export const removeProjectMember = async (projectId: number, classId: number, members: Member[]): Promise<void> => {
+  members.forEach(m => FetchRequest
+    .protectedAPI(`/classes/${classId}/projects/${projectId}/members/${m.id}/delete`)
+    .delete()
+    .commit()
+  )
 }
 
-export const getProjectProfile = async (projectId: number): Promise<Member> => {
+// local
+export const getProjectProfile = async (classId: number): Promise<Member> => {
+  await loadClassIfNotExist(classId);
   return {
     id: 1,
     name: "john pork",

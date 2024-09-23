@@ -73,6 +73,7 @@ export const range = (x: number, y: number): number[] => Array.from({ length: y 
 // some useful FP stuff
 
 export const is = <T>(value: T) => (another: any) => value === another
+export const ident = <T>(v: T) => v;
 
 export const boolAnd = (x: any, y: any) => x && y;
 export const boolOr = (x: any, y: any) => x || y;

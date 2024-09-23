@@ -2,12 +2,39 @@ syntax = "proto3";
 
 import "proto/Profile.proto";
 
+message Project {
+  int32 id = 1;
+  int32 template_id = 2;
+  string title = 3;
+  string description = 4;
+}
+
 message Classroom {
   int32 id = 1;
   string name = 2;
   string description = 3;
   string created_at = 4;
   bool archived = 5;
+}
+
+message GetProjectResponse {
+  Project project = 1;
+}
+
+message GetProjectsResponse {
+  repeated Project projects = 1;
+}
+
+message AddProjectMembersRequest {
+  repeated string emails = 1;
+}
+
+message AddProjectMembersResponse {
+  repeated string invalid_emails = 1;
+}
+
+message RemoveProjectMemberRequest {
+  repeated int32 member_ids = 1;
 }
 
 message CreateClassRequest {

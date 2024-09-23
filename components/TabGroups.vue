@@ -5,10 +5,8 @@
 </template>
 
 <script lang="ts" setup>
-// update state
-const state = useAppStateStore();
-onMounted(()=>{
-  state.setProjectPage("tasks");
+const props = defineProps({
+  tabs: {}
 });
 </script>
 

@@ -65,7 +65,10 @@ const addMember = async () => {
       style: {colorPreset: "accent-strong"},
       expanding: true,
       action: async (c, s: string) => {
-        const invalids = await addProjectMember(state.projectId ?? -1, s.split("\n").filter(Boolean).map(x => x.trim()));
+        const emails = s.split("\n").filter(Boolean).map(x => x.trim());
+        if (emails.length === 0) return;
+
+        const invalids = await addProjectMember(state.projectId ?? -1, emails);
         dialogs.closeDialog(c.id);
         members.value = await getProjectManagers(state.projectId ?? -1);
         
@@ -87,10 +90,10 @@ const selfProfile: Ref<Optional<Member>> = ref(undefined);
 onMounted(async ()=>{
   state.setProjectPage("members");
 
-  members.value = await getProjectMembers(state.projectId ?? -1);
-  status.value = await getProjectStatus(state.projectId ?? -1);
-  managers.value = await getProjectManagers(state.projectId ?? -1);
-  selfProfile.value = await getProjectProfile(state.projectId ?? -1);
+  members.value = await getProjectMembers(state.projectId ?? -1, state.classId ?? -1);
+  status.value = await getProjectStatus(state.classId ?? -1);
+  managers.value = await getProjectManagers(state.classId ?? -1);
+  selfProfile.value = await getProjectProfile(state.classId ?? -1);
 
   loading.value = false;
 });
@@ -121,10 +124,10 @@ const selectedActions: SelectedAction[] = [
       }
 
       dialogs.closeAllWithTypeThenOpen({
-        dialogType: "updateProjectMemberRole",
+        dialogType: "updateMemberRole",
         title: t("projects.editClass.updateRole"),
         width: "350px",
-        payload: { currRole, selfRole, members, projId: state.projectId ?? -1},
+        payload: { currRole, selfRole, members, classId: state.classId},
         close: {
           caption: t(`dialogCommon.confirm`),
           icon: "fluent:checkmark-20-regular",

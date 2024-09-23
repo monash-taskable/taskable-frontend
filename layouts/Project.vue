@@ -6,17 +6,25 @@
 </template>
 
 <script lang="ts" setup>
+import { loadClassIfNotExist } from '~/scripts/ProjectClassesFetches';
 import { isNumericString } from '~/scripts/Utils';
 
 const appState = useAppStateStore();
 const stateRef = storeToRefs(appState);
 
+const {t} = useI18n();
+
 onMounted(() => {
   const route = useRoute();
   const id = route.params.id.toString().trim();
-  if (id === '' || !isNumericString(id)) {
+  const classId = route.params.classId.toString().trim();
+  if (
+    id === '' ||
+    !isNumericString(id) ||
+    (!isNumericString(classId) && classId !== "-1")
+  ) {
     useDialogs().closeAllWithTypeThenOpen({
-      title: "dialogError.somethingWentWrong",
+      title: t("dialogError.somethingWentWrong"),
       icon: "fluent:error-circle-20-regular",
       dialogType: "projectError",
       width: "400px",
@@ -30,6 +38,8 @@ onMounted(() => {
   }
 
   appState.setProject(Number(id));
+  appState.setClass(Number(classId));
+  loadClassIfNotExist(Number(classId));
   appState.setProjectTitle("Debug");
 })
 </script>

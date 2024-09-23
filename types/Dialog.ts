@@ -17,7 +17,6 @@ const dialogTypes = [
   "batchMemberAdd",
   "sessionError",
   "projectError",
-  "updateProjectMemberRole",
 ] as const;
 export type DialogType = typeof dialogTypes[number];
 export const isOfDialog = isOfType(dialogTypes);

@@ -5,6 +5,7 @@ import { GetProfileResponse } from '~/types/proto/Profile';
 import { isAccentColor, isTheme } from '~/types/Theming';
 import { isOfType } from "~/scripts/Utils";
 import type { Optional } from '~/types/Optional';
+import { loadClassIfNotExist } from '~/scripts/ProjectClassesFetches';
 
 export type Profile = {
   id: number,
@@ -30,6 +31,7 @@ export type AppState = {
   sessionLoading: boolean,
   projectId: Optional<number>,
   projectPage: Optional<string>,
+  classId: Optional<number>,
   projectMenuState: Boolean,
 };
 
@@ -48,6 +50,7 @@ export const useAppStateStore = defineStore({
     sessionLoading: true,
     projectId: undefined,
     projectPage: undefined,
+    classId: undefined,
     projectMenuState: false,
   }),
   actions: {
@@ -71,6 +74,9 @@ export const useAppStateStore = defineStore({
     },
     setProject (projectId: number) {
       this.projectId = projectId;
+    },
+    setClass (classId: number) {
+      this.classId = classId;
     },
     setProjectPage(projectPage: string) {
       this.projectPage = projectPage;

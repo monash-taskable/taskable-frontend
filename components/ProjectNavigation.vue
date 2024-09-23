@@ -53,8 +53,10 @@ const props = defineProps({
 
 const isSelected = (key: string) => props.selected === key ? "selected" : "";
 
+const route = useRoute();
 const state = useAppStateStore();
-const navTo = (dest: string) => navigateTo(urlJoin("/", "projects", String(state.projectId), dest));
+const classId = route.params.classId.toString();
+const navTo = (dest: string) => navigateTo(urlJoin("/", "projects", classId, String(state.projectId), dest));
 </script>
 
 <style lang="scss" scoped>
