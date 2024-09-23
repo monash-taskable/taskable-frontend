@@ -1,7 +1,7 @@
 <template>
   <div class="body">
     <div class="instruction">{{ $t('dialogs.batchMemberAdd.instruction') }}</div>
-    <Multiline @change="() => emitValue(value)" v-model="value" :styles="{colorPreset: 'layer', height: '200px'}"/>
+    <Multiline focused @change="() => emitValue(value)" v-model="value" :styles="{colorPreset: 'layer', height: '200px'}"/>
   </div>
 </template>
 

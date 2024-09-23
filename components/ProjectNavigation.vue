@@ -7,14 +7,14 @@
           {{ $t('projectView.page.overview') }}
         </button>
         <button class="nav-link" :class="isSelected('members')" @click="() => navTo('members')">
-          <Icon :name="getIcon('fluent:clipboard-task-list-20-', !!isSelected('members'))"/>
+          <Icon :name="getIcon('fluent:people-team-20-', !!isSelected('members'))"/>
           {{ $t('projectView.page.members') }}
         </button>
       </div>
       <hr/>
       <div class="nav-link-group">
         <button class="nav-link" :class="isSelected('tasks')" @click="() => navTo('tasks')">
-          <Icon :name="getIcon('fluent:people-team-20-', !!isSelected('tasks'))"/>
+          <Icon :name="getIcon('fluent:clipboard-task-list-20-', !!isSelected('tasks'))"/>
           {{ $t('projectView.page.tasks') }}
         </button>
         <button class="nav-link" :class="isSelected('announcements')" @click="() => navTo('announcements')">
@@ -66,12 +66,13 @@ const navTo = (dest: string) => navigateTo(urlJoin("/", "projects", String(state
 .nav {
   position: absolute;
   top: calc($icon-size-medium + calc($space-large + $space-medium));
-  left: 0;
+  left: $space-large;
   width: auto;
   max-width: calc(calc($space-medium-large * 2) + $icon-size-medium);
   overflow-x: hidden;
   transition: $def-transition;
-  
+  z-index: 999;
+
   &:hover {
     max-width: 50vw;
     filter: $def-float;
@@ -128,6 +129,9 @@ hr {
   &.selected {
     color: var(--accent-strong);
     background: var(--accent-weak);
+    border-left: 2px solid var(--accent-strong);
+    padding-left: calc($space-medium-large - 2px);
+    
     &:hover {background: var(--accent-interact)}
   }
 }

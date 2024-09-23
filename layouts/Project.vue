@@ -42,8 +42,9 @@ onMounted(() => {
   padding-left: calc(
     calc(
       calc($space-medium-large * 2) + $icon-size-medium
-    ) + $space-large
+    ) + calc($space-large * 2)
   );
   padding-top: $space-medium;
+  padding-right: $space-large;
 }
 </style>

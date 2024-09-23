@@ -25,7 +25,8 @@ const props = defineProps({
   @include flex-cross(flex-start);
 
   gap: $space-extra-small;
-  padding: $space-large;
+  padding: $space-small;
+  padding-bottom: $space-medium;
 }
 
 h4 {

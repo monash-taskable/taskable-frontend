@@ -23,7 +23,7 @@
       <div class="spring"/>
       <div v-show="props.action" class="right">
         <IconButton
-          v-if="props.search && !searchFlag"
+          v-if="props.search && !props.loading && !searchFlag"
           @click="searchOn"
           :caption="props.search.button.label"
           :styles="props.search.button.style"
@@ -55,7 +55,14 @@
             currSortedDirection : 'Default'"
           @switch-order="switchSort"/>
       </div>
-      <div class="table-row" v-for="row in sort(
+      <div v-if="props.loading" class="table-row" v-for="_ in range(0, 3)">
+        <TableToggle
+          v-if="props.selectable" toggle="Empty"/>
+        <div :style="getCellStyle(column.flex ?? 1)" class="table-cell skeleton-container" v-for="column in props.columns">
+          <div class="cell-skeleton" :style="getRandomSize()"><Skeleton fill /></div>
+        </div>
+      </div>
+      <div v-else class="table-row" v-for="row in sort(
           currSortedDirection,
           currSortedField ?? '', 
           mapToRows(filter(props.items, searchVal), props.serialize, props.identify))">
@@ -72,12 +79,13 @@
 <script lang="ts" setup>
 import { sprintf } from 'sprintf-js';
 import type { PropType } from 'vue';
-import { findInList, listRemove } from '~/scripts/Utils';
+import { findInList, listRemove, randRange, range } from '~/scripts/Utils';
 import type { Optional } from '~/types/Optional';
 import type { SearchProp, SelectedAction, TableCell, TableColumn, TableRow, TableSortChangeEvent, TableSortDirection, TableToggleChangeEvent, TableToggleType } from '~/types/Table';
 
 const props = defineProps({
   action: {type: Boolean, required: false, default: false},
+  loading: {type: Boolean, required: false, default: false},
   search: {type: Object as PropType<SearchProp>, required: false},
   columns: {type: Object as PropType<TableColumn[]>, required: true},
   selectable: {type: Boolean, required: false, default: false},
@@ -95,11 +103,12 @@ const mapToRows = <T>(items: T[], serialize: (t: T) => {[k: string]: string}, id
 
 const emitEvent = defineEmits(["select"]);
 
+const getRandomSize = () => `width: ${randRange(40, 80)}%`;
 
 // search logic
 const searchFlag = ref(false);
 const searchVal = ref("");
-const searchOn = () => searchFlag.value = true;
+const searchOn = () => { if (!props.loading) searchFlag.value = true; };
 const searchOff = () => { if (searchVal.value === "") searchFlag.value = false; };
 const filter = <T>(rows: T[], search: string): T[] => {
   if (props.search === undefined ) return rows;
@@ -111,6 +120,8 @@ const filter = <T>(rows: T[], search: string): T[] => {
 const currSortedField: Ref<Optional<string>> = ref(undefined);
 const currSortedDirection: Ref<TableSortDirection> = ref("Default");
 const switchSort = ({field, direction}: TableSortChangeEvent) => {
+  if (props.loading) return;
+
   currSortedDirection.value = direction;
   currSortedField.value = direction === "Default" ? undefined : field;
 }
@@ -132,18 +143,21 @@ const sort = <T>(mode: TableSortDirection, field: string, rows: TableRow<T>[]): 
 // toggle logic
 const checked: Ref<number[]> = ref([]);
 const updateSelected = (id: number, toggle: TableToggleType) => {
+  
   const state = toggle === "Checked";
-
+  
   if (state && !checked.value.includes(id)) {
     checked.value.push(id);
   }
   else if (!state && checked.value.includes(id)){
     listRemove(checked.value, id);
   }
-
+  
   emitEvent("select", {selected: props.items.filter((i, idx) => checked.value.includes(props.identify(i, idx)))});
 }
 const updateAllSelected = ({toggle}: TableToggleChangeEvent) => {
+  if (props.loading) return;
+  
   if (toggle === "Checked") {
     checked.value = props.items.map(props.identify);
     emitEvent("select", {selected: props.items.map(x=>x)});
@@ -224,14 +238,25 @@ const getAllSelectState = (selected: number[]): TableToggleType => {
 
 .table-row {
   @include typemix-label;
-
+  
   transition: $def-transition;
-
+  
   &:hover {background: var(--background-interaction-strong)}
 }
 
 .table-cell {
   padding: $space-medium;
+  overflow-x: hidden;
+  
+  &.skeleton-container{
+    @include flex-row;
+    @include flex-main(flex-start);
+    @include flex-cross(center);
+  }
+}
+
+.cell-skeleton {
+  height: $typesize-default;
 }
 
 .selection-indication {

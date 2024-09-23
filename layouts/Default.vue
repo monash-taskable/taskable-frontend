@@ -88,7 +88,7 @@
       </header>
       <slot/>
     </div>
-    <div class="loading layout-root centered" v-show="!authFlag"><Loading/></div>
+    <div style="z-index: 3000;" class="loading layout-root centered" v-show="!authFlag"><Loading/></div>
   </div>
 </template>
 

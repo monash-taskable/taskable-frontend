@@ -1,19 +1,12 @@
 <template>
   <div class="page-root">
-    <ProjectNavigation :project-id="1234" selected="1"/>
+    <DateTimeFormat :datetime="new Date()" format="time-only"/>
   </div>
 </template>
 
 <script lang="ts" setup>
 definePageMeta({
   layout: "empty",
-})
-
-const x = () => useDialogs().closeAllWithTypeThenOpen({
-  dialogType: "sessionError",
-  title: "x",
-  width: "122",
-  payload: undefined,
 })
 </script>
 

@@ -51,6 +51,7 @@ export const useProjectClassStore = defineStore({
           id: memberProto.id,
           name: [memberProto.basicInfo!.firstName, memberProto.basicInfo!.lastName].join(" ").trim(),
           role: (isRole(memberProto.role)) ? memberProto.role : "STUDENT",
+          email: memberProto.basicInfo!.email,
         }))
       }
     },

@@ -15,6 +15,7 @@ export type ProjectClass = {
 export type Member = {
   id: number,
   name: string,
+  email: string,
   role: OwnershipRole
 }
 
@@ -44,7 +45,37 @@ export const isRole = isOfType(ownershipRoles);
 export const checkPrecedence = (role1: OwnershipRole, role2: OwnershipRole) =>
   ownershipRoles.findIndex(is(role1)) >= ownershipRoles.findIndex(is(role2));
 
+export type Subtask = {
+  id: number,
+  title: string,
+  description: string,
+  status: string,
+  priority: string,
+  start: Date,
+  due: Date,
+  assignment: Member,
+};
 
+export type Task = {
+  id: number,
+  title: string,
+  description: string,
+  subtasks: Subtask[],
+}
+
+export type ProjectStatus = "Mutable" | "Immutable";
+export type ProjectMembers = Member[];
+export type ProjectTasks = Task[];
+
+export type ProjectDetails = 
+ | ProjectStatus
+ | ProjectMembers
+ | ProjectTasks;
+
+export type ProjectWithDetails<T extends ProjectDetails> = {
+  project: Project,
+  details: T
+}
 
 /// DEBUG Project Class
 export const debugProjectClass: ProjectClass = {
@@ -71,7 +102,7 @@ export const debugProjectClass: ProjectClass = {
   createdAt: new Date(),
   role: "OWNER",
   members: [
-    {id: 1, name: "John Port II", role: "OWNER"},
-    {id: 2, name: "John Port III", role: "STUDENT"},
+    {id: 1, name: "John Port II", role: "OWNER", email: "pork@example.com"},
+    {id: 2, name: "John Port III", role: "STUDENT", email: "pork2@example.com"},
   ]
 }

@@ -33,16 +33,16 @@
         <IconButton
           @click="deleteClass"
           icon="fluent:delete-20-regular"
-          :caption="$t('projects.editClass.deleteClass')" 
+          :caption="$t('projects.editClass.deleteClass')"
           :styles="{colorPreset: 'dangerous-strong'}"/>
-        <IconButton v-if="props.context.payload.projectClass.archived" 
-          icon="fluent:archive-arrow-back-20-regular" 
-          :caption="$t('projects.editClass.unarchive')" 
+        <IconButton v-if="props.context.payload.projectClass.archived"
+          icon="fluent:archive-arrow-back-20-regular"
+          :caption="$t('projects.editClass.unarchive')"
           :styles="{colorPreset: 'strong', backgroundColor:'var(--layer-background)'}"
           @click="unarchiveClass"/>
         <IconButton v-else
-          icon="fluent:archive-20-regular" 
-          :caption="$t('projects.editClass.archiveClass')" 
+          icon="fluent:archive-20-regular"
+          :caption="$t('projects.editClass.archiveClass')"
           :styles="{colorPreset: 'strong', backgroundColor:'var(--layer-background)'}"
           @click="archiveClass"/>
       </div>
@@ -154,7 +154,7 @@ const addMember = async () => {
       caption: t("dialogCommon.cancel")
     },
     actionsRight: [{
-      caption: `dialogCommon.confirm`,
+      caption: t(`dialogCommon.confirm`),
       icon: "fluent:checkmark-20-regular",
       style: {colorPreset: "accent-strong"},
       expanding: true,
@@ -175,7 +175,6 @@ const addMember = async () => {
       }
     }]
   })
-  
 }
 
 // load members
