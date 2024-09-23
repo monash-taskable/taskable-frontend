@@ -1,8 +1,35 @@
 import { checkPrecedence, isRole } from "~/types/ProjectClass";
-import type { Member, ProjectMembers, ProjectStatus } from "~/types/ProjectClass";
+import type { Member, Project, ProjectMembers, ProjectStatus } from "~/types/ProjectClass";
 import { findInList, ident } from "./Utils";
 import { FetchRequest } from "./FetchTools";
 import { AddProjectMembersRequest, AddProjectMembersResponse, GetMembersResponse, GetProjectResponse } from "~/types/proto/ProjectClass";
+import type { Optional } from "~/types/Optional";
+
+export const getProject = async (classId: number, projectId: number): Promise<Optional<Project>> => {
+  await loadClassIfNotExist(classId);
+  const projectClasses = useProjectClassStore();
+  await projectClasses.loadTemplates(classId);
+  
+  const req = await FetchRequest
+    .protectedAPI(`/classes/${classId}/projects/${projectId}`)
+    .commitAndRecv(GetProjectResponse.decode);
+
+  if (!req.isError() && req._result && req._result.project){
+    const {archived, description, id, title, templateId} = req._result.project;
+    return {
+      archived, description,
+      name: title,
+      projectId: id,
+      template: templateId === undefined ? undefined : 
+        findInList(projectClasses.projectClasses[classId].templates, t => t.templateId === templateId, ident),
+    }
+  }
+}
+
+// TODO
+export const updateProject = async (classId: number, projectId: number, options: {name?: string, description?: string, archived?: boolean}) => {
+  
+}
 
 export const loadClassIfNotExist = async (classId: number) => {
   const projectClasses = useProjectClassStore();

@@ -143,6 +143,13 @@
   "projectView.members.asGuest": "Viewing as Guest",
   "projectView.members.asGuestMessage": "You are viewing this project as a guest member and only owner or an admin can add, remove or update a member.",
 
+  "projectView.options": "Project Options -",
+  "projectView.projectActions": "Project Actions",
+  "projectView.deleteProject": "Delete Project",
+  "projectView.archiveProject": "Archive Project",
+  "projectView.unarchiveProject": "Unarchive Project",
+  "projectView.detachTemplate": "Detach From Template",
+
   "projectView.page.overview": "Project Overview",
   "projectView.page.members": "Members",
   "projectView.page.options": "Project Options",

@@ -22,7 +22,8 @@
         <Loading v-if="size === 'label'" label/>
         <Loading v-if="size === 'title'" small/>
       </span>
-      <Icon v-else name="fluent:pen-24-regular"/>
+      <Icon v-else-if="props.size === 'label'" name="fluent:pen-24-regular"/>
+      <Icon v-else name="fluent:pen-48-regular"/>
     </span>
   </span>
 </template>
