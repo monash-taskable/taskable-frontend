@@ -20,8 +20,8 @@
             @click="openCreateProject('Template', props.personal, props.projectClass.classId)"
             icon="fluent:stack-add-20-regular"/>
           <IconButton 
-            v-if="actionIsUsable('add', props.projectClass.role)" 
-            :styles="{...buttonStyle, size: 'small'}" 
+            v-if="actionIsUsable('add', props.projectClass.role)"
+            :styles="{...buttonStyle, size: 'small'}"
             expanding :expanded="false"
             @click="openCreateProject('Project', props.personal, props.projectClass.classId)"
             icon="fluent:add-circle-20-regular"/>
@@ -32,11 +32,11 @@
       <ProjectButton 
         v-for="template in props.projectClass.templates" 
         template :caption="template.name"
-        @click="navToTemplate(template.template_id)"/>
+        @click="viewTemplate(template.templateId, template)"/>
       <ProjectButton 
         v-for="project in props.projectClass.projects" 
         :caption="project.name"
-        @click="navToProj(project.project_id, props.projectClass.classId)"/>
+        @click="navToProj(project.projectId, props.projectClass.classId)"/>
     </div>
   </div>
 </template>
@@ -45,7 +45,7 @@
 import type { PropType } from 'vue';
 import type { ButtonStyle } from '~/types/Button';
 import { defaultClose, quickAlert } from '~/types/Dialog';
-import type { OwnershipRole, ProjectClass } from '~/types/ProjectClass';
+import type { OwnershipRole, ProjectClass, Template } from '~/types/ProjectClass';
 
 const {t} = useI18n();
 
@@ -90,7 +90,19 @@ const openCreateProject = (template: string, personal: boolean, classId: number)
       caption: t(`dialogCommon.confirm`),
       icon: "fluent:checkmark-20-regular",
       style: {colorPreset: "accent-strong"},
-      action: (_, x) => quickAlert(x),
+      action: async (ctx, name: string) => {
+        const projectClasses = useProjectClassStore();
+        
+        name = name.trim();
+
+        if (name === "") return;
+
+        if (template === "Template"){
+          await projectClasses.addTemplate(classId, name);
+        }
+
+        dialogControl.closeDialog(ctx.id);
+      },
       expanding: false,
     }
   ],
@@ -118,7 +130,26 @@ const openEditClass = (projectClass: ProjectClass) => dialogControl.closeAllWith
 
 // nav
 const navToProj = (id: number, classId: number) => navigateTo(`/projects/${classId}/${id}`);
-const navToTemplate = (id: number) => navigateTo(`/projects/template/${id}`);
+
+// template
+const viewTemplate = (id: number, template: Template) => {
+  
+  dialogControl.closeAllWithTypeThenOpen({
+    dialogType: "editTemplate",
+    width: "650px",
+    title: template.name,
+    close: {
+      caption: t(`dialogCommon.confirm`),
+      icon: "fluent:checkmark-20-regular",
+      style: {colorPreset: "accent-strong"},
+      expanding: true,
+    },
+    payload: {
+      templateId: id,
+      projectClassId: props.projectClass.classId,
+    }
+  });
+};
 </script>
 
 <style lang="scss" scoped>

@@ -6,6 +6,7 @@
 
     <div class="input-group">
       <TextInput
+        focused
         :placeholder="$t('projects.newClass.name')"
         :styles="{colorPreset: 'layer', width: '100%'}"
         @change="emitValue" :error="error" :error-messages="$t('projects.newClass.cannotBeEmpty')"/>

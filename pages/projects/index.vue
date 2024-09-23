@@ -30,7 +30,7 @@ const personalProjects: ProjectClass = {
       archived: false,
       name: "awa",
       description: "",
-      project_id: 1987
+      projectId: 1987
     }
   ],
   templates: [],

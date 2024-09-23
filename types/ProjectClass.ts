@@ -20,7 +20,7 @@ export type Member = {
 }
 
 export type Template = {
-  template_id: number,
+  templateId: number,
   name: string,
   description: string,
   project_class?: ProjectClass,
@@ -28,10 +28,10 @@ export type Template = {
 }
 
 export type Project = {
-  project_id: number,
+  projectId: number,
   name: string,
   description: string,
-  template_id?: Template,
+  template?: Template,
   archived: boolean,
 }
 
@@ -86,7 +86,7 @@ export const debugProjectClass: ProjectClass = {
       archived: false,
       name: "Debug Project",
       description: "",
-      project_id: 1987
+      projectId: 1987
     }
   ],
   templates: [
@@ -94,7 +94,7 @@ export const debugProjectClass: ProjectClass = {
       archived: false,
       description: "",
       name: "Debug Template",
-      template_id: 1234
+      templateId: 1234
     }
   ],
   description: "",

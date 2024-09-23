@@ -121,7 +121,15 @@
   "projects.editClass.deleteClass": "Delete",
   "projects.editClass.archiveClass": "Archive",
   "projects.editClass.unarchive": "Unarchive",
-
+  "projects.editTemplate.nowViewing": "You are now viewing ",
+  "projects.editTemplate.archiveTemplate": "Archive Template",
+  "projects.editTemplate.unarchiveTemplate": "Unarchive Template",
+  "projects.editTemplate.deleteTemplate": "Delete Template",
+  "projects.editTemplate.createProjectFromTemplate": "Create project from this template",
+  "projects.editTemplate.createSingleProject": "Create Single Project",
+  "projects.editTemplate.createSingleProjectFromTemplate": "Create Single Project from Template",
+  "projects.editTemplate.batchProjectCreation": "Batch Project Creation",
+  
   "projectView.invalidProject": "Error occurred while retrieving this project. Either you don't have permission, or the project doesn't exist.",
   "projectView.backToProjects": "Back to projects",
 

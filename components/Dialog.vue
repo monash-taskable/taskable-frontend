@@ -49,6 +49,7 @@
     <DialogsBatchMemberAdd @emit="updateEmit" v-if="context.dialogType === 'batchMemberAdd'" :context="props.context"/>
     <DialogsSessionError @emit="updateEmit" v-if="context.dialogType === 'sessionError'" :context="props.context"/>
     <DialogsProjectError @emit="updateEmit" v-if="context.dialogType === 'projectError'" :context="props.context"/>
+    <DialogsEditTemplate @emit="updateEmit" v-if="context.dialogType === 'editTemplate'" :context="props.context"/>
   </div>
 </template>
 
