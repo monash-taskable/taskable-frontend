@@ -8,7 +8,7 @@ import type { AccentColor, Theme } from '~/types/Theming';
 export const languageNames = {
   "en-au": "English (Australia)",
   "zh-tw": "中文（台灣）",
-  "si-lk": "Sinhalese (Sri Lanka)"
+  "si-lk": "සිංහල (ශ්‍රී ලංකාව)"
 };
 
 export type AppConfig = {
