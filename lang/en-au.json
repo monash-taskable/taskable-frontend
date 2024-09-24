@@ -83,7 +83,7 @@
   "about.title": "About",
 
   "projects.title": "All Projects",
-  "projects.noProjects": "There are no projects yet! Start by creating one!",
+  "projects.noProjects": "There are no classrooms yet! Start by creating one!",
   "projects.newProject": "Create Project",
   "projects.newTemplate": "Create Template",
   "projects.class": "Projects of Class: %s",

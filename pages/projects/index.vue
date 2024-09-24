@@ -2,7 +2,7 @@
   <div class="container" :class="isEmpty() ? 'empty' : ''">
     <ProjectClassList :project-class="projCls" v-for="[_, projCls] in Object.entries(projectClassRef.projectClasses.value)" />
     <div v-if="isEmpty()">
-      {{ $t('projects.noProjects') }}
+      {{ $t('projects.noClass') }}
     </div>
     <div class="new-section">
       <IconButton @click="openCreateClassForm" icon="fluent:people-community-add-20-regular" :caption="$t('projects.newClass')" :styles="{colorPreset: 'accent', size: 'small'}" />
