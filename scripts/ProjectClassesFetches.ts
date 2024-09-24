@@ -198,16 +198,19 @@ export const getAnnouncements = async (classId: number): Promise<Announcement[]>
   const req = await FetchRequest
   .protectedAPI(`/classes/${classId}/announcements`)
   .commitAndRecv(GetAnnouncementsResponse.decode);
-  
+
   if (!req.isError() && req._result) {
-    return req._result.announcements.map(a => ({
-      author: findInList(projectClasses.projectClasses[classId].members, m => m.id === a.id, ident)!,
-      projectClass: projectClasses.projectClasses[classId],
-      content: a.content,
-      id: a.id,
-      sentAt: stringToDate(a.sentAt),
-      title: a.title,
-    }));
+
+    return req._result.announcements.map(a => {
+      return {
+        author: findInList(projectClasses.projectClasses[classId].members, m => m.id === a.authorId, ident)!,
+        projectClass: projectClasses.projectClasses[classId],
+        content: a.content,
+        id: a.id,
+        sentAt: stringToDate(a.sentAt),
+        title: a.title,
+      }
+    });
   }
   
   return []

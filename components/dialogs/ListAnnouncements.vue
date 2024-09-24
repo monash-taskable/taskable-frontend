@@ -22,6 +22,7 @@
         />
       </template>
     </Table>
+    <div class="info" v-if="announcements.length === 0">{{ $t('projects.announcements.noAnnouncements') }}</div>
   </div>
 </template>
 
@@ -141,8 +142,8 @@ const search = defaultSearch((s: string) => (entry: Announcement) => `${entry.au
 const postAnnouncement = () => dialogs.closeAllWithTypeThenOpen({
   dialogType: "editAnnouncement",
   payload: {
-    title: "Title!",
-    content: "Content!",
+    title: "",
+    content: "",
   },
   title: t("projects.announcements.postAnnouncement.title"),
   width: "700px",

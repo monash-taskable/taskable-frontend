@@ -2,12 +2,26 @@
   <div class="editor-root">
     <div class="group">
       <h3>{{ $t('projects.announcements.title') }}</h3>
-      <TextInput v-model="title" :value="_title" :styles="{colorPreset: 'layer'}" @keydown="emitValue" @change="emitValue"/>
+      <TextInput 
+        :placeholder="$t('projects.announcements.enterTitle')"
+        v-model="title"
+        :value="_title"
+        :styles="{colorPreset: 'layer'}" 
+        @keydown="emitValue"
+        @change="emitValue"
+      />
     </div>
     <div class="editor">
       <div class="group">
         <h3>{{ $t('projects.announcements.content') }}</h3>
-        <Multiline v-model="content" :value="_content" :styles="{colorPreset: 'layer', height: '270px'}" @keydown="emitValue" @change="emitValue"/>
+        <Multiline
+          :placeholder="$t('projects.announcements.enterContent')"
+          v-model="content"
+          :value="_content"
+          :styles="{colorPreset: 'layer', height: '270px'}" 
+          @keydown="emitValue" 
+          @change="emitValue"
+        />
       </div>
       <div class="group">
         <h3>{{ $t('projects.announcements.preview') }}</h3>
@@ -83,7 +97,7 @@ h3 {
 }
 
 .preview {
-  background: var(--layer-background);
+  border: 2px solid var(--layer-background);
   height: 270px;
   overflow-y: auto;
   padding: $space-medium;
