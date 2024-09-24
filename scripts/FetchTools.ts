@@ -94,12 +94,32 @@ export class FetchRequest {
   }
 
   async commit(): Promise<FetchResult<undefined>> {
+    const error = () => {
+      try {
+        const {t} = useI18n();
+        const dialogs = useDialogs();
+        dialogs.closeAllDialogs();
+        dialogs.openDialog({
+          dialogType: "sessionError",
+          payload: undefined,
+          width: "300px",
+          title: t("signin.sessionError"),
+          style: {
+            titleBackground: "var(--dangerous-weak)",
+            titleColor: "var(--dangerous-strong)",
+          },
+          icon: "fluent:error-circle-20-regular",
+        }, false);
+      } catch(e) {}
+    }
+    
     try {
       if (FetchRequest._csrf !== undefined && this._csrfOverride === undefined) {
         this.attachHeader({ "X-XSRF-TOKEN": FetchRequest._csrf });
       }
 
       const rawResult = await fetch(this._dest, this._reqInit);
+
 
       // if error, try verify (when protectedDefaultBehaviour)
       if (
@@ -109,19 +129,7 @@ export class FetchRequest {
         !await useAppStateStore().validateSession() &&
         !useRuntimeConfig().public.debug
       ){
-        const dialogs = useDialogs();
-        dialogs.closeAllDialogs();
-        dialogs.openDialog({
-          dialogType: "sessionError",
-          payload: undefined,
-          width: "300px",
-          title: "signin.sessionError",
-          style: {
-            titleBackground: "var(--dangerous-weak)",
-            titleColor: "var(--dangerous-strong)",
-          },
-          icon: "fluent:error-circle-20-regular",
-        }, false)
+        error();
       }
       
       if (!rawResult.ok) {
@@ -129,9 +137,10 @@ export class FetchRequest {
       }
       
       return new FetchResult(rawResult ,undefined);
-
+      
     }
     catch (e) {
+      error();
       return new FetchResult(undefined ,undefined, undefined, e instanceof Error ? e : new Error("Unknown Error"));
     }
   }

@@ -53,7 +53,7 @@ export type Subtask = {
   priority: string,
   start: Date,
   due: Date,
-  assignment: Member,
+  assignment?: Member,
 };
 
 export type Task = {

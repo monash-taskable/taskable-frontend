@@ -12,6 +12,7 @@
       <span v-else> {{ projName }} </span>
     </h2>
     <div class="group">
+      <div v-if="project && project.template">{{ sprintf($t('projectView.partOf'), project.template.name) }}</div>
       <div class="actions">
         <IconButton
           @click="deleteProject"
@@ -32,8 +33,8 @@
           icon="fluent:archive-20-regular"
           :styles="{colorPreset: 'strong', backgroundColor:'var(--layer-background)'}"
         ><Skeleton/></IconButton>
-        <IconButton
-          @click=""
+        <IconButton v-if="project && project.template"
+          @click="detachProject"
           icon="fluent:plug-disconnected-20-regular"
           :caption="$t('projectView.detachTemplate')"
           :styles="{colorPreset: 'strong', backgroundColor:'var(--layer-background)'}"/>
@@ -44,7 +45,7 @@
 
 <script lang="ts" setup>
 import { sprintf } from 'sprintf-js';
-import { getProject, getProjectStatus, updateProject, deleteProject as deleteProjectFetch, setupProjectState } from '~/scripts/ProjectClassesFetches';
+import { getProject, getProjectStatus, updateProject, deleteProject as deleteProjectFetch, setupProjectState, detachProject as detachProjectFetch } from '~/scripts/ProjectClassesFetches';
 import { defaultClose, type Dialog, type DialogAction } from '~/types/Dialog';
 import type { Optional } from '~/types/Optional';
 import type { Project, ProjectStatus } from '~/types/ProjectClass';
@@ -107,6 +108,10 @@ const deleteProject = async () => {
     title: t("projectView.deleteConfirm")
   })
 }
+const detachProject = async () =>{
+  await detachProjectFetch(state.classId ?? -1, state.projectId ?? -1);
+  project.value = await getProject(state.classId ?? -1, state.projectId ?? -1);
+}
 
 // update state
 onMounted(async () => {
@@ -117,7 +122,7 @@ onMounted(async () => {
   project.value = await getProject(state.classId ?? -1, state.projectId ?? -1);
   status.value = await getProjectStatus(state.classId ?? -1);
   projName.value = project.value!.name;
-  
+
   loading.value = false;
 });
 </script>
