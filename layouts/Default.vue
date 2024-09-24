@@ -191,6 +191,7 @@ const navToDebug = () => location.href = "/debug";
 const authFlag = ref(false);
 onMounted(async () => {
   if (useRuntimeConfig().public.debug) {
+    appStateStore.loadDebugProfile();
     authFlag.value = true;
     return;
   }

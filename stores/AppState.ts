@@ -5,7 +5,6 @@ import { GetProfileResponse } from '~/types/proto/Profile';
 import { isAccentColor, isTheme } from '~/types/Theming';
 import { isOfType } from "~/scripts/Utils";
 import type { Optional } from '~/types/Optional';
-import { loadClassIfNotExist } from '~/scripts/ProjectClassesFetches';
 
 export type Profile = {
   id: number,
@@ -81,6 +80,9 @@ export const useAppStateStore = defineStore({
     setProjectPage(projectPage: string) {
       this.projectPage = projectPage;
     },
+    loadDebugProfile(){
+      this.session.profile = debugProfile;
+    },
     async signOut() {
       API.auth.logout().commit();
       this.clearSession();
@@ -142,5 +144,12 @@ export const useAppStateStore = defineStore({
 
       return !tokenExchange.isError();
     }
-  }
+  },
 })
+
+const debugProfile: Profile = {
+  email: "debugger@example.com",
+  firstName: "De",
+  lastName: "Bugger",
+  id: 1234,
+}
