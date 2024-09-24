@@ -29,7 +29,7 @@
 <script lang="ts" setup>
 import { sprintf } from 'sprintf-js';
 import type { PropType } from 'vue';
-import { dayOfWeekLookup, monthLookup } from '~/scripts/datetime';
+import { dayOfWeekLookup, monthLookup } from '~/scripts/Datetime';
 import { createAnnouncement, getAnnouncements, updateAnnouncement as updateAnnouncementFetch, deleteAnnouncement as deleteAnnouncementFetch, getAnnouncement } from '~/scripts/ProjectClassesFetches';
 import { defaultClose, quickAlert, quickError, type Dialog, type DialogAction } from '~/types/Dialog';
 import type { ProjectClass, Announcement } from '~/types/ProjectClass';

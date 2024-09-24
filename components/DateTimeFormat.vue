@@ -7,7 +7,7 @@
 <script lang="ts" setup>
 import { sprintf } from 'sprintf-js';
 import type { PropType } from 'vue';
-import { dayOfWeekLookup, monthLookup } from '~/scripts/datetime';
+import { dayOfWeekLookup, monthLookup } from '~/scripts/Datetime';
 
 const {t} = useI18n();
 
