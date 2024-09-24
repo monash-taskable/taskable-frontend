@@ -218,7 +218,7 @@ export const getAnnouncement = async (classId: number, announcementId: number): 
   const projectClasses = useProjectClassStore();
   
   const req = await FetchRequest
-  .protectedAPI(`/classes/${classId}/announcement/${announcementId}`)
+  .protectedAPI(`/classes/${classId}/announcements/${announcementId}`)
   .commitAndRecv(GetAnnouncementResponse.decode);
 
   if (!req.isError() && req._result) {
@@ -235,7 +235,7 @@ export const getAnnouncement = async (classId: number, announcementId: number): 
 
 export const createAnnouncement = async (classId: number, title: string, content: string) => {
   const req = await FetchRequest
-    .protectedAPI(`/classes/${classId}/announcement/create`)
+    .protectedAPI(`/classes/${classId}/announcements/create`)
     .post()
     .payload(CreateAnnouncementRequest.encode, { content, title, sentAt: getCurrentGMTDateTime() })
     .commitAndRecv(CreateAnnouncementResponse.decode);
@@ -247,7 +247,7 @@ export const createAnnouncement = async (classId: number, title: string, content
   
 export const updateAnnouncement = async (classId: number, announcementId: number, options: {title?: string, content?: string}) => {
   const req = await FetchRequest
-    .protectedAPI(`/classes/${classId}/announcement/${announcementId}/update`)
+    .protectedAPI(`/classes/${classId}/announcements/${announcementId}/update`)
     .post()
     .payload(UpdateAnnouncementRequest.encode, options)
     .commit()
@@ -255,7 +255,7 @@ export const updateAnnouncement = async (classId: number, announcementId: number
   
 export const deleteAnnouncement = async (classId: number, announcementId: number) => {
   const req = await FetchRequest
-    .protectedAPI(`/classes/${classId}/announcement/${announcementId}/delete`)
+    .protectedAPI(`/classes/${classId}/announcements/${announcementId}/delete`)
     .delete()
     .commit()
 }
