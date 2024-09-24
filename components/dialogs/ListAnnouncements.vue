@@ -29,7 +29,7 @@
 import { sprintf } from 'sprintf-js';
 import type { PropType } from 'vue';
 import { dayOfWeekLookup, monthLookup } from '~/scripts/datetime';
-import { createAnnouncement, getAnnouncements, updateAnnouncement as updateAnnouncementFetch, deleteAnnouncement as deleteAnnouncementFetch } from '~/scripts/ProjectClassesFetches';
+import { createAnnouncement, getAnnouncements, updateAnnouncement as updateAnnouncementFetch, deleteAnnouncement as deleteAnnouncementFetch, getAnnouncement } from '~/scripts/ProjectClassesFetches';
 import { defaultClose, quickAlert, quickError, type Dialog, type DialogAction } from '~/types/Dialog';
 import type { ProjectClass, Announcement } from '~/types/ProjectClass';
 import { defaultSearch, type SelectedAction } from '~/types/Table';
@@ -153,8 +153,11 @@ const postAnnouncement = () => dialogs.closeAllWithTypeThenOpen({
     style: {colorPreset: 'accent-strong'},
     action: async (_, data: {title: string, content: string}) => {
       const {title, content} = data;
-      await createAnnouncement(projectClass.classId, title, content);
-      announcements.value = await getAnnouncements(projectClass.classId);
+      const id = await createAnnouncement(projectClass.classId, title, content);
+      if (id){
+        const newAnnouncement = await getAnnouncement(projectClass.classId, id);
+        if (newAnnouncement) announcements.value.push(newAnnouncement);
+      }
     }
   }],
   close: defaultClose,
