@@ -1,6 +1,6 @@
 <template>
   <div class="proj-page-root">
-    <div class="tabs">
+    <div class="action-group">
       <Button
         :caption="$t('projectView.tasks.allTasksView')"
         :styles="{colorPreset: 'strong', backgroundColor: 'var(--layer-background)', size: 'small'}"
@@ -23,10 +23,14 @@
 </template>
 
 <script lang="ts" setup>
+import { setupProjectState } from '~/scripts/ProjectClassesFetches';
+
+const state = useAppStateStore();
+const route = useRoute();
 
 // update state
-const state = useAppStateStore();
-onMounted(()=>{
+onMounted(async ()=>{
+  await setupProjectState(route.params.classId.toString(), route.params.id.toString());
   state.setProjectPage("tasks");
 });
 
@@ -39,7 +43,7 @@ const navToKanban = () => navigateTo("kanban");
 @import "/assets/styles/constants/Flex.scss";
 @import "/assets/styles/constants/Sizes.scss";
 
-.tabs {
+.action-group {
   @include flex-row;
   @include flex-main(flex-start);
 

@@ -1,31 +1,50 @@
 <template>
   <div class="proj-page-root">
-    <div class="tabs">
-      <div class="selected">
+    <div class="actions">
+      <div class="action-group">
+        <div class="selected">
+          <Button
+            :caption="$t('projectView.tasks.allTasksView')"
+            :styles="{colorPreset: 'accent-strong', size: 'small'}"
+          />
+        </div>
         <Button
-          :caption="$t('projectView.tasks.allTasksView')"
-          :styles="{colorPreset: 'accent-strong', size: 'small'}"
+          :caption="$t('projectView.tasks.kanbanView')"
+          :styles="{colorPreset: 'strong', backgroundColor: 'var(--layer-background)', size: 'small'}"
+          @click="navToKanban"
+        />
+        <Button
+          :caption="$t('projectView.tasks.timelineView')"
+          :styles="{colorPreset: 'strong', backgroundColor: 'var(--layer-background)', size: 'small'}"
+          @click="navToTimeline"
         />
       </div>
-      <Button
-        :caption="$t('projectView.tasks.kanbanView')"
-        :styles="{colorPreset: 'strong', backgroundColor: 'var(--layer-background)', size: 'small'}"
-        @click="navToKanban"
-      />
-      <Button
-        :caption="$t('projectView.tasks.timelineView')"
-        :styles="{colorPreset: 'strong', backgroundColor: 'var(--layer-background)', size: 'small'}"
-        @click="navToTimeline"
-      />
+      <div class="action-group">
+        <IconButton
+          :styles="{colorPreset: 'strong', backgroundColor: 'var(--layer-background)', size: 'small'}"
+          caption="hi"
+        />
+      </div>
+    </div>
+    <div class="tasks">
+      <!-- <TaskList /> -->
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { setupProjectState } from '~/scripts/ProjectClassesFetches';
+import type { Task } from '~/types/ProjectClass';
+
+const state = useAppStateStore();
+const route = useRoute();
+
+// data
+const tasks: Ref<Task[]> = ref([]);
 
 // update state
-const state = useAppStateStore();
-onMounted(()=>{
+onMounted(async ()=>{
+  await setupProjectState(route.params.classId.toString(), route.params.id.toString());
   state.setProjectPage("tasks");
 });
 
@@ -38,7 +57,14 @@ const navToTimeline = () => navigateTo("tasks/timeline");
 @import "/assets/styles/constants/Flex.scss";
 @import "/assets/styles/constants/Sizes.scss";
 
-.tabs {
+.actions {
+  @include flex-row;
+  @include flex-main(flex-start);
+
+  gap: $space-medium;
+}
+
+.action-group {
   @include flex-row;
   @include flex-main(flex-start);
 

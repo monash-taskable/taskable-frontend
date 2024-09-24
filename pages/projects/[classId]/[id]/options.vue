@@ -44,13 +44,14 @@
 
 <script lang="ts" setup>
 import { sprintf } from 'sprintf-js';
-import { getProject, getProjectStatus, updateProject, deleteProject as deleteProjectFetch } from '~/scripts/ProjectClassesFetches';
+import { getProject, getProjectStatus, updateProject, deleteProject as deleteProjectFetch, setupProjectState } from '~/scripts/ProjectClassesFetches';
 import { defaultClose, type Dialog, type DialogAction } from '~/types/Dialog';
 import type { Optional } from '~/types/Optional';
 import type { Project, ProjectStatus } from '~/types/ProjectClass';
 
 const state = useAppStateStore();
 const dialogs = useDialogs();
+const route = useRoute();
 const {t} = useI18n();
 
 const loading = ref(true);
@@ -60,9 +61,9 @@ const status: Ref<ProjectStatus> = ref("Immutable");
 // update project name
 const projName = ref("");
 const projNameUpdating = ref(false);
-const updateProjName = async () => {
+const updateProjName = async (newName: string) => {
   projNameUpdating.value = true;
-  await updateProject(state.classId ?? -1, state.projectId ?? -1, {name: projName.value});
+  await updateProject(state.classId ?? -1, state.projectId ?? -1, {name: newName});
   project.value = await getProject(state.classId ?? -1, state.projectId ?? -1);
   projName.value = project.value!.name;
   projNameUpdating.value = false;
@@ -110,6 +111,8 @@ const deleteProject = async () => {
 // update state
 onMounted(async () => {
   state.setProjectPage("options");
+
+  await setupProjectState(route.params.classId.toString(), route.params.id.toString());
 
   project.value = await getProject(state.classId ?? -1, state.projectId ?? -1);
   status.value = await getProjectStatus(state.classId ?? -1);

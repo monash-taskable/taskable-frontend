@@ -72,8 +72,10 @@ const updateTemplateName = async (name: string) => {
 
   const _template = template;
   
-  if (_template)
+  if (_template){
     await projectClasses.updateTemplate(projectClass.classId, _template.templateId, name);
+    await projectClasses.loadTemplate(projectClass.classId, _template.templateId);
+  }
   
   updatingTemplateName.value = false;
 }

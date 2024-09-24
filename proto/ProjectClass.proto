@@ -112,8 +112,15 @@ message UpdateTemplateRequest {
 
 message CreateProjectRequest { 
   string name = 1;
+  string created_at = 2;
 }
 
 message CreateProjectResponse {
   int32 id = 1;
+}
+
+message UpdateProjectRequest {
+  optional string title = 1;
+  optional string description = 2;
+  optional bool archived = 3;
 }

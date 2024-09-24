@@ -34,7 +34,7 @@
 </template>
 
 <script lang="ts" setup>
-import { addProjectMember, getProjectManagers, getProjectMembers, getProjectProfile, getProjectStatus, removeProjectMember } from '~/scripts/ProjectClassesFetches';
+import { addProjectMember, getProjectManagers, getProjectMembers, getProjectProfile, getProjectStatus, removeProjectMember, setupProjectState } from '~/scripts/ProjectClassesFetches';
 import { anyOf, listRemove, same } from '~/scripts/Utils';
 import { defaultClose, quickError } from '~/types/Dialog';
 import type { Optional } from '~/types/Optional';
@@ -43,6 +43,7 @@ import { defaultSearch, type SelectedAction } from '~/types/Table';
 
 const {t} = useI18n();
 const state = useAppStateStore();
+const route = useRoute();
 
 // search button
 const searchBy = (s: string) => (m: Member) => `${m.id}\n${m.email}\n${m.name}\n${m.role}\n${t(`role.${m.role.toLowerCase()}`)}`.includes(s);
@@ -68,9 +69,11 @@ const addMember = async () => {
         const emails = s.split("\n").filter(Boolean).map(x => x.trim());
         if (emails.length === 0) return;
 
-        const invalids = await addProjectMember(state.projectId ?? -1, emails);
+        const invalids = await addProjectMember(state.projectId ?? -1, state.classId ?? -1, emails);
         dialogs.closeDialog(c.id);
-        members.value = await getProjectManagers(state.projectId ?? -1);
+        members.value = await getProjectManagers(state.classId ?? -1);
+
+        members.value = await getProjectMembers(state.projectId ?? -1, state.classId ?? -1);
         
         if (invalids.length === 0) return;
         quickError(invalids.map(x => `* ${x}`).join("\n"), t('dialogs.batchMemberAdd.invalidEmail'));
@@ -90,6 +93,8 @@ const selfProfile: Ref<Optional<Member>> = ref(undefined);
 onMounted(async ()=>{
   state.setProjectPage("members");
 
+  await setupProjectState(route.params.classId.toString(), route.params.id.toString());
+
   members.value = await getProjectMembers(state.projectId ?? -1, state.classId ?? -1);
   status.value = await getProjectStatus(state.classId ?? -1);
   managers.value = await getProjectManagers(state.classId ?? -1);
@@ -108,13 +113,13 @@ const selectedActions: SelectedAction[] = [
       expanded: false,
       style: {colorPreset: "strong"}
     },
-    action: (members: Member[]) => {
-      const roles = members.map(m => m.role)
+    action: async (_members: Member[]) => {
+      const roles = _members.map(m => m.role)
 
       if (!selfProfile.value) return;
       
       const selfRole = selfProfile.value.role;
-      const currRole = same(roles) ? members[0].role : "MULTI";
+      const currRole = same(roles) ? _members[0].role : "MULTI";
 
       const precedenceErr = anyOf(roles, r => checkPrecedence(r, selfRole));
 
@@ -127,14 +132,15 @@ const selectedActions: SelectedAction[] = [
         dialogType: "updateMemberRole",
         title: t("projects.editClass.updateRole"),
         width: "350px",
-        payload: { currRole, selfRole, members, classId: state.classId},
+        payload: { currRole, selfRole, members: _members, classId: state.classId},
         close: {
           caption: t(`dialogCommon.confirm`),
           icon: "fluent:checkmark-20-regular",
           style: {colorPreset: "accent-strong"},
           expanding: true,
         }
-      })
+      });
+      members.value = await getProjectMembers(state.projectId ?? -1, state.classId ?? -1);
     },
   },
   {
@@ -146,8 +152,8 @@ const selectedActions: SelectedAction[] = [
       style: {colorPreset: "strong"}
     },
     action: async (m: Member[]) => {
-      await removeProjectMember(state.projectId ?? -1, m);
-      members.value = await getProjectManagers(state.projectId ?? -1);
+      await removeProjectMember(state.projectId ?? -1, state.classId ?? -1, m);
+      members.value = await getProjectMembers(state.projectId ?? -1, state.classId ?? -1);
     },
   }
 ]

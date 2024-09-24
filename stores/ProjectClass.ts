@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { FetchRequest } from '~/scripts/FetchTools'
-import { findInList, ident, listRemove, stringToDate } from '~/scripts/Utils'
+import { findInList, getCurrentGMTDateTime, ident, listRemove, stringToDate } from '~/scripts/Utils'
 import { isRole, type Member, type OwnershipRole, type ProjectClass, type ProjectClassStore, type Template, type Project } from '~/types/ProjectClass'
 import { AddMembersRequest, AddMembersResponse, CreateProjectRequest, CreateProjectResponse, CreateTemplateRequest, CreateTemplateResponse, GetClassesResponse, GetClassResponse, GetMembersResponse, GetProjectResponse, GetProjectsResponse, GetTemplateResponse, GetTemplatesResponse, Template as TemplateProto, UpdateClassRequest, UpdateMemberRoleRequest, UpdateTemplateRequest } from '~/types/proto/ProjectClass'
 
@@ -29,7 +29,15 @@ export const useProjectClassStore = defineStore({
     async loadClasses(){
       this.cleanupLocalClasses();
       const getClasses = await FetchRequest.protectedAPI("/classes").commitAndRecv(GetClassesResponse.decode);
-      getClasses.res(classes => classes.responses.forEach(this.createClassCallback));
+      getClasses.res(classes => {
+        classes.responses.forEach(res => {
+          this.createClassCallback(res);
+          if (res.classroom){
+            this.loadTemplates(res.classroom.id);
+            this.loadProjects(res.classroom.id);
+          }
+        })
+      });
     },
     async loadClass(classId: number){
       if (classId === -1){
@@ -38,12 +46,19 @@ export const useProjectClassStore = defineStore({
 
       delete this.projectClasses[classId];
       const getClass = await FetchRequest
-        .protectedAPI(`/class/${classId}`)
+        .protectedAPI(`/classes/${classId}`)
         .commitAndRecv(GetClassResponse.decode);
-
+      
       getClass.res(this.createClassCallback);
+
+      if (getClass.isError()){
+        return false;
+      }
+      
       await this.loadMembers(classId);
       await this.loadProjects(classId);
+
+      return true;
     },
     async loadMembers(classId: number){
       if (classId === -1 || !(classId in this.projectClasses)){
@@ -229,9 +244,9 @@ export const useProjectClassStore = defineStore({
     },
     async createSingleProjectFromTemplate(classId: number, templateId: number, name: string) {
       const req = await FetchRequest
-        .protectedAPI(`/classes/${classId}/templates/${templateId}/createSingle`)
+        .protectedAPI(`/classes/${classId}/templates/${templateId}/create-single`)
         .post()
-        .payload(CreateProjectRequest.encode, { name })
+        .payload(CreateProjectRequest.encode, { name, createdAt: getCurrentGMTDateTime() })
         .commitAndRecv(CreateProjectResponse.decode);
 
       if (!req.isError() && req._result){

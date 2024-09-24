@@ -5,9 +5,14 @@
 </template>
 
 <script lang="ts" setup>
-// update state
+import { setupProjectState } from '~/scripts/ProjectClassesFetches';
+
+const route = useRoute();
 const state = useAppStateStore();
-onMounted(()=>{
+
+// update state
+onMounted(async ()=>{
+  await setupProjectState(route.params.classId.toString(), route.params.id.toString());
   state.setProjectPage("sharedFiles");
 });
 </script>

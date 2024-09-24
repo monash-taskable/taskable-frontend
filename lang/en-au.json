@@ -145,10 +145,12 @@
   "projectView.members.email": "Email",
   "projectView.members.role": "Role",
   "projectView.members.asGuest": "Viewing as Guest",
+  "projectView.members.asGuestMessage": "You are viewing this project as guest. This means you can't add, remove or update project members.",
   
   "projectView.tasks.allTasksView": "All Tasks",
   "projectView.tasks.kanbanView": "Kanban",
   "projectView.tasks.timelineView": "Timeline",
+  "projectView.tasks.add": "Timeline",
   
   "projectView.options": "Project Options -",
   "projectView.projectActions": "Project Actions",

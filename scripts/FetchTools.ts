@@ -84,7 +84,7 @@ export class FetchRequest {
   
   async commitAndRecv<R>(decoder: (_b: Uint8Array) => R): Promise<FetchResult<R>> {
     const req = await this.commit();
-    if (req._response === undefined){
+    if (req.isError() || req._response === undefined){
       return new FetchResult(req._response, <Optional<R>>req._result, req._httpError, req._otherError);
     }
 

@@ -1,12 +1,61 @@
 import { checkPrecedence, isRole } from "~/types/ProjectClass";
-import type { Member, Project, ProjectMembers, ProjectStatus } from "~/types/ProjectClass";
-import { findInList, ident } from "./Utils";
+import type { Member, OwnershipRole, Project, ProjectClass, ProjectMembers, ProjectStatus } from "~/types/ProjectClass";
+import { findInList, ident, isNumericString } from "./Utils";
 import { FetchRequest } from "./FetchTools";
-import { AddProjectMembersRequest, AddProjectMembersResponse, GetMembersResponse, GetProjectResponse } from "~/types/proto/ProjectClass";
+import { AddProjectMembersRequest, AddProjectMembersResponse, GetMembersResponse, GetProjectResponse, UpdateProjectRequest } from "~/types/proto/ProjectClass";
 import type { Optional } from "~/types/Optional";
 
+export const setupProjectState = async (classIdParam: string, projIdParam: string) => {
+
+
+  const id = projIdParam.trim();
+  const classId = classIdParam.trim();
+  const appState = useAppStateStore();
+  const dialogs = useDialogs();
+  const {t} = useI18n();
+
+  const showError = () => dialogs.closeAllWithTypeThenOpen({
+    title: t("dialogError.somethingWentWrong"),
+    icon: "fluent:error-circle-20-regular",
+    dialogType: "projectError",
+    width: "400px",
+    payload: undefined,
+    style: {
+      titleBackground: "var(--dangerous-weak)",
+      titleColor: "var(--dangerous-strong)",
+    },
+  }, false);
+
+  if (
+    id === '' ||
+    !isNumericString(id) ||
+    (!isNumericString(classId) && classId !== "-1")
+  ) {
+    showError();
+    return;
+  }
+  
+  // try getting project
+  const tryClass = await getProject(Number(classId), Number(id));
+  if (
+    !useRuntimeConfig().public.debug &&
+    !tryClass
+  ) {
+    showError();
+    return;
+  }
+
+  appState.setProject(Number(id));
+  appState.setClass(Number(classId));
+  loadClassIfNotExist(Number(classId));
+  appState.setProjectTitle("Debug");
+}
+
 export const getProject = async (classId: number, projectId: number): Promise<Optional<Project>> => {
-  await loadClassIfNotExist(classId);
+  const classRes = await loadClassIfNotExist(classId);
+
+  if (!classRes) return;
+
   const projectClasses = useProjectClassStore();
   await projectClasses.loadTemplates(classId);
   
@@ -28,7 +77,15 @@ export const getProject = async (classId: number, projectId: number): Promise<Op
 
 // TODO
 export const updateProject = async (classId: number, projectId: number, options: {name?: string, description?: string, archived?: boolean}) => {
-  
+  const req = await FetchRequest
+    .protectedAPI(`/classes/${classId}/projects/${projectId}/update`)
+    .post()
+    .payload(UpdateProjectRequest.encode, {
+      description: options.description, 
+      archived: options.archived, 
+      title: options.name
+    })
+    .commit();
 }
 
 export const deleteProject = async (classId: number, projectId: number) => {
@@ -40,19 +97,23 @@ export const deleteProject = async (classId: number, projectId: number) => {
 
 export const loadClassIfNotExist = async (classId: number) => {
   const projectClasses = useProjectClassStore();
-  if (!(classId in projectClasses.projectClasses)) 
-    await projectClasses.loadClass(classId);
+  if (!(classId in projectClasses.projectClasses)){
+    return await projectClasses.loadClass(classId);
+  }
+  return true;
 };
 
 export const getProjectMembers = async (projectId: number, classId: number): Promise<ProjectMembers> => {
   const req = await FetchRequest
     .protectedAPI(`/classes/${classId}/projects/${projectId}/members`)
     .commitAndRecv(GetMembersResponse.decode);
-  
+
+  req.res(console.log);
+
   if (!req.isError() && req._result) {
     return req._result.classMembers.map((m): Member => ({
       id: m.id,
-      name: `${m.basicInfo!.firstName} ${m.basicInfo!.firstName}`.trim(),
+      name: `${m.basicInfo!.firstName} ${m.basicInfo!.lastName}`.trim(),
       email: m.basicInfo!.email,
       role: isRole(m.role) ? m.role : "STUDENT",
     }));
@@ -61,23 +122,27 @@ export const getProjectMembers = async (projectId: number, classId: number): Pro
   return [];
 }
 
-// local
 export const getProjectStatus = async (classId: number): Promise<ProjectStatus> => {
   const appState = useAppStateStore();
   const projectClasses = useProjectClassStore();
   await loadClassIfNotExist(classId);
   
+  if (projectClasses.projectClasses[classId].members.length === 0){
+    await projectClasses.loadMembers(classId);
+  }
+
   const role = findInList(
     projectClasses.projectClasses[classId].members, 
     m => m.id === appState.session.profile!.id, 
     m => m.role);
-    
+
     return checkPrecedence(role ?? "STUDENT", "ADMIN") ? "Mutable" : "Immutable";
   }
   
   // local
-  export const getProjectManagers = async (classId: number): Promise<ProjectMembers> => {
+export const getProjectManagers = async (classId: number): Promise<ProjectMembers> => {
   const projectClasses = useProjectClassStore();
+
   await loadClassIfNotExist(classId);
 
   return projectClasses.projectClasses[classId].members.filter(m => checkPrecedence(m.role, "ADMIN"));
