@@ -56,27 +56,47 @@ export const checkPrecedence = (role1: OwnershipRole, role2: OwnershipRole) =>
 
 export type Subtask = {
   id: number,
+  task: Task,
   title: string,
   description: string,
-  status: string,
-  priority: string,
+  status: TaskStatus,
+  priority: Priority,
   start: Date,
-  due: Date,
-  assignment?: Member,
+  end: Date,
+  assignment: Member[],
 };
 
 export type Task = {
   id: number,
   title: string,
   description: string,
-  subtasks: Subtask[],
+  color: TaskColor
+}
+
+export const taskColors = ["ruby", "orange", "green", "aqua", "blue", "purple", "magenta", "gray"] as const;
+export type TaskColor = typeof taskColors[number];
+export const isTaskColor = isOfType(taskColors);
+
+export const priorities = ["urgent", "non-urgent"] as const;
+export type Priority = typeof priorities[number];
+export const isPriority = isOfType(priorities);
+
+export const taskStatuses = ["unassigned", "assigned", "done"] as const;
+export type TaskStatus = typeof taskStatuses[number];
+export const isTaskStatus = isOfType(taskStatuses);
+
+export type Comment = {
+  id: number,
+  author: Member;
+  comment: string,
+  created: Date,
 }
 
 export type ProjectStatus = "Mutable" | "Immutable";
 export type ProjectMembers = Member[];
 export type ProjectTasks = Task[];
 
-export type ProjectDetails = 
+export type ProjectDetails =
  | ProjectStatus
  | ProjectMembers
  | ProjectTasks;

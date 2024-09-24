@@ -226,7 +226,7 @@ export const getAnnouncement = async (classId: number, announcementId: number): 
 
   if (!req.isError() && req._result) {
     return {
-      author: findInList(projectClasses.projectClasses[classId].members, m => m.id === req._result!.announcement!.id, ident)!,
+      author: findInList(projectClasses.projectClasses[classId].members, m => m.id === req._result!.announcement!.authorId, ident)!,
       projectClass: projectClasses.projectClasses[classId],
       content: req._result.announcement!.content,
       id: req._result.announcement!.id,

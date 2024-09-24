@@ -20,20 +20,6 @@ import type { Optional } from "~/types/Optional";
  */
 export const isOfType = <T>(typeDef: readonly T[]) => (val: any): val is T => typeDef.includes(val);
 
-export const getCurrentGMTDateTime = () => {
-  const now = new Date();
-
-  // Get the parts of the date
-  const year = now.getUTCFullYear();
-  const month = String(now.getUTCMonth() + 1).padStart(2, '0');
-  const day = String(now.getUTCDate()).padStart(2, '0');
-  const hours = String(now.getUTCHours()).padStart(2, '0');
-  const minutes = String(now.getUTCMinutes()).padStart(2, '0');
-
-  // Format the date and time as 'YYYY-MM-DD HH:MM'
-  return `${year}-${month}-${day} ${hours}:${minutes}`;
-}
-
 export const stringToDate = (dateString: string) => {
   // Split the date and time components
   const [datePart, timePart] = dateString.split('T');
@@ -49,6 +35,21 @@ export const stringToDate = (dateString: string) => {
 
   return date;
 }
+
+export const dateToString = (date: Date) => {
+  // Get the parts of the date
+  const year = date.getUTCFullYear();
+  const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(date.getUTCDate()).padStart(2, '0');
+  const hours = String(date.getUTCHours()).padStart(2, '0');
+  const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+
+  // Format the date and time as 'YYYY-MM-DD HH:MM'
+  return `${year}-${month}-${day} ${hours}:${minutes}`;
+}
+
+export const getCurrentGMTDateTime = () => dateToString(new Date());
+
 
 export const findInList = <T, V>(list: T[], predicate: (t: T) => boolean, extractor: (t: T) => V): Optional<V> => {
   for (const item of list) {
