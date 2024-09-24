@@ -146,6 +146,9 @@
   "projectView.members.role": "Role",
   "projectView.members.asGuest": "Viewing as Guest",
   
+  "projectView.tasks.allTasksView": "All Tasks",
+  "projectView.tasks.kanbanView": "Kanban",
+  "projectView.tasks.timelineView": "Timeline",
   
   "projectView.options": "Project Options -",
   "projectView.projectActions": "Project Actions",
