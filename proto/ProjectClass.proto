@@ -144,10 +144,6 @@ message CreateAnnouncementResponse {
   int32 id = 1;
 }
 
-message GetAnnouncementRequest {
-  int32 id = 1;
-}
-
 message GetAnnouncementResponse {
   Announcement announcement = 1;
 }
