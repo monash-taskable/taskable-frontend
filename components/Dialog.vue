@@ -50,6 +50,7 @@
     <DialogsSessionError @emit="updateEmit" v-if="context.dialogType === 'sessionError'" :context="props.context"/>
     <DialogsProjectError @emit="updateEmit" v-if="context.dialogType === 'projectError'" :context="props.context"/>
     <DialogsEditTemplate @emit="updateEmit" v-if="context.dialogType === 'editTemplate'" :context="props.context"/>
+    <DialogsOptionsAlert @emit="updateEmit" v-if="context.dialogType === 'optionsAlert'" :context="props.context"/>
   </div>
 </template>
 

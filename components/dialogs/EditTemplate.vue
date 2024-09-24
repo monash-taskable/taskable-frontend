@@ -45,9 +45,10 @@
 </template>
 
 <script lang="ts" setup>
+import { sprintf } from 'sprintf-js';
 import type { PropType } from 'vue';
 import { findInList, ident } from '~/scripts/Utils';
-import { defaultClose, type Dialog } from '~/types/Dialog';
+import { defaultClose, type Dialog, type DialogAction } from '~/types/Dialog';
 
 const projectClasses = useProjectClassStore();
 const dialogs = useDialogs();
@@ -85,7 +86,31 @@ const unarchiveTemplate = async () => {
   await projectClasses.updateTemplate(projectClassId, templateId, undefined, undefined, false);
 }
 const deleteTemplate = async () => {
-  await projectClasses.deleteTemplate(projectClassId, templateId);
+  dialogs.closeAllWithTypeThenOpen({
+    dialogType: "optionsAlert",
+    width: "400px",
+    close: defaultClose,
+    payload: {
+      message: sprintf(t("projects.editTemplate.deleteConfirmMsg"), (template ?? {name: ''}).name),
+      actions: [<DialogAction>{
+        caption: t("dialogCommon.cancel"),
+        icon: "fluent:arrow-turn-up-left-20-regular",
+        expanding: false,
+        style: {colorPreset: 'strong', backgroundColor: 'var(--layer-background)'},
+        action: (c: Dialog<any>, _: any) => dialogs.closeDialog(c.id)
+      },{
+        caption: t("projects.editTemplate.deleteTemplate"),
+        icon: "fluent:delete-20-regular",
+        expanding: false,
+        style: {colorPreset: 'dangerous-strong'},
+        action: async (c: Dialog<any>, _: any) => {
+          await projectClasses.deleteTemplate(projectClassId, templateId);
+          dialogs.closeAllDialogs();
+        }
+      }]
+    },
+    title: t("projects.editTemplate.deleteTemplate")
+  })
 }
 
 // project creation

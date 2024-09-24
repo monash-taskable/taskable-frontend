@@ -51,9 +51,10 @@
 </template>
 
 <script lang="ts" setup>
+import { sprintf } from 'sprintf-js';
 import type { PropType } from 'vue';
 import { anyOf, same } from '~/scripts/Utils';
-import { defaultClose, quickError, type Dialog } from '~/types/Dialog';
+import { defaultClose, quickError, type Dialog, type DialogAction } from '~/types/Dialog';
 import { checkPrecedence, type Member, type ProjectClass } from '~/types/ProjectClass';
 import { defaultSearch, type SelectedAction } from '~/types/Table';
 
@@ -184,8 +185,31 @@ onMounted(() => {
 
 // delete class
 const deleteClass = async () => {
-  await classStore.deleteClass(classId);
-  dialogs.closeDialog(props.context.id);
+  dialogs.closeAllWithTypeThenOpen({
+    dialogType: "optionsAlert",
+    width: "400px",
+    close: defaultClose,
+    payload: {
+      message: sprintf(t("projects.editClass.deleteConfirmMsg"), props.context.payload.projectClass.name),
+      actions: [<DialogAction>{
+        caption: t("dialogCommon.cancel"),
+        icon: "fluent:arrow-turn-up-left-20-regular",
+        expanding: false,
+        style: {colorPreset: 'strong', backgroundColor: 'var(--layer-background)'},
+        action: (c: Dialog<any>, _: any) => dialogs.closeDialog(c.id)
+      },{
+        caption: t("projects.editClass.deleteClass"),
+        icon: "fluent:delete-20-regular",
+        expanding: false,
+        style: {colorPreset: 'dangerous-strong'},
+        action: async (c: Dialog<any>, _: any) => {
+          await classStore.deleteClass(classId);
+          dialogs.closeAllDialogs();
+        }
+      }]
+    },
+    title: t("projects.editClass.deleteConfirm")
+  })
 }
 
 // set archive

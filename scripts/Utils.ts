@@ -64,6 +64,14 @@ export const listRemove = <T>(list: T[], item: T) => {
   }
 }
 
+export const listRemoveIdx = <T>(list: T[], index: number) => {
+  if (index >= list.length) return;
+  if (index < 0) return;
+  if (index > -1) { // only splice array when item is found
+    list.splice(index, 1); // 2nd parameter means remove one item only
+  }
+}
+
 export const isNumericChar = (c: string) => c >= '0' && c <= '9';
 export const isNumericString = (s: string) => allOf(s.split(''), isNumericChar);
 

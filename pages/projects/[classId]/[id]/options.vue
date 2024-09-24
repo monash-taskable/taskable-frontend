@@ -14,7 +14,7 @@
     <div class="group">
       <div class="actions">
         <IconButton
-          @click=""
+          @click="deleteProject"
           icon="fluent:delete-20-regular"
           :caption="$t('projectView.deleteProject')"
           :styles="{colorPreset: 'dangerous-strong'}"/>
@@ -43,11 +43,15 @@
 </template>
 
 <script lang="ts" setup>
-import { getProject, getProjectStatus, updateProject } from '~/scripts/ProjectClassesFetches';
+import { sprintf } from 'sprintf-js';
+import { getProject, getProjectStatus, updateProject, deleteProject as deleteProjectFetch } from '~/scripts/ProjectClassesFetches';
+import { defaultClose, type Dialog, type DialogAction } from '~/types/Dialog';
 import type { Optional } from '~/types/Optional';
 import type { Project, ProjectStatus } from '~/types/ProjectClass';
 
 const state = useAppStateStore();
+const dialogs = useDialogs();
+const {t} = useI18n();
 
 const loading = ref(true);
 const project: Ref<Optional<Project>> = ref(undefined);
@@ -74,6 +78,33 @@ const unarchive = async () => {
   project.value = undefined;
   await updateProject(state.classId ?? -1, state.projectId ?? -1, {archived: false});
   project.value = await getProject(state.classId ?? -1, state.projectId ?? -1);
+}
+const deleteProject = async () => {
+  dialogs.closeAllWithTypeThenOpen({
+    dialogType: "optionsAlert",
+    width: "400px",
+    close: defaultClose,
+    payload: {
+      message: sprintf(t("projectView.deleteConfirmMsg"), (project.value ?? {name: ''}).name),
+      actions: [<DialogAction>{
+        caption: t("dialogCommon.cancel"),
+        icon: "fluent:arrow-turn-up-left-20-regular",
+        expanding: false,
+        style: {colorPreset: 'strong', backgroundColor: 'var(--layer-background)'},
+        action: (c: Dialog<any>, _: any) => dialogs.closeDialog(c.id)
+      },{
+        caption: t("projectView.deleteProject"),
+        icon: "fluent:delete-20-regular",
+        expanding: false,
+        style: {colorPreset: 'dangerous-strong'},
+        action: async (c: Dialog<any>, _: any) => {
+          await deleteProjectFetch(state.classId ?? -1, state.projectId ?? -1);
+          location.href = "/projects";
+        }
+      }]
+    },
+    title: t("projectView.deleteConfirm")
+  })
 }
 
 // update state

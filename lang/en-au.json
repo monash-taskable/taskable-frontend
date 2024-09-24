@@ -121,6 +121,8 @@
   "projects.editClass.deleteClass": "Delete",
   "projects.editClass.archiveClass": "Archive",
   "projects.editClass.unarchive": "Unarchive",
+  "projects.editClass.deleteConfirm": "Confirm Deletion",
+  "projects.editClass.deleteConfirmMsg": "You are about to delete %s. This action cannot be reverted.",
   "projects.editTemplate.nowViewing": "You are now viewing ",
   "projects.editTemplate.archiveTemplate": "Archive Template",
   "projects.editTemplate.unarchiveTemplate": "Unarchive Template",
@@ -129,10 +131,12 @@
   "projects.editTemplate.createSingleProject": "Create Single Project",
   "projects.editTemplate.createSingleProjectFromTemplate": "Create Single Project from Template",
   "projects.editTemplate.batchProjectCreation": "Batch Project Creation",
+  "projects.editTemplate.deleteConfirm": "Confirm Deletion",
+  "projects.editTemplate.deleteConfirmMsg": "You are about to delete %s. This action cannot be reverted.",
   
   "projectView.invalidProject": "Error occurred while retrieving this project. Either you don't have permission, or the project doesn't exist.",
   "projectView.backToProjects": "Back to projects",
-
+  
   "projectView.members": "Project Members",
   "projectView.members.desc": "View, update and remove members of this project",
   "projectView.members.addMember": "Add Member",
@@ -141,14 +145,16 @@
   "projectView.members.email": "Email",
   "projectView.members.role": "Role",
   "projectView.members.asGuest": "Viewing as Guest",
-  "projectView.members.asGuestMessage": "You are viewing this project as a guest member and only owner or an admin can add, remove or update a member.",
-
+  
+  
   "projectView.options": "Project Options -",
   "projectView.projectActions": "Project Actions",
   "projectView.deleteProject": "Delete Project",
   "projectView.archiveProject": "Archive Project",
   "projectView.unarchiveProject": "Unarchive Project",
   "projectView.detachTemplate": "Detach From Template",
+  "projectView.deleteConfirm": "Confirm Deletion",
+  "projectView.deleteConfirmMsg": "You are about to delete %s. This action cannot be reverted.",
 
   "projectView.page.overview": "Project Overview",
   "projectView.page.members": "Members",

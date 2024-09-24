@@ -31,6 +31,13 @@ export const updateProject = async (classId: number, projectId: number, options:
   
 }
 
+export const deleteProject = async (classId: number, projectId: number) => {
+  await FetchRequest
+    .protectedAPI(`/classes/${classId}/projects/${projectId}/delete`)
+    .delete()
+    .commit();
+}
+
 export const loadClassIfNotExist = async (classId: number) => {
   const projectClasses = useProjectClassStore();
   if (!(classId in projectClasses.projectClasses)) 
