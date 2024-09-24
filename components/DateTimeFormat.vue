@@ -7,6 +7,7 @@
 <script lang="ts" setup>
 import { sprintf } from 'sprintf-js';
 import type { PropType } from 'vue';
+import { dayOfWeekLookup, monthLookup } from '~/scripts/datetime';
 
 const {t} = useI18n();
 
@@ -22,31 +23,6 @@ const props = defineProps({
     | "day-only"
   >, default: "date-time"},
 });
-
-const dayOfWeekLookup = [
-  "sunday",
-  "monday",
-  "tuesday",
-  "wednesday",
-  "thursday",
-  "friday",
-  "saturday",
-]
-
-const monthLookup = [
-  "january",
-  "february",
-  "march",
-  "april",
-  "may",
-  "june",
-  "july",
-  "august",
-  "september",
-  "october",
-  "november",
-  "december",
-]
 
 const AM = t("datetime.am");
 const PM = t("datetime.pm");

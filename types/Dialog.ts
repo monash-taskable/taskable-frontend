@@ -19,6 +19,8 @@ const dialogTypes = [
   "projectError",
   "editTemplate",
   "optionsAlert",
+  "listAnnouncements",
+  "editAnnouncement",
 ] as const;
 export type DialogType = typeof dialogTypes[number];
 export const isOfDialog = isOfType(dialogTypes);
@@ -85,8 +87,7 @@ export const quickAlert = (message: string, title?: string) => useDialogs().open
   dialogType: 'alert',
   payload: message,
   width: "300px",
-  x: 120,
-  y: 120,
+  close: defaultClose
 })
 
 export const quickError = (message: string, title: string, icon?: string) => 

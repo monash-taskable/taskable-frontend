@@ -39,6 +39,15 @@ export type ProjectClassStore = {
   projectClasses: {[key: number]: ProjectClass},
 }
 
+export type Announcement = {
+  id: number,
+  projectClass: ProjectClass,
+  author: Member,
+  title: string,
+  content: string,
+  sentAt: Date,
+}
+
 export const ownershipRoles = ["STUDENT", "TUTOR", "ADMIN", "OWNER"] as const;
 export type OwnershipRole = typeof ownershipRoles[number];
 export const isRole = isOfType(ownershipRoles);

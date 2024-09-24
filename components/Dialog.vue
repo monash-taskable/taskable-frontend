@@ -51,6 +51,8 @@
     <DialogsProjectError @emit="updateEmit" v-if="context.dialogType === 'projectError'" :context="props.context"/>
     <DialogsEditTemplate @emit="updateEmit" v-if="context.dialogType === 'editTemplate'" :context="props.context"/>
     <DialogsOptionsAlert @emit="updateEmit" v-if="context.dialogType === 'optionsAlert'" :context="props.context"/>
+    <DialogsEditAnnouncement @emit="updateEmit" v-if="context.dialogType === 'editAnnouncement'" :context="props.context"/>
+    <DialogsListAnnouncements @emit="updateEmit" v-if="context.dialogType === 'listAnnouncements'" :context="props.context"/>
   </div>
 </template>
 

@@ -27,7 +27,7 @@
       </div>
     </div>
     <div class="tasks">
-      <!-- <TaskList /> -->
+      <TaskList :task="task"/>
     </div>
   </div>
 </template>
@@ -41,6 +41,16 @@ const route = useRoute();
 
 // data
 const tasks: Ref<Task[]> = ref([]);
+
+const task: Task = {
+  title: "Task112",
+  description: "hello",
+  id: 12,
+  subtasks: [
+    {id: 134, title: "Test Subtask", due: new Date(), priority: "", start: new Date(), description: "", status: ""},
+    {id: 144, title: "Test Subtask", due: new Date(), priority: "", start: new Date(), description: "", status: ""},
+  ],
+}
 
 // update state
 onMounted(async ()=>{

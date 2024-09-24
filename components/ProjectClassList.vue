@@ -10,6 +10,12 @@
           <IconButton 
             v-if="actionIsUsable('edit', props.projectClass.role)" 
             :styles="{...buttonStyle, size: 'small'}" 
+            @click="viewAnnouncements"
+            expanding :expanded="false" 
+            icon="fluent:megaphone-20-regular"/>
+          <IconButton 
+            v-if="actionIsUsable('edit', props.projectClass.role)" 
+            :styles="{...buttonStyle, size: 'small'}" 
             @click="openEditClass(props.projectClass)"
             expanding :expanded="false" 
             icon="fluent:edit-20-regular"/>
@@ -44,7 +50,7 @@
 <script lang="ts" setup>
 import type { PropType } from 'vue';
 import type { ButtonStyle } from '~/types/Button';
-import { defaultClose, quickAlert } from '~/types/Dialog';
+import { defaultClose } from '~/types/Dialog';
 import type { OwnershipRole, ProjectClass, Template } from '~/types/ProjectClass';
 
 const {t} = useI18n();
@@ -150,6 +156,19 @@ const viewTemplate = (id: number, template: Template) => {
     }
   });
 };
+
+// announcements
+const viewAnnouncements = () => {
+  dialogControl.closeAllWithTypeThenOpen({
+    dialogType: "listAnnouncements",
+    payload: {
+      projectClass: props.projectClass,
+    },
+    width: "900px",
+    close: defaultClose,
+    title: t('projects.announcements')
+  })
+}
 </script>
 
 <style lang="scss" scoped>

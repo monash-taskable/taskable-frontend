@@ -1,8 +1,8 @@
 import { checkPrecedence, isRole } from "~/types/ProjectClass";
-import type { Member, OwnershipRole, Project, ProjectClass, ProjectMembers, ProjectStatus } from "~/types/ProjectClass";
-import { findInList, ident, isNumericString } from "./Utils";
+import type { Announcement, Member, Project, ProjectMembers, ProjectStatus } from "~/types/ProjectClass";
+import { findInList, getCurrentGMTDateTime, ident, isNumericString, stringToDate } from "./Utils";
 import { FetchRequest } from "./FetchTools";
-import { AddProjectMembersRequest, AddProjectMembersResponse, GetMembersResponse, GetProjectResponse, UpdateProjectRequest } from "~/types/proto/ProjectClass";
+import { AddProjectMembersRequest, AddProjectMembersResponse, CreateAnnouncementRequest, CreateAnnouncementResponse, GetAnnouncementResponse, GetAnnouncementsResponse, GetMembersResponse, GetProjectResponse, UpdateAnnouncementRequest, UpdateProjectRequest } from "~/types/proto/ProjectClass";
 import type { Optional } from "~/types/Optional";
 
 export const setupProjectState = async (classIdParam: string, projIdParam: string) => {
@@ -105,6 +105,14 @@ export const loadClassIfNotExist = async (classId: number) => {
   if (!(classId in projectClasses.projectClasses)){
     return await projectClasses.loadClass(classId);
   }
+  else {
+    if (projectClasses.projectClasses[classId].members.length === 0) 
+      projectClasses.loadMembers(classId);
+    if (projectClasses.projectClasses[classId].projects.length === 0) 
+      projectClasses.loadProjects(classId);
+    if (projectClasses.projectClasses[classId].templates.length === 0) 
+      projectClasses.loadTemplates(classId);
+  }
   return true;
 };
 
@@ -181,4 +189,73 @@ export const getProjectProfile = async (classId: number): Promise<Member> => {
     role: "OWNER",
     email: "jpor0001@student.monash.edu",
   }
+}
+
+export const getAnnouncements = async (classId: number): Promise<Announcement[]> => {
+  await loadClassIfNotExist(classId);
+  const projectClasses = useProjectClassStore();
+  
+  const req = await FetchRequest
+  .protectedAPI(`/classes/${classId}/announcements`)
+  .commitAndRecv(GetAnnouncementsResponse.decode);
+  
+  if (!req.isError() && req._result) {
+    return req._result.announcements.map(a => ({
+      author: findInList(projectClasses.projectClasses[classId].members, m => m.id === a.id, ident)!,
+      projectClass: projectClasses.projectClasses[classId],
+      content: a.content,
+      id: a.id,
+      sentAt: stringToDate(a.sentAt),
+      title: a.title,
+    }));
+  }
+  
+  return []
+}
+
+export const getAnnouncement = async (classId: number, announcementId: number): Promise<Optional<Announcement>> => {
+  await loadClassIfNotExist(classId);
+  const projectClasses = useProjectClassStore();
+  
+  const req = await FetchRequest
+  .protectedAPI(`/classes/${classId}/announcement/${announcementId}`)
+  .commitAndRecv(GetAnnouncementResponse.decode);
+
+  if (!req.isError() && req._result) {
+    return {
+      author: findInList(projectClasses.projectClasses[classId].members, m => m.id === req._result!.announcement!.id, ident)!,
+      projectClass: projectClasses.projectClasses[classId],
+      content: req._result.announcement!.content,
+      id: req._result.announcement!.id,
+      sentAt: stringToDate(req._result.announcement!.sentAt),
+      title: req._result.announcement!.title,
+    }
+  }
+}
+
+export const createAnnouncement = async (classId: number, title: string, content: string) => {
+  const req = await FetchRequest
+    .protectedAPI(`/classes/${classId}/announcement/create`)
+    .post()
+    .payload(CreateAnnouncementRequest.encode, { content, title, sentAt: getCurrentGMTDateTime() })
+    .commitAndRecv(CreateAnnouncementResponse.decode);
+    
+    if (!req.isError() && req._result) {
+      return req._result.id;
+    }
+  }
+  
+export const updateAnnouncement = async (classId: number, announcementId: number, options: {title?: string, content?: string}) => {
+  const req = await FetchRequest
+    .protectedAPI(`/classes/${classId}/announcement/${announcementId}/update`)
+    .post()
+    .payload(UpdateAnnouncementRequest.encode, options)
+    .commit()
+  }
+  
+export const deleteAnnouncement = async (classId: number, announcementId: number) => {
+  const req = await FetchRequest
+    .protectedAPI(`/classes/${classId}/announcement/${announcementId}/delete`)
+    .delete()
+    .commit()
 }
