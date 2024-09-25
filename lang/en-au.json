@@ -169,7 +169,6 @@
   "projectView.tasks.kanbanView": "Kanban",
   "projectView.tasks.timelineView": "Timeline",
   "projectView.tasks.addTask": "Add Category",
-  "projectView.tasks.addSubtask": "Add Task",
   "projectView.tasks.filter": "Filter",
   "projectView.tasks.edit": "Edit",
   "projectView.tasks.editComplete": "Done",
@@ -180,6 +179,15 @@
   "projectView.tasks.description": "Description",
   "projectView.tasks.taskDeleteConfirm": "Confirm Category Deletion",
   "projectView.tasks.taskDeleteMessage": "You are about to delete task(s). This action cannot be reverted.",
+  "projectView.tasks.addSubtask": "Add Task",
+  "projectView.subtasks.assignment": "Assignments",
+  "projectView.subtasks.assign": "Assign",
+  "projectView.subtasks.assignMember": "Assign a Member",
+  "projectView.subtasks.selectAMember": "Select a member and assign them to the task:",
+  "projectView.subtasks.markAsDone": "Mark as done",
+  "projectView.subtasks.deleteSubtask": "Delete Task",
+  "projectView.subtasks.deleteSubtaskConfirm": "Confirm Task Deletion",
+  "projectView.subtasks.deleteConfirmMsg": "You are about to delete %s. This action cannot be reverted.",
   
   "projectView.options": "Project Options -",
   "projectView.projectActions": "Project Actions",
@@ -216,6 +224,14 @@
   "role.tutor": "Tutor",
   "role.student": "Student",
   
+  "priority.urgent": "Urgent",
+  "priority.non-urgent": "Non Urgent",
+
+  "status.hold": "Hold",
+  "status.progress": "In Progress",
+  "status.review": "Reviewing",
+  "status.done": "Completed",
+
   "tableCommon.search": "Search",
   "tableCommon.selected": "%s selected",
   

@@ -1,7 +1,6 @@
 import { isOfType } from "~/scripts/Utils";
 import type { ButtonStyle } from "./Button";
 import type { Optional } from "./Optional";
-import { useNuxt } from "nuxt/kit";
 
 const dialogTypes = [
   "alert",
@@ -22,6 +21,8 @@ const dialogTypes = [
   "listAnnouncements",
   "editAnnouncement",
   "editTask",
+  "editSubtask",
+  "memberSelect",
 ] as const;
 export type DialogType = typeof dialogTypes[number];
 export const isOfDialog = isOfType(dialogTypes);

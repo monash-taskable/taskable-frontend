@@ -54,6 +54,8 @@
     <DialogsEditAnnouncement @emit="updateEmit" v-else-if="context.dialogType === 'editAnnouncement'" :context="props.context"/>
     <DialogsListAnnouncements @emit="updateEmit" v-else-if="context.dialogType === 'listAnnouncements'" :context="props.context"/>
     <DialogsEditTask @emit="updateEmit" v-else-if="context.dialogType === 'editTask'" :context="props.context"/>
+    <DialogsEditSubtask @emit="updateEmit" v-else-if="context.dialogType === 'editSubtask'" :context="props.context"/>
+    <DialogsMemberSelect @emit="updateEmit" v-else-if="context.dialogType === 'memberSelect'" :context="props.context"/>
   </div>
 </template>
 

@@ -77,11 +77,11 @@ export const taskColors = ["ruby", "orange", "green", "aqua", "blue", "purple", 
 export type TaskColor = typeof taskColors[number];
 export const isTaskColor = isOfType(taskColors);
 
-export const priorities = ["urgent", "non-urgent"] as const;
+export const priorities = ["non-urgent", "urgent"] as const;
 export type Priority = typeof priorities[number];
 export const isPriority = isOfType(priorities);
 
-export const taskStatuses = ["unassigned", "assigned", "done"] as const;
+export const taskStatuses = ["hold", "progress", "review", "done"] as const;
 export type TaskStatus = typeof taskStatuses[number];
 export const isTaskStatus = isOfType(taskStatuses);
 

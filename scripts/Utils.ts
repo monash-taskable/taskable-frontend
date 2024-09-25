@@ -51,6 +51,8 @@ export const listRemoveIdx = <T>(list: T[], index: number) => {
   }
 }
 
+export const insertAt = <T>(arr: T[], index: number, value: T): void => {arr.splice(index, 0, value)};
+
 export const isNumericChar = (c: string) => c >= '0' && c <= '9';
 export const isNumericString = (s: string) => allOf(s.split(''), isNumericChar);
 

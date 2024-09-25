@@ -133,7 +133,6 @@ const createSingleProject = async () => dialogs.closeAllWithTypeThenOpen({
       style: {colorPreset: "accent-strong"},
       expanding: false,
       action: async (_, name: string) => {
-        console.log(name);
         
         name = name.trim();
         if (name === "") return;

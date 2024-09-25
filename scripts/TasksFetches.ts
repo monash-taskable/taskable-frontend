@@ -1,4 +1,4 @@
-import { CreateCommentRequest, CreateCommentResponse, CreateSubtaskRequest, CreateSubtaskResponse, CreateTaskRequest, CreateTaskResponse, GetCommentResponse, GetCommentsResponse, GetSubtaskResponse, GetSubtasksResponse, GetTaskResponse, GetTasksResponse, UpdateCommentRequest, UpdateSubtaskRequest, UpdateTaskRequest } from "~/types/proto/Task"
+import { AssignMultipleToSubtaskRequest, CreateCommentRequest, CreateCommentResponse, CreateSubtaskRequest, CreateSubtaskResponse, CreateTaskRequest, CreateTaskResponse, GetCommentResponse, GetCommentsResponse, GetSubtaskResponse, GetSubtasksResponse, GetTaskResponse, GetTasksResponse, UpdateCommentRequest, UpdateSubtaskRequest, UpdateTaskRequest } from "~/types/proto/Task"
 import { FetchRequest } from "./FetchTools"
 import { isPriority, isTaskColor, isTaskStatus, type Comment, type Member, type Priority, type Subtask, type Task, type TaskColor, type TaskStatus } from "~/types/ProjectClass"
 import type { Optional } from "~/types/Optional";
@@ -133,7 +133,7 @@ export const getSubtasks = async (classId: number, projectId: number, task: Task
 }
 
 export const updateSubtask = async (classId: number, projectId: number, taskId: number, subtaskId: number,
-  data: {taskId?: number, title?: string, description?: string, status?: TaskStatus, priority?: Priority, start: Date, end: Date}
+  data: {taskId: number, title: string, description: string, status: TaskStatus, priority: Priority, start: Date, end: Date}
 ) => {
   await FetchRequest
   .protectedAPI(`/classes/${classId}/projects/${projectId}/tasks/${taskId}/subtasks/${subtaskId}/update`)
@@ -217,4 +217,27 @@ export const deleteComments = async (classId: number, projectId: number, taskId:
   await FetchRequest
     .protectedAPI(`/classes/${classId}/projects/${projectId}/tasks/${taskId}/subtasks/${subtaskId}/comments/${commentId}/delete`)
     .delete().commit();
+}
+
+export const assignToSubtask = async (classId: number, projectId: number, taskId: number, subtaskId: number, memberIds: number[]) => {
+  await FetchRequest
+    .protectedAPI(`/classes/${classId}/projects/${projectId}/tasks/${taskId}/subtasks/${subtaskId}/assign`)
+    .post()
+    .payload(AssignMultipleToSubtaskRequest.encode, {userIds: memberIds})
+    .commit()
+}
+
+export const unassignToSubtask = async (classId: number, projectId: number, taskId: number, subtaskId: number, memberIds: number[]) => {
+  await FetchRequest
+    .protectedAPI(`/classes/${classId}/projects/${projectId}/tasks/${taskId}/subtasks/${subtaskId}/unassign`)
+    .post()
+    .payload(AssignMultipleToSubtaskRequest.encode, {userIds: memberIds})
+    .commit()
+}
+
+export const markAllSubtasksAs = async (classId: number, projectId: number, taskId: number) => {
+  await FetchRequest
+  .protectedAPI(`/classes/${classId}/projects/${projectId}/tasks/${taskId}/subtasks/mark-all-as-done`)
+  .post()
+  .commit()
 }

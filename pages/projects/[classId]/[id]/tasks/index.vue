@@ -78,20 +78,24 @@
     <div v-else class="tasks">
       <TaskList 
         v-for="task in tasks"
+        :tasks="tasks"
         :task="task"
         :subtasks="multiSubtasks[task.id]"
         :selectable="editMode"
         :selected="task.id in selectedTasks"
         @click="(e) => onTaskSelect(task, multiSubtasks[task.id], e)"
+        @create="() => createSubtask(task)"
+        @edit="({subtask: Subtask}) => editSubtask(Subtask, task)"
       />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { getNextWeek } from '~/scripts/Datetime';
 import { setupProjectState } from '~/scripts/ProjectClassesFetches';
-import { getSubtasks, getTasks, createTask as createTaskFetch, getTask, updateTask, deleteTask } from '~/scripts/TasksFetches';
-import { findIndexInList } from '~/scripts/Utils';
+import { getSubtasks, getTasks, createTask as createTaskFetch, getTask, updateTask, deleteTask, createSubtask as createSubtaskFetch, getSubtask, updateSubtask, assignToSubtask, unassignToSubtask } from '~/scripts/TasksFetches';
+import { findIndexInList, insertAt, listRemoveIdx } from '~/scripts/Utils';
 import type { ButtonStyle } from '~/types/Button';
 import { defaultClose, type Dialog, type DialogAction } from '~/types/Dialog';
 import type { Subtask, Task } from '~/types/ProjectClass';
@@ -106,16 +110,6 @@ const btnDefault: ButtonStyle = {colorPreset: 'strong', backgroundColor: 'var(--
 const btnDisabled: ButtonStyle = {colorPreset: 'disabled', backgroundColor: 'var(--layer-background)', backgroundColorHover: 'var(--layer-background)', size: 'small'}
 
 // data
-// const now = new Date();
-// const tasks: Ref<Task[]> = ref([
-//   {id: 0, title: '1', description: '2', color: 'green'}
-// ]);
-// const multiSubtasks: Ref<{[key: number]: Subtask[]}> = ref({});
-// multiSubtasks.value[0] = [
-//   {assignment: [], description: "subtask desc 1", end: new Date(now.getTime() + 500), start: new Date(now.getTime() - 50), id: 1, priority: 'non-urgent', status: 'unassigned', task: tasks.value[0], title: "subtask 1!"},
-//   {assignment: [], description: "subtask desc 2", end: new Date(now.getTime() + 500), start: new Date(now.getTime() - 50), id: 2, priority: 'non-urgent', status: 'unassigned', task: tasks.value[0], title: "subtask 2!"},
-//   {assignment: [], description: "subtask desc urgent", end: new Date(now.getTime()), start: new Date(now.getTime() - 50), id: 3, priority: 'urgent', status: 'assigned', task: tasks.value[0], title: "subtask! urgent"}
-// ];
 const tasks: Ref<Task[]> = ref([]);
 const multiSubtasks: Ref<{[key: number]: Subtask[]}> = ref({});
 multiSubtasks.value[0] = [];
@@ -219,8 +213,11 @@ const editTask = (_tasks: Task[]) => {
         editExit();
         const taskIdx = findIndexInList(tasks.value, t => t.id === _tasks[0].id);
         const newTask = await getTask(classId!, projId!, _tasks[0].id);
+        
         if (taskIdx !== undefined && newTask !== undefined) {
-          tasks.value[taskIdx] = newTask
+          tasks.value[taskIdx].color = newTask.color;
+          tasks.value[taskIdx].description = newTask.description;
+          tasks.value[taskIdx].title = newTask.title;
         }
         dialogs.closeDialog(c.id);
       }
@@ -264,6 +261,125 @@ const deleteTasks = (_tasks: Task[]) => {
     title: t("projects.editTemplate.deleteTemplate")
   })
 }
+
+// create subtask 
+const createSubtask = (task: Task) => dialogs.closeAllWithTypeThenOpen({
+  dialogType: "editSubtask",
+  payload: {
+    subtask: <Subtask>{
+      id: -1,
+      title: "",
+      description: "",
+      assignment: [],
+      end: getNextWeek(),
+      start: new Date(),
+      priority: "non-urgent",
+      status: "progress",
+      task: task,
+    },
+    tasks,
+    deletable: false,
+  },
+  title: t('projectView.tasks.addSubtask'),
+  width: "400px",
+  close: defaultClose,
+  actionsRight: [{
+    caption: t("projectView.tasks.addSubtask"),
+    expanding: true,
+    icon: 'fluent:add-20-regular',
+    style: {colorPreset: 'accent-strong'},
+    action: async (c, s: Subtask) => {
+      const {classId, projectId} = state;
+      
+      const id = await createSubtaskFetch(
+        classId!, 
+        projectId!, 
+        s.task.id, 
+        s.title, 
+        s.description, 
+        s.status,
+        s.priority, 
+        s.start, 
+        s.end
+      );
+      if (id === undefined) {
+        dialogs.closeDialog(c.id);
+        return;
+      };
+
+      if (s.assignment.length){
+        await assignToSubtask(classId!, projectId!, s.task.id, s.id, s.assignment.map(x => x.id));
+      }
+      
+      const _subtask = await getSubtask(classId!, projectId!, s.task, id);
+      if (_subtask === undefined){
+        dialogs.closeDialog(c.id);
+        return;
+      }
+
+      multiSubtasks.value[_subtask.task.id].push(_subtask);
+      dialogs.closeDialog(c.id);
+    }
+  }]
+})
+
+
+// edit subtask
+const editSubtask = (s: Subtask, task: Task) => dialogs.closeAllWithTypeThenOpen({
+  dialogType: "editSubtask",
+  payload: {
+    subtask: {...s},
+    tasks,
+    deletable: true,
+    deleteCallback: () => {
+      const idx = findIndexInList(multiSubtasks.value[s.task.id], __s => __s.id === s.id);
+      if (idx === undefined) return;
+      listRemoveIdx(multiSubtasks.value[s.task.id], idx);
+    }
+  },
+  title: "",
+  width: "400px",
+  close: defaultClose,
+  actionsRight: [{
+    caption: t("dialogCommon.confirm"),
+    expanding: true,
+    icon: 'fluent:checkmark-20-regular',
+    style: {colorPreset: 'accent-strong'},
+    action: async (c, _sUpdated: Subtask) => {
+      const {classId, projectId} = state;
+      await updateSubtask(classId!, projectId!, task.id, _sUpdated.id, {
+        taskId: _sUpdated.task.id,
+        end: _sUpdated.end,
+        start: _sUpdated.start,
+        description: _sUpdated.description,
+        priority: _sUpdated.priority,
+        status: _sUpdated.status,
+        title: _sUpdated.title
+      });
+
+      const idx = findIndexInList(multiSubtasks.value[task.id], _s => _s.id === _sUpdated.id);
+      const newSubtask = await getSubtask(classId!, projectId!, _sUpdated.task, _sUpdated.id);
+
+      if (idx === undefined || newSubtask === undefined) {
+        dialogs.closeDialog(c.id);
+        return;
+      }
+
+      if (s.assignment.length){
+        await unassignToSubtask(classId!, projectId!, newSubtask.task.id, newSubtask.id, s.assignment.map(x => x.id));
+      }
+      if (_sUpdated.assignment,length){
+        await assignToSubtask(classId!, projectId!, newSubtask.task.id, newSubtask.id, _sUpdated.assignment.map(x => x.id));
+      }
+      
+      listRemoveIdx(multiSubtasks.value[task.id], idx);
+      insertAt(multiSubtasks.value[newSubtask.task.id], idx, newSubtask);
+
+      dialogs.closeDialog(c.id);
+      return;
+    }
+  }]
+})
 
 // tab nav
 const navToKanban = () => navigateTo("tasks/kanban");

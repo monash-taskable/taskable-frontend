@@ -7,14 +7,15 @@
       {{ task.description.trim() }}
     </div>
     <div class="subtasks content">
-      <TaskListEntry v-for="subtask in subtasks.filter(x => x.priority === 'urgent')" :subtask="subtask"/>
-      <TaskListEntry v-for="subtask in subtasks.filter(x => x.priority === 'non-urgent')" :subtask="subtask"/>
+      <TaskListEntry @click="() => editSubtask(subtask)" v-for="subtask in subtasksRef.filter(x => x.priority === 'urgent')" :subtask="subtask"/>
+      <TaskListEntry @click="() => editSubtask(subtask)" v-for="subtask in subtasksRef.filter(x => x.priority === 'non-urgent')" :subtask="subtask"/>
     </div>
     <div class="actions content" v-if="!props.selectable">
       <IconButton
         :styles="{foregroundColor: 'var(--tc-strong)', backgroundColorHover: 'var(--tc-weak)'}"
         :caption="$t('projectView.tasks.addSubtask')"
         icon="fluent:add-20-regular"
+        @click="createSubtask"
       />
     </div>
   </div>
@@ -24,13 +25,21 @@
 import type { PropType } from 'vue';
 import type { Subtask, Task } from '~/types/ProjectClass';
 
-const emits = defineEmits(["click"]);
+const emits = defineEmits(["click", "create", "edit"]);
 const props = defineProps({
+  tasks: {type: Object as PropType<Task[]>, required: true},
   task: {type: Object as PropType<Task>, required: true},
   subtasks: {type: Object as PropType<Subtask[]>, required: true},
   selectable: {type: Boolean, default: false},
-  selected: {type: Boolean, default: false},
+  selected: {type: Boolean, default: false}
 });
+
+const createSubtask = () => emits("create");
+const editSubtask = (subtask: Subtask) => emits("edit", {subtask});
+
+const {task, tasks, subtasks} = props;
+
+const subtasksRef = ref(subtasks);
 
 const getClass = () => [
   props.selectable ? "selectable" : "",
@@ -50,6 +59,7 @@ const _onClick = () => {
     toggle: !props.selected
   });
 }
+
 </script>
 
 <style lang="scss" scoped>

@@ -64,3 +64,8 @@ export const dateToString = (date: Date) => {
 }
 
 export const getCurrentGMTDateTime = () => dateToString(new Date());
+
+export const getNextWeek = (): Date => new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+
+export const inputToDate = (dateString: string) => new Date(dateString);
+export const dateToInput = (date: Date) => date.toISOString().split('T')[0];

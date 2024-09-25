@@ -155,7 +155,6 @@ export const useProjectClassStore = defineStore({
 
       const mids = members.filter(_m => _m.role !== "OWNER").map(m => m.id);
       mids.forEach(id => {
-        console.log(`/classes/${classId}/members/${id}/delete`);
         FetchRequest.protectedAPI(`/classes/${classId}/members/${id}/delete`).delete().commit();
       })
       this.projectClasses[classId].members = this.projectClasses[classId].members.filter(

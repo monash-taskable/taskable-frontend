@@ -123,7 +123,7 @@ const emitChange = () => {
 
   .content {
     flex: 1;
-    ::v-deep .field { width: 100% }
+    &:deep(.field) { width: 100% }
   }
 }
 

@@ -1,16 +1,16 @@
 <template>
-  <div class="list-entry" :class="getClass(subtask)" :style="getStyle(subtask)">
+  <div @click="_onClick" class="list-entry" :class="getClass(subtask)" :style="getStyle(subtask)">
     <div class="label">
       <div class="icon-holder"><Icon name="fluent:re-order-dots-vertical-20-regular"/></div>
       <div class="title">{{ subtask.title }}</div>
       <div class="indicator">
         <Icon name="fluent:checkmark-circle-16-regular" v-if="subtask.status === 'done'"/>
         <Icon name="fluent:timer-16-regular" v-if="subtask.priority === 'urgent' && !overdue && subtask.status !== 'done'"/>
-        <Icon class="red" name="fluent:person-warning-16-regular" v-if="subtask.status === 'unassigned'"/>
+        <Icon class="red" name="fluent:person-warning-16-regular" v-if="subtask.assignment.length === 0"/>
         <Icon class="red" name="fluent:warning-16-regular" v-if="overdue"/>
       </div>
     </div>
-    <div class="progress" v-if="subtask.status !== 'done' && !overdue"/>
+    <div class="progress-bar" v-if="subtask.status !== 'done' && !overdue"/>
   </div>
 </template>
 
@@ -45,6 +45,9 @@ const getStyle = (subtask: Subtask) => {
     `--task-percent: ${Math.floor(percent(subtask) * 100)}%`
   ].join("; ");
 }
+
+const emits = defineEmits(["click"]);
+const _onClick = () => emits("click");
 </script>
 
 <style lang="scss" scoped>
@@ -123,7 +126,7 @@ const getStyle = (subtask: Subtask) => {
   }
 }
 
-.progress {
+.progress-bar {
   height: 3px;
   display: block;
 

@@ -85,8 +85,16 @@ message UpdateSubtaskRequest {
   optional string end = 7;
 }
 
-message AssignToSubtaskRequest {
-  int32 user_id = 1;
+message AssignMultipleToSubtaskRequest {
+  repeated int32 user_ids = 1;
+}
+
+message UnassignMultipleToSubtaskRequest {
+  repeated int32 user_ids = 1;
+}
+
+message MarkAllSubtasksRequest {
+  bool done = 1;
 }
 
 // Comments

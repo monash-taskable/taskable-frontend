@@ -151,9 +151,9 @@ export const getProjectStatus = async (classId: number): Promise<ProjectStatus> 
     m => m.role);
 
     return checkPrecedence(role ?? "STUDENT", "ADMIN") ? "Mutable" : "Immutable";
-  }
+}
   
-  // local
+// local
 export const getProjectManagers = async (classId: number): Promise<ProjectMembers> => {
   const projectClasses = useProjectClassStore();
 
@@ -247,16 +247,16 @@ export const createAnnouncement = async (classId: number, title: string, content
     if (!req.isError() && req._result) {
       return req._result.id;
     }
-  }
-  
+}
+
 export const updateAnnouncement = async (classId: number, announcementId: number, options: {title?: string, content?: string}) => {
   const req = await FetchRequest
     .protectedAPI(`/classes/${classId}/announcements/${announcementId}/update`)
     .post()
     .payload(UpdateAnnouncementRequest.encode, options)
     .commit()
-  }
-  
+}
+
 export const deleteAnnouncement = async (classId: number, announcementId: number) => {
   const req = await FetchRequest
     .protectedAPI(`/classes/${classId}/announcements/${announcementId}/delete`)
