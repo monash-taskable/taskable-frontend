@@ -5,12 +5,12 @@
       <div class="title">{{ subtask.title }}</div>
       <div class="indicator">
         <Icon name="fluent:checkmark-circle-16-regular" v-if="subtask.status === 'done'"/>
-        <Icon name="fluent:timer-16-regular" v-if="subtask.priority === 'urgent' && !overdue && subtask.status !== 'done'"/>
-        <Icon class="red" name="fluent:person-warning-16-regular" v-if="subtask.assignment.length === 0"/>
-        <Icon class="red" name="fluent:warning-16-regular" v-if="overdue"/>
+        <Icon name="fluent:timer-16-regular" v-else-if="subtask.priority === 'urgent' && !overdue(subtask)"/>
+        <Icon class="red" name="fluent:person-warning-16-regular" v-if="subtask.assignment.length === 0 && subtask.status !== 'done'"/>
+        <Icon class="red" name="fluent:warning-16-regular" v-if="overdue(subtask) && subtask.status !== 'done'"/>
       </div>
     </div>
-    <div class="progress-bar" v-if="subtask.status !== 'done' && !overdue"/>
+    <div class="progress-bar" v-if="subtask.status !== 'done' && !overdue(subtask)"/>
   </div>
 </template>
 
@@ -26,13 +26,13 @@ const props = defineProps({
 
 const now = new Date();
 const percent = (subtask: Subtask) => getDatePercentage(subtask.start, subtask.end, now);
-
-const p = percent(props.subtask);
-const done = props.subtask.status === 'done';
-const overdue = !done && p === 1;
-const due = !done && !overdue && p >= 0.8;
+const overdue = (subtask: Subtask) => subtask.status !== 'done' && getDatePercentage(subtask.start, subtask.end, now) === 1;
 
 const getClass = (subtask: Subtask) => {
+  const p = percent(props.subtask);
+  const done = props.subtask.status === 'done';
+  const overdue = !done && p === 1;
+  const due = !done && !overdue && p >= 0.8;
   return [
     props.readonly ? "readonly" : "",
     subtask.status,

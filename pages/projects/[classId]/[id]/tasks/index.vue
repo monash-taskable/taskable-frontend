@@ -61,6 +61,7 @@
           :styles="Object.keys(selectedTasks).length === 0 ? btnDisabled : btnDefault"
           icon="fluent:checkmark-circle-20-regular"
           :caption="$t('projectView.tasks.markAllAsDone')"
+          @click="markAll"
         />
         <!-- edit -->
         <IconButton v-if="editMode"
@@ -72,8 +73,7 @@
       </div>
     </div>
     <div v-if="loading" class="tasks">
-      <TaskListSkeleton/>
-      <TaskListSkeleton/>
+      <TaskListSkeleton v-for="_ in 3"/>
     </div>
     <div v-else class="tasks">
       <TaskList 
@@ -87,6 +87,7 @@
         @create="() => createSubtask(task)"
         @edit="({subtask: Subtask}) => editSubtask(Subtask, task)"
       />
+      <div class="no-tasks">{{ $t('projectView.tasks.noTasks') }}</div>
     </div>
   </div>
 </template>
@@ -94,8 +95,8 @@
 <script lang="ts" setup>
 import { getNextWeek } from '~/scripts/Datetime';
 import { setupProjectState } from '~/scripts/ProjectClassesFetches';
-import { getSubtasks, getTasks, createTask as createTaskFetch, getTask, updateTask, deleteTask, createSubtask as createSubtaskFetch, getSubtask, updateSubtask, assignToSubtask, unassignToSubtask } from '~/scripts/TasksFetches';
-import { findIndexInList, insertAt, listRemoveIdx } from '~/scripts/Utils';
+import { getSubtasks, getTasks, createTask as createTaskFetch, getTask, updateTask, deleteTask, createSubtask as createSubtaskFetch, getSubtask, updateSubtask, assignToSubtask, unassignToSubtask, markAllSubtasksAs } from '~/scripts/TasksFetches';
+import { findIndexInList, insertAt, listRemoveIdx, randRange } from '~/scripts/Utils';
 import type { ButtonStyle } from '~/types/Button';
 import { defaultClose, type Dialog, type DialogAction } from '~/types/Dialog';
 import type { Subtask, Task } from '~/types/ProjectClass';
@@ -323,6 +324,15 @@ const createSubtask = (task: Task) => dialogs.closeAllWithTypeThenOpen({
   }]
 })
 
+//mark all as done
+const markAll = async (tasks: Task[]) => {
+  const {classId, projectId} = state;
+  for (const task of tasks){
+    await markAllSubtasksAs(classId!, projectId!, task.id);
+    multiSubtasks.value[task.id] = await getSubtasks(classId!, projectId!, task);
+  }
+}
+
 
 // edit subtask
 const editSubtask = (s: Subtask, task: Task) => dialogs.closeAllWithTypeThenOpen({
@@ -389,6 +399,7 @@ const navToTimeline = () => navigateTo("tasks/timeline");
 <style lang="scss" scoped>
 @import "/assets/styles/constants/Flex.scss";
 @import "/assets/styles/constants/Sizes.scss";
+@import "/assets/styles/constants/Typography.scss";
 
 .actions {
   @include flex-row;
@@ -419,5 +430,10 @@ const navToTimeline = () => navigateTo("tasks/timeline");
   
   gap: $space-large;
   margin-top: $space-large;
+}
+
+.no-tasks {
+  @include typemix-header;
+  font-weight: $typeweight-light;
 }
 </style>

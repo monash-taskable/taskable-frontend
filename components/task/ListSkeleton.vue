@@ -4,13 +4,7 @@
       <Skeleton fill :width="getLength()"/>
     </div>
     <div class="content">
-      <Skeleton :width="getLength()"/>
-      <Skeleton :width="getLength()"/>
-      <Skeleton :width="getLength()"/>
-      <Skeleton :width="getLength()"/>
-      <Skeleton :width="getLength()"/>
-      <Skeleton :width="getLength()"/>
-      <Skeleton :width="getLength()"/>
+      <Skeleton :width="getLength()" v-for="_ in randRange(3, 10)"/>
     </div>
   </div>
 </template>

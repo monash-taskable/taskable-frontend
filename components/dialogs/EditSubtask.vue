@@ -73,7 +73,8 @@
         <Dropdown 
           :styles="{colorPreset: 'strong', backgroundColor: 'var(--layer-background)'}"
           :selected="String(dataRef.status)"
-          @change=""
+          v-model="dataRef.status"
+        @change="emitChange"
         >
           <option v-for="p in taskStatuses" :value="p">{{ $t(`status.${p}`) }}</option>
         </Dropdown>
