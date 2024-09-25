@@ -6,9 +6,6 @@
 </template>
 
 <script lang="ts" setup>
-import { getProject, loadClassIfNotExist } from '~/scripts/ProjectClassesFetches';
-import { isNumericString } from '~/scripts/Utils';
-
 const appState = useAppStateStore();
 const stateRef = storeToRefs(appState);
 

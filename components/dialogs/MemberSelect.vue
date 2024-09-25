@@ -28,7 +28,6 @@ const props = defineProps({
 
 
 const {members, action} = props.context.payload;
-console.log(members);
 </script>
 
 <style lang="scss" scoped>

@@ -1,10 +1,7 @@
 <template>
   <div class="task-list">
-    <div class="title">
-      <Skeleton fill :width="getLength()"/>
-    </div>
     <div class="content">
-      <Skeleton :width="getLength()" v-for="_ in randRange(3, 10)"/>
+      <Skeleton fill />
     </div>
   </div>
 </template>
@@ -12,9 +9,7 @@
 <script lang="ts" setup>
 import { randRange } from '~/scripts/Utils';
 
-
 const getLength = () => `${randRange(100, 280)}px`;
-
 </script>
 
 <style lang="scss" scoped>
@@ -31,23 +26,9 @@ const getLength = () => `${randRange(100, 280)}px`;
   background: var(--layer-background);
   min-width: 400px;
 }
-
-.title {
-  @include flex-col;
-  @include flex-cross(stretch);
-  @include flex-main(flex-start);
-
-  padding: $space-medium-large $space-large;
-  height: $typesize-large;
-  margin-bottom: $space-medium;
-}
-
 .content {
-  @include flex-col;
-  @include flex-cross(stretch);
-  
   padding: 0 $space-large;
-  gap: $space-large;
-  margin-bottom: $space-medium;
+  margin: $space-medium 0;
+  height: 300px;
 }
 </style>

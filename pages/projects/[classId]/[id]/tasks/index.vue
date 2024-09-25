@@ -27,7 +27,7 @@
           :caption="$t('projectView.tasks.filter')"
         />
         <!-- Create task -->
-        <IconButton
+        <IconButton v-if="status === 'Mutable'"
           :styles="btnDefault"
           icon="fluent:add-20-regular"
           :caption="$t('projectView.tasks.addTask')"
@@ -36,7 +36,7 @@
       </div>
       <div class="action-group">
         <!-- Edit mode enter -->
-        <IconButton v-if="!editMode"
+        <IconButton v-if="!editMode && status === 'Mutable'"
           :styles="btnDefault"
           icon="fluent:pen-20-regular"
           :caption="$t('projectView.tasks.edit')"
@@ -72,8 +72,11 @@
         />
       </div>
     </div>
+    <div v-if="status === 'Immutable' && !loading" class="immutable">
+      <AlertCard :title="$t('projectView.tasks.asGuest')" :content="$t('projectView.tasks.asGuestMessage')"/>
+    </div>
     <div v-if="loading" class="tasks">
-      <TaskListSkeleton v-for="_ in 3"/>
+      <TaskListSkeleton v-for="_ in tasksCountInit"/>
     </div>
     <div v-else class="tasks">
       <TaskList 
@@ -83,23 +86,25 @@
         :subtasks="multiSubtasks[task.id]"
         :selectable="editMode"
         :selected="task.id in selectedTasks"
+        :readonly="status === 'Immutable'"
         @click="(e) => onTaskSelect(task, multiSubtasks[task.id], e)"
         @create="() => createSubtask(task)"
         @edit="({subtask: Subtask}) => editSubtask(Subtask, task)"
+        @drop="(e) => _drop(task, e)"
       />
-      <div v-if="tasks.length === 0" class="no-tasks">{{ $t('projectView.tasks.noTasks') }}</div>
+      <div v-if="tasks.length === 0 && status === 'Mutable'" class="no-tasks">{{ $t('projectView.tasks.noTasks') }}</div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { getNextWeek } from '~/scripts/Datetime';
-import { setupProjectState } from '~/scripts/ProjectClassesFetches';
+import { getProjectMembers, getProjectRole, getProjectStatus, setupProjectState } from '~/scripts/ProjectClassesFetches';
 import { getSubtasks, getTasks, createTask as createTaskFetch, getTask, updateTask, deleteTask, createSubtask as createSubtaskFetch, getSubtask, updateSubtask, assignToSubtask, unassignToSubtask, markAllSubtasksAs } from '~/scripts/TasksFetches';
-import { findIndexInList, insertAt, listRemoveIdx, randRange } from '~/scripts/Utils';
+import { findIndexInList, findInList, ident, insertAt, listRemoveIdx, randRange } from '~/scripts/Utils';
 import type { ButtonStyle } from '~/types/Button';
 import { defaultClose, type Dialog, type DialogAction } from '~/types/Dialog';
-import type { Subtask, Task } from '~/types/ProjectClass';
+import type { DropSubtaskEvent, ProjectStatus, Subtask, Task } from '~/types/ProjectClass';
 
 const state = useAppStateStore();
 const dialogs = useDialogs();
@@ -111,8 +116,10 @@ const btnDefault: ButtonStyle = {colorPreset: 'strong', backgroundColor: 'var(--
 const btnDisabled: ButtonStyle = {colorPreset: 'disabled', backgroundColor: 'var(--layer-background)', backgroundColorHover: 'var(--layer-background)', size: 'small'}
 
 // data
+const tasksCountInit = ref(0);
 const tasks: Ref<Task[]> = ref([]);
 const multiSubtasks: Ref<{[key: number]: Subtask[]}> = ref({});
+const status: Ref<ProjectStatus> = ref('Immutable');
 multiSubtasks.value[0] = [];
 
 // loading
@@ -133,6 +140,18 @@ const onTaskSelect = (task: Task, subtasks: Subtask[], event: {toggle: boolean})
     selectedTasks.value[task.id] = {task, subtasks};
 }
 
+// drop
+const _drop = async (destTask: Task ,{ sourceTask, subtaskId}: DropSubtaskEvent) => {
+  const {classId, projectId} = state;
+  await updateSubtask(classId!, projectId!, sourceTask.id, subtaskId, {taskId: destTask.id});
+  
+  const subtaskIdx = findIndexInList(multiSubtasks.value[sourceTask.id], s => s.id === subtaskId)!;
+  const subtask = multiSubtasks.value[sourceTask.id][subtaskIdx];
+  subtask.task = destTask;
+  listRemoveIdx(multiSubtasks.value[sourceTask.id], subtaskIdx);
+  multiSubtasks.value[destTask.id].push(subtask);
+}
+
 // update state
 onMounted(async ()=>{
   await setupProjectState(route.params.classId.toString(), route.params.id.toString());
@@ -142,11 +161,19 @@ onMounted(async ()=>{
   const {classId, projectId: projId} = state;
   
   const _tasks = await getTasks(classId, projId);
+  tasksCountInit.value = _tasks.length;
   for (const task of _tasks){
     multiSubtasks.value[task.id] = await getSubtasks(classId, projId, task);
   }
   tasks.value = _tasks;
-  
+  const role = await getProjectRole(classId)!;
+  if (role === 'TUTOR'){
+    status.value = ((await getProjectMembers(projId!, classId!))).map(x => x.id).includes(state.session.profile!.id) ? "Mutable" : "Immutable";
+  }
+  else{
+    status.value = "Mutable";
+  }
+
   loading.value = false;
   
   state.setProjectPage("tasks");
@@ -338,7 +365,7 @@ const markAll = async (tasks: Task[]) => {
 const editSubtask = (s: Subtask, task: Task) => dialogs.closeAllWithTypeThenOpen({
   dialogType: "editSubtask",
   payload: {
-    subtask: {...s},
+    subtask: {...s, assignment: [...s.assignment]},
     tasks,
     deletable: true,
     deleteCallback: () => {
@@ -366,20 +393,27 @@ const editSubtask = (s: Subtask, task: Task) => dialogs.closeAllWithTypeThenOpen
         status: _sUpdated.status,
         title: _sUpdated.title
       });
-
+      
       const idx = findIndexInList(multiSubtasks.value[task.id], _s => _s.id === _sUpdated.id);
-      const newSubtask = await getSubtask(classId!, projectId!, _sUpdated.task, _sUpdated.id);
-
-      if (idx === undefined || newSubtask === undefined) {
+      
+      if (idx === undefined ) {
         dialogs.closeDialog(c.id);
         return;
       }
-
+      
       if (s.assignment.length){
-        await unassignToSubtask(classId!, projectId!, newSubtask.task.id, newSubtask.id, s.assignment.map(x => x.id));
+        await unassignToSubtask(classId!, projectId!, _sUpdated.task.id, _sUpdated.id, s.assignment.map(x => x.id));
       }
-      if (_sUpdated.assignment,length){
-        await assignToSubtask(classId!, projectId!, newSubtask.task.id, newSubtask.id, _sUpdated.assignment.map(x => x.id));
+      
+      if (_sUpdated.assignment.length){
+        await assignToSubtask(classId!, projectId!, _sUpdated.task.id, _sUpdated.id, _sUpdated.assignment.map(x => x.id));
+      }
+
+      const newSubtask = await getSubtask(classId!, projectId!, _sUpdated.task, _sUpdated.id);
+
+      if (newSubtask === undefined) {
+        dialogs.closeDialog(c.id);
+        return;
       }
       
       listRemoveIdx(multiSubtasks.value[task.id], idx);
@@ -400,6 +434,11 @@ const navToTimeline = () => navigateTo("tasks/timeline");
 @import "/assets/styles/constants/Flex.scss";
 @import "/assets/styles/constants/Sizes.scss";
 @import "/assets/styles/constants/Typography.scss";
+
+.immutable {
+  margin-top: $space-large;
+  max-width: 500px;
+}
 
 .actions {
   @include flex-row;

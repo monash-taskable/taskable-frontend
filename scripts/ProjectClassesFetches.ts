@@ -1,5 +1,5 @@
 import { checkPrecedence, isRole } from "~/types/ProjectClass";
-import type { Announcement, Member, Project, ProjectMembers, ProjectStatus } from "~/types/ProjectClass";
+import type { Announcement, Member, OwnershipRole, Project, ProjectMembers, ProjectStatus } from "~/types/ProjectClass";
 import { findInList, ident, isNumericString } from "./Utils";
 import { FetchRequest } from "./FetchTools";
 import { AddProjectMembersRequest, AddProjectMembersResponse, CreateAnnouncementRequest, CreateAnnouncementResponse, GetAnnouncementResponse, GetAnnouncementsResponse, GetMembersResponse, GetProjectResponse, UpdateAnnouncementRequest, UpdateProjectRequest } from "~/types/proto/ProjectClass";
@@ -121,8 +121,6 @@ export const getProjectMembers = async (projectId: number, classId: number): Pro
     .protectedAPI(`/classes/${classId}/projects/${projectId}/members`)
     .commitAndRecv(GetMembersResponse.decode);
 
-  req.res(console.log);
-
   if (!req.isError() && req._result) {
     return req._result.classMembers.map((m): Member => ({
       id: m.id,
@@ -151,7 +149,24 @@ export const getProjectStatus = async (classId: number): Promise<ProjectStatus> 
 
     return checkPrecedence(role ?? "STUDENT", "ADMIN") ? "Mutable" : "Immutable";
 }
+
+export const getProjectRole = async (classId: number): Promise<Optional<OwnershipRole>> => {
+  const appState = useAppStateStore();
+  const projectClasses = useProjectClassStore();
+  await loadClassIfNotExist(classId);
   
+  if (projectClasses.projectClasses[classId].members.length === 0){
+    await projectClasses.loadMembers(classId);
+  }
+
+  const role = findInList(
+    projectClasses.projectClasses[classId].members,
+    m => m.id === appState.session.profile!.id, 
+    m => m.role);
+
+  return role;
+}
+
 // local
 export const getProjectManagers = async (classId: number): Promise<ProjectMembers> => {
   const projectClasses = useProjectClassStore();

@@ -1,6 +1,6 @@
 <template>
-  <div @click="_onClick" class="list-entry" :class="getClass(subtask)" :style="getStyle(subtask)">
-    <div class="label">
+  <div :draggable="props.readonly ? 'false' : 'true'" @dragstart="_onDrag" @click="_onClick" class="list-entry" :class="getClass(subtask)" :style="getStyle(subtask)">
+    <div class="label" draggable="false">
       <div class="icon-holder"><Icon name="fluent:re-order-dots-vertical-20-regular"/></div>
       <div class="title">{{ subtask.title }}</div>
       <div class="indicator">
@@ -27,6 +27,12 @@ const props = defineProps({
 const now = new Date();
 const percent = (subtask: Subtask) => getDatePercentage(subtask.start, subtask.end, now);
 const overdue = (subtask: Subtask) => subtask.status !== 'done' && getDatePercentage(subtask.start, subtask.end, now) === 1;
+
+const _onDrag = (event: DragEvent) => {
+  event.dataTransfer?.setData("subtaskId", String(props.subtask.id));
+  event.dataTransfer?.setData("sourceTaskId", String(props.subtask.task.id));
+  event.dataTransfer?.setData("sourceStatus", String(props.subtask.status));
+}
 
 const getClass = (subtask: Subtask) => {
   const p = percent(props.subtask);

@@ -97,7 +97,7 @@ export const getSubtask = async (classId: number, projectId: number, task: Task,
   return {
     assignment, description, id, task, title,
     priority: isPriority(priority) ? priority : 'non-urgent',
-    status: isTaskStatus(status) ? status : 'unassigned',
+    status: isTaskStatus(status) ? status : 'progress',
     end: stringToDate(end),
     start: stringToDate(start),
   }
@@ -123,7 +123,7 @@ export const getSubtasks = async (classId: number, projectId: number, task: Task
     result.push({
       assignment, description, id, task, title,
       priority: isPriority(priority) ? priority : 'non-urgent',
-      status: isTaskStatus(status) ? status : 'unassigned',
+      status: isTaskStatus(status) ? status : 'progress',
       end: stringToDate(end),
       start: stringToDate(start),
     });
@@ -133,16 +133,16 @@ export const getSubtasks = async (classId: number, projectId: number, task: Task
 }
 
 export const updateSubtask = async (classId: number, projectId: number, taskId: number, subtaskId: number,
-  data: {taskId: number, title: string, description: string, status: TaskStatus, priority: Priority, start: Date, end: Date}
+  data: {taskId?: number, title?: string, description?: string, status?: TaskStatus, priority?: Priority, start?: Date, end?: Date}
 ) => {
   await FetchRequest
   .protectedAPI(`/classes/${classId}/projects/${projectId}/tasks/${taskId}/subtasks/${subtaskId}/update`)
   .post()
   .payload(UpdateSubtaskRequest.encode, {
     description: data.description, 
-    end: dateToString(data.end),
+    end: data.end ? dateToString(data.end) : undefined,
     priority: data.priority,
-    start: dateToString(data.start),
+    start: data.start ? dateToString(data.start) : undefined,
     status: data.status,
     taskId: data.taskId,
     title: data.title,
@@ -230,7 +230,7 @@ export const assignToSubtask = async (classId: number, projectId: number, taskId
 export const unassignToSubtask = async (classId: number, projectId: number, taskId: number, subtaskId: number, memberIds: number[]) => {
   await FetchRequest
     .protectedAPI(`/classes/${classId}/projects/${projectId}/tasks/${taskId}/subtasks/${subtaskId}/unassign`)
-    .post()
+    .delete()
     .payload(AssignMultipleToSubtaskRequest.encode, {userIds: memberIds})
     .commit()
 }

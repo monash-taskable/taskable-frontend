@@ -135,3 +135,9 @@ export const debugProjectClass: ProjectClass = {
     {id: 2, name: "John Port III", role: "STUDENT", email: "pork2@example.com"},
   ]
 }
+
+export type DropSubtaskEvent = {
+  subtaskId: number,
+  sourceTask: Task,
+  sourceStatus: TaskStatus,
+}

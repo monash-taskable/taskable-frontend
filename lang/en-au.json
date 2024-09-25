@@ -181,6 +181,8 @@
   "projectView.tasks.taskDeleteMessage": "You are about to delete task(s), which deletes all tasks belongs to the category. This action cannot be reverted.",
   "projectView.tasks.addSubtask": "Add Task",
   "projectView.tasks.noTasks": "This project doesn't have any categories yet. Create one by clicking 'Add Category'",
+  "projectView.tasks.asGuest": "Viewing as Guest",
+  "projectView.tasks.asGuestMessage": "You are viewing this project as guest. This means you can't add, remove or modify categories, tasks, kanban board and timeline.",
   "projectView.subtasks.assignment": "Assignments",
   "projectView.subtasks.assign": "Assign",
   "projectView.subtasks.assignMember": "Assign a Member",
