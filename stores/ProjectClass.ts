@@ -254,5 +254,17 @@ export const useProjectClassStore = defineStore({
         return req._result.id;
       }
     },
+    async createProject(classId: number, name: string) {
+      const req = await FetchRequest
+        .protectedAPI(`/classes/${classId}/projects/create`)
+        .post()
+        .payload(CreateProjectRequest.encode, { name, createdAt: getCurrentGMTDateTime() })
+        .commitAndRecv(CreateProjectResponse.decode);
+
+      if (!req.isError() && req._result){
+        this.loadProject(classId, req._result.id);
+        return req._result.id;
+      }
+    },
   },
 })

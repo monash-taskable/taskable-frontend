@@ -58,7 +58,7 @@ const deleteAnnouncement = (a: Announcement[]) => {
     width: "400px",
     close: defaultClose,
     payload: {
-      message: t("projects.announcements.deleteAnnoucementMessage"),
+      message: t("projects.announcements.deleteAnnouncementMessage"),
       actions: [<DialogAction>{
         caption: t("dialogCommon.cancel"),
         icon: "fluent:arrow-turn-up-left-20-regular",
@@ -66,7 +66,7 @@ const deleteAnnouncement = (a: Announcement[]) => {
         style: {colorPreset: 'strong', backgroundColor: 'var(--layer-background)'},
         action: (c: Dialog<any>, _: any) => dialogs.closeDialog(c.id)
       },{
-        caption: t("projects.announcements.deleteAnnoucement"),
+        caption: t("projects.announcements.deleteAnnouncement"),
         icon: "fluent:delete-20-regular",
         expanding: false,
         style: {colorPreset: 'dangerous-strong'},
@@ -78,7 +78,7 @@ const deleteAnnouncement = (a: Announcement[]) => {
         }
       }]
     },
-    title: t("projects.announcements.deleteAnnoucement.title")
+    title: t("projects.announcements.deleteAnnouncement.title")
   })
 }
 
@@ -152,13 +152,14 @@ const postAnnouncement = () => dialogs.closeAllWithTypeThenOpen({
     icon: "fluent:checkmark-20-regular",
     expanding: true,
     style: {colorPreset: 'accent-strong'},
-    action: async (_, data: {title: string, content: string}) => {
+    action: async (c, data: {title: string, content: string}) => {
       const {title, content} = data;
       const id = await createAnnouncement(projectClass.classId, title, content);
       if (id){
         const newAnnouncement = await getAnnouncement(projectClass.classId, id);
         if (newAnnouncement) announcements.value.push(newAnnouncement);
       }
+      dialogs.closeDialog(c.id);
     }
   }],
   close: defaultClose,
@@ -198,9 +199,18 @@ onMounted(async () => {
 .body {
   @include flex-col;
   @include flex-cross(stretch);
-
+  
   padding: $space-extra;
   height: var(--height);
-  gap: $space-large;
+  // gap: $space-large;
+}
+
+.info {
+  @include flex-col;
+  @include flex-cross(center);
+  @include typemix-label;
+  
+  background: var(--layer-background);
+  padding: $space-extra;
 }
 </style>

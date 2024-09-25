@@ -81,7 +81,6 @@ export const detachProject = async (classId: number, projectId: number) => {
     .post().commit();
 }
 
-// TODO
 export const updateProject = async (classId: number, projectId: number, options: {name?: string, description?: string, archived?: boolean}) => {
   const req = await FetchRequest
     .protectedAPI(`/classes/${classId}/projects/${projectId}/update`)

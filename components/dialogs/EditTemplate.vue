@@ -75,6 +75,7 @@ const updateTemplateName = async (name: string) => {
   if (_template){
     await projectClasses.updateTemplate(projectClass.classId, _template.templateId, name);
     await projectClasses.loadTemplate(projectClass.classId, _template.templateId);
+    dialogs.updateDialog(props.context.id, {...props.context, title: name})
   }
   
   updatingTemplateName.value = false;
@@ -121,7 +122,7 @@ const createSingleProject = async () => dialogs.closeAllWithTypeThenOpen({
   dialogType: "createProjectTemplate",
   title: t("projects.editTemplate.createSingleProjectFromTemplate"),
   payload: {
-    template: true,
+    template: false,
     personal: false,
     classId: projectClassId,
   },

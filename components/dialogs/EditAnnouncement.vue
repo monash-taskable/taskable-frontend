@@ -2,7 +2,8 @@
   <div class="editor-root">
     <div class="group">
       <h3>{{ $t('projects.announcements.title') }}</h3>
-      <TextInput 
+      <TextInput
+        focused
         :placeholder="$t('projects.announcements.enterTitle')"
         v-model="title"
         :value="_title"

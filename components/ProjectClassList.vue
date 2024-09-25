@@ -101,7 +101,11 @@ const openCreateProject = (template: string, personal: boolean, classId: number)
         
         name = name.trim();
 
-        if (name === "") return;
+        if (name === "") {
+          const projId = await projectClasses.createProject(classId, name);
+          dialogControl.closeAllDialogs();
+          if (projId !== undefined) navigateTo(`/projects/${props.projectClass.classId}/${projId}`);
+        }
 
         if (template === "Template"){
           await projectClasses.addTemplate(classId, name);
