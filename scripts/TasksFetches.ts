@@ -132,6 +132,19 @@ export const getSubtasks = async (classId: number, projectId: number, task: Task
   return result;
 }
 
+export const getSubtasksWithLookup = async (classId: number, projectId: number, taskLookup: {[x: number]: Task}): Promise<Subtask[]> => {
+  await loadClassIfNotExist(classId);
+
+  
+  const result: Subtask[] = [];
+  for (const task of Object.values(taskLookup)) {
+    (await getSubtasks(classId, projectId, task)).forEach(x => result.push(x));
+  }
+
+  console.log(result);
+  return result;
+}
+
 export const updateSubtask = async (classId: number, projectId: number, taskId: number, subtaskId: number,
   data: {taskId?: number, title?: string, description?: string, status?: TaskStatus, priority?: Priority, start?: Date, end?: Date}
 ) => {

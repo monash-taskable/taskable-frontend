@@ -360,7 +360,6 @@ const markAll = async (tasks: Task[]) => {
   }
 }
 
-
 // edit subtask
 const editSubtask = (s: Subtask, task: Task) => dialogs.closeAllWithTypeThenOpen({
   dialogType: "editSubtask",

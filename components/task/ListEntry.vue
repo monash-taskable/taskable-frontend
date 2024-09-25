@@ -21,7 +21,8 @@ import type { Subtask } from '~/types/ProjectClass';
 
 const props = defineProps({
   subtask: {type: Object as PropType<Subtask>, required: true},
-  readonly: {type: Boolean, default: false}
+  readonly: {type: Boolean, default: false},
+  highlighted: {type: Boolean, default: false}
 })
 
 const now = new Date();
@@ -29,6 +30,7 @@ const percent = (subtask: Subtask) => getDatePercentage(subtask.start, subtask.e
 const overdue = (subtask: Subtask) => subtask.status !== 'done' && getDatePercentage(subtask.start, subtask.end, now) === 1;
 
 const _onDrag = (event: DragEvent) => {
+  
   event.dataTransfer?.setData("subtaskId", String(props.subtask.id));
   event.dataTransfer?.setData("sourceTaskId", String(props.subtask.task.id));
   event.dataTransfer?.setData("sourceStatus", String(props.subtask.status));
@@ -41,6 +43,7 @@ const getClass = (subtask: Subtask) => {
   const due = !done && !overdue && p >= 0.8;
   return [
     props.readonly ? "readonly" : "",
+    props.highlighted ? "highlighted" : "",
     subtask.status,
     overdue ? "overdue" : "",
     due ? "due" : "",
@@ -48,7 +51,10 @@ const getClass = (subtask: Subtask) => {
 };
 const getStyle = (subtask: Subtask) => {
   return [
-    `--task-percent: ${Math.floor(percent(subtask) * 100)}%`
+    `--task-percent: ${Math.floor(percent(subtask) * 100)}%`,
+    `--tc-strong: var(--tc-${subtask.task.color}-strong)`,
+    `--tc-weak: var(--tc-${subtask.task.color}-weak)`,
+    `--tc-medium: var(--tc-${subtask.task.color}-medium)`,
   ].join("; ");
 }
 
@@ -126,7 +132,7 @@ const _onClick = () => emits("click");
     color: var(--foreground-weak);
   }
 
-  .list-entry:hover & {
+  .list-entry:hover &, .list-entry.highlighted & {
     background: var(--tc-weak);
     span {color: var(--tc-strong);}
   }
