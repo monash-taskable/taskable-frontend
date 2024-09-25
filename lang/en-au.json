@@ -178,7 +178,7 @@
   "projectView.tasks.title": "Title",
   "projectView.tasks.description": "Description",
   "projectView.tasks.taskDeleteConfirm": "Confirm Category Deletion",
-  "projectView.tasks.taskDeleteMessage": "You are about to delete task(s). This action cannot be reverted.",
+  "projectView.tasks.taskDeleteMessage": "You are about to delete task(s), which deletes all tasks belongs to the category. This action cannot be reverted.",
   "projectView.tasks.addSubtask": "Add Task",
   "projectView.subtasks.assignment": "Assignments",
   "projectView.subtasks.assign": "Assign",
