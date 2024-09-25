@@ -28,6 +28,7 @@
   "datetime.july": "Jul",
   "datetime.august": "Aug",
   "datetime.september": "Sep",
+  "datetime.october": "Oct",
   "datetime.november": "Nov",
   "datetime.december": "Dec",
   "datetime.mins": "min(s)",
@@ -49,6 +50,7 @@
   "datetime.formatDateDay": "%(date)s %(day)s",
   "datetime.formatTimeDay": "%(day)s %(time)s",
   "datetime.formatDateTimeDay": "%(day)s %(date)s %(time)s",
+  "datetime.formatYearMonth": "%(month)s/%(year)s",
 
   "home.welcomeBack": "Welcome back, ",
   "home.recentProj": "Recent Projects",

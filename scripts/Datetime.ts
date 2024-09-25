@@ -69,3 +69,25 @@ export const getNextWeek = (): Date => new Date(Date.now() + 7 * 24 * 60 * 60 * 
 
 export const inputToDate = (dateString: string) => new Date(dateString);
 export const dateToInput = (date: Date) => date.toISOString().split('T')[0];
+
+export const getDaysInMonth = (year: number, month: number): number => new Date(year, month, 0).getDate();
+
+export const getMonthSegment = (year: number, month: number, start: Date, end: Date): [number, number] => {
+  // First, create the first and last day of the target month
+  const startOfMonth = new Date(year, month, 1);
+  const endOfMonth = new Date(year, month + 1, 0); // Last day of the month
+
+  // Find the effective start and end dates within the month segment
+  const effectiveStart = start > endOfMonth ? null : (start < startOfMonth ? startOfMonth : start);
+  const effectiveEnd = end < startOfMonth ? null : (end > endOfMonth ? endOfMonth : end);
+
+  if (effectiveStart === null || effectiveEnd === null) {
+      return [0, 0]; // If no part of the range overlaps with the month
+  }
+
+  // Calculate the start day (0-indexed within the month) and the length of the segment
+  const startDayInMonth = effectiveStart.getDate() - 1;
+  const segmentLength = effectiveEnd.getDate() - effectiveStart.getDate() + 1;
+
+  return [startDayInMonth, segmentLength];
+}

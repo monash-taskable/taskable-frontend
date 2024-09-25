@@ -16,6 +16,10 @@ const {t} = useI18n();
 @import "/assets/styles/constants/Flex.scss";
 @import "/assets/styles/constants/Sizes.scss";
 
+.proj-layout-root {
+  height: 80%;
+}
+
 .proj-layout-content {
   padding-left: calc(
     calc(
@@ -24,5 +28,7 @@ const {t} = useI18n();
   );
   padding-top: $space-medium;
   padding-right: $space-large;
+
+  height: 100%;
 }
 </style>
