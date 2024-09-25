@@ -12,10 +12,10 @@
 </template>
 
 <script lang="ts" setup>
+import { getCurrentGMTDateTime } from '~/scripts/Datetime';
 import { FetchRequest } from '~/scripts/FetchTools';
-import { getCurrentGMTDateTime } from '~/scripts/Utils';
 import { defaultClose, type Dialog } from '~/types/Dialog';
-import { debugProjectClass, type ProjectClass } from '~/types/ProjectClass';
+import { debugProjectClass } from '~/types/ProjectClass';
 import { CreateClassRequest, GetClassResponse } from '~/types/proto/ProjectClass';
 
 const {t} = useI18n();

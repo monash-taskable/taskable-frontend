@@ -67,6 +67,7 @@ const updateProjName = async (newName: string) => {
   await updateProject(state.classId ?? -1, state.projectId ?? -1, {name: newName});
   project.value = await getProject(state.classId ?? -1, state.projectId ?? -1);
   projName.value = project.value!.name;
+  state.setProjectTitle(projName.value);
   projNameUpdating.value = false;
 }
 

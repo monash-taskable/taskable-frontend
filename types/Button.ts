@@ -30,7 +30,8 @@ export type ButtonPreset =
   | "accent" 
   | "accent-strong" 
   | "dangerous"
-  | "dangerous-strong";
+  | "dangerous-strong"
+  | "disabled";
 
 
 export const presets: ReadonlyMap<ButtonPreset, ButtonStyle> = new Map([
@@ -65,6 +66,11 @@ export const presets: ReadonlyMap<ButtonPreset, ButtonStyle> = new Map([
     backgroundColor: "var(--dangerous-weak)",
     backgroundColorHover: "var(--dangerous-interact)",
     foregroundColor: "var(--dangerous-strong)",
+  }],
+  ["disabled", {
+    backgroundColor: "transparent",
+    backgroundColorHover: "transparent",
+    foregroundColor: "var(--foreground-disabled)",
   }],
 ]);
 

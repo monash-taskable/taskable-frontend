@@ -117,6 +117,7 @@ button {
     transition: $def-transition;
     display: inline-block;
     white-space: nowrap;
+    height: $icon-size-medium;
   }
   
   gap: $space-medium;

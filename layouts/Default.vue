@@ -100,6 +100,7 @@ import type { Optional } from '~/types/Optional';
 const conf = useRuntimeConfig();
 const notificationCount = ref(30);
 const navBtnStyle = buttonStyle({ colorPreset: 'layer' });
+const {setLocale} = useI18n();
 
 const appStateStore = useAppStateStore()
 const appState = storeToRefs(appStateStore);
@@ -198,7 +199,8 @@ onMounted(async () => {
 
   if (await appStateStore.validateSession()){
     authFlag.value = true;
-    await appStateStore.initSessionAndCsrf();
+    const lang = await appStateStore.initSessionAndCsrf();
+    setLocale(lang ?? 'en-au');
   }
   else {
     navigateTo("/login");

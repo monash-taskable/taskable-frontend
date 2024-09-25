@@ -1,9 +1,10 @@
 import { checkPrecedence, isRole } from "~/types/ProjectClass";
 import type { Announcement, Member, Project, ProjectMembers, ProjectStatus } from "~/types/ProjectClass";
-import { findInList, getCurrentGMTDateTime, ident, isNumericString, stringToDate } from "./Utils";
+import { findInList, ident, isNumericString } from "./Utils";
 import { FetchRequest } from "./FetchTools";
 import { AddProjectMembersRequest, AddProjectMembersResponse, CreateAnnouncementRequest, CreateAnnouncementResponse, GetAnnouncementResponse, GetAnnouncementsResponse, GetMembersResponse, GetProjectResponse, UpdateAnnouncementRequest, UpdateProjectRequest } from "~/types/proto/ProjectClass";
 import type { Optional } from "~/types/Optional";
+import { getCurrentGMTDateTime, stringToDate } from "./Datetime";
 
 export const setupProjectState = async (classIdParam: string, projIdParam: string) => {
 
@@ -48,7 +49,7 @@ export const setupProjectState = async (classIdParam: string, projIdParam: strin
   appState.setProject(Number(id));
   appState.setClass(Number(classId));
   loadClassIfNotExist(Number(classId));
-  appState.setProjectTitle("Debug");
+  appState.setProjectTitle(tryClass!.name);
 }
 
 export const getProject = async (classId: number, projectId: number): Promise<Optional<Project>> => {

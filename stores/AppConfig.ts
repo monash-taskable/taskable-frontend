@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia'
+import { FetchRequest } from '~/scripts/FetchTools';
 import { isOfType } from '~/scripts/Utils';
+import { UpdateProfileRequest } from '~/types/proto/Profile';
 import type { AccentColor, Theme } from '~/types/Theming';
 
 // export const languages = ["en-au", "zh-tw"] as const;
@@ -25,9 +27,19 @@ export const useAppConfigStore = defineStore({
   actions: {
     setTheme(theme: Theme){
       this.theme = theme;
+      FetchRequest
+      .protectedAPI(`/users/update`)
+      .post()
+      .payload(UpdateProfileRequest.encode, {theme})
+      .commit();
     },
     setAccent(accent: AccentColor){
       this.accent = accent;
+      FetchRequest
+      .protectedAPI(`/users/update`)
+      .post()
+      .payload(UpdateProfileRequest.encode, {color: accent})
+      .commit();
     },
   }
 })

@@ -126,7 +126,7 @@ const selectedActions: SelectedAction[] = [{
     await updateAnnouncement(a[0]);
   },
   button: {
-    icon: "fluent:person-edit-20-regular",
+    icon: "fluent:pen-20-regular",
     label: "",
     expanding: true,
     expanded: false,

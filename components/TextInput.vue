@@ -15,6 +15,7 @@
         @focusout="unfocus"
         @focusin="focus"
         @keydown="_onKeyDown"
+        @keyup="_onKeyUp"
         />
     </div>
     <div v-show="props.error" :style="getStyle(props.styles)" class="error-msg">
@@ -49,7 +50,7 @@ onMounted(()=>{
 })
 
 // focus and filled logic
-const emitEvent = defineEmits(["change", "focusin", "focusout", "keydown"]);
+const emitEvent = defineEmits(["change", "focusin", "focusout", "keydown", "keyup"]);
 
 const focusFlag = ref(props.focused);
 const focus = () => {
@@ -80,6 +81,7 @@ const updateText = () => {
 }
 
 const _onKeyDown = (e: KeyboardEvent) => emitEvent("keydown", e);
+const _onKeyUp = (e: KeyboardEvent) => {emitEvent("keyup", e); updateText()};
 
 
 // getters

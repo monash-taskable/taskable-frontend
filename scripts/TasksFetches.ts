@@ -2,8 +2,9 @@ import { CreateCommentRequest, CreateCommentResponse, CreateSubtaskRequest, Crea
 import { FetchRequest } from "./FetchTools"
 import { isPriority, isTaskColor, isTaskStatus, type Comment, type Member, type Priority, type Subtask, type Task, type TaskColor, type TaskStatus } from "~/types/ProjectClass"
 import type { Optional } from "~/types/Optional";
-import { dateToString, findInList, ident, stringToDate } from "./Utils";
+import { findInList, ident } from "./Utils";
 import { loadClassIfNotExist } from "./ProjectClassesFetches";
+import { dateToString, stringToDate } from "./Datetime";
 
 export const createTask = async (classId: number, projectId: number, title: string, description: string, color?: TaskColor) => {
   const req = await FetchRequest
@@ -31,7 +32,7 @@ export const getTask = async (classId: number, projectId: number, taskId: number
   }
 }
 
-export const getTasks = async (classId: number, projectId: number): Promise<Optional<Task[]>> => {
+export const getTasks = async (classId: number, projectId: number): Promise<Task[]> => {
   const req = await FetchRequest
   .protectedAPI(`/classes/${classId}/projects/${projectId}/tasks`)
   .commitAndRecv(GetTasksResponse.decode);
@@ -41,6 +42,8 @@ export const getTasks = async (classId: number, projectId: number): Promise<Opti
       description, id, title,
       color: isTaskColor(color) ? color : "blue",
     }))
+
+  return []
 }
 
 export const updateTask = async (classId: number, projectId: number, taskId: number,

@@ -4,7 +4,7 @@
     class="table-header-cell" 
     :style="getStyle(props.column.flex ?? 1)" 
     :class="getClass(props.sorted !== 'Default', focusFlag)">
-    <div class="label">
+    <div class="icon">
       {{ props.column.label }}
     </div>
     <div class="icon">
@@ -79,7 +79,7 @@ const _onClick = () => {
   }
 }
 
-.label {
+.icon {
   @include typemix-label;
 
 }

@@ -117,6 +117,39 @@
     --popup-overlay: rgba(57, 57, 57, 0.1);
     --float-color: rgba(0, 0, 0, 0.05);
 
+    // task colors
+    --tc-ruby-strong: #8F092A;
+    --tc-ruby-medium: #C7294F;
+    --tc-ruby-weak: #FFD3DD;
+
+    --tc-orange-strong: #C95400;
+    --tc-orange-medium: #F26906;
+    --tc-orange-weak: #FFD8BB;
+
+    --tc-green-strong: #3A9900;
+    --tc-green-medium: #70BE40;
+    --tc-green-weak: #E6FFD5;
+
+    --tc-aqua-strong: #036E85;
+    --tc-aqua-medium: #1C99B5;
+    --tc-aqua-weak: #C9F5FF;
+
+    --tc-blue-strong: #124DA2;
+    --tc-blue-medium: #1671F4;
+    --tc-blue-weak: #D6E7FF;
+
+    --tc-purple-strong: #5717C1;
+    --tc-purple-medium: #8649E9;
+    --tc-purple-weak: #EDE1FF;
+
+    --tc-magenta-strong: #9C0E75;
+    --tc-magenta-medium: #D735AA;
+    --tc-magenta-weak: #FFDCF5;
+
+    --tc-gray-strong: #313131;
+    --tc-gray-medium: #4C4C4C;
+    --tc-gray-weak: #DFDFDF;
+
     &.color--orange,
     & .theme-override.color--orange {
       --accent-strong: var(--gnr-orange100);
@@ -223,5 +256,4 @@
       --accent-weak: var(--gnr-magenta100);
     }
   }
-
 }

@@ -32,7 +32,7 @@
       <div class="option row row-center">
         <h4> {{ $t("settings.locale") }} </h4>
         <div>
-          <Dropdown @change="setLocale" :selected="locale">
+          <Dropdown @change="updateLocale" :selected="locale">
             <option v-for="[langCode, langName] in Object.entries(languageNames)" :value="langCode">{{ langName }}</option>
           </Dropdown>
         </div>
@@ -42,8 +42,24 @@
 </template>
 
 <script lang="ts" setup>
+import { FetchRequest } from '~/scripts/FetchTools';
+import { UpdateProfileRequest } from '~/types/proto/Profile';
+
 const { locale, setLocale, t } = useI18n();
 useAppStateStore().setTitle(t("settings.title"), true, "fluent:settings-20-regular");
+
+const updateLocale = (language: string) => {
+  setLocale(language);
+  
+  const state = useAppStateStore();
+  if (state.session.profile)
+  FetchRequest
+  .protectedAPI(`/users/update`)
+  .post()
+  .payload(UpdateProfileRequest.encode, {language})
+  .commit();
+}
+
 </script>
 
 <style lang="scss" scoped>

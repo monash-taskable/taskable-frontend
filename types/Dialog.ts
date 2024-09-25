@@ -21,6 +21,7 @@ const dialogTypes = [
   "optionsAlert",
   "listAnnouncements",
   "editAnnouncement",
+  "editTask",
 ] as const;
 export type DialogType = typeof dialogTypes[number];
 export const isOfDialog = isOfType(dialogTypes);

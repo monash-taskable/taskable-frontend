@@ -37,22 +37,23 @@
     
     <!-- Dialog Types -->
     <DialogsAlert @emit="updateEmit" v-if="context.dialogType === 'alert'" :context="props.context"/>
-    <DialogsError @emit="updateEmit" v-if="context.dialogType === 'error'" :context="props.context"/>
-    <DialogsCreateClass @emit="updateEmit" v-if="context.dialogType === 'createClass'" :context="props.context"/>
-    <DialogsSignIn @emit="updateEmit" v-if="context.dialogType === 'signIn'" :context="props.context"/>
-    <DialogsSignInLoading @emit="updateEmit" v-if="context.dialogType === 'signInLoading'" :context="props.context"/>
-    <DialogsSignInError @emit="updateEmit" v-if="context.dialogType === 'signInError'" :context="props.context"/>
-    <DialogsCreateProjectTemplate @emit="updateEmit" v-if="context.dialogType === 'createProjectTemplate'" :context="props.context"/>
-    <DialogsEditClass @emit="updateEmit" v-if="context.dialogType === 'editClass'" :context="props.context"/>
-    <DialogsUpdateMemberRole @emit="updateEmit" v-if="context.dialogType === 'updateMemberRole'" :context="props.context"/>
-    <DialogsSearchUser @emit="updateEmit" v-if="context.dialogType === 'searchUser'" :context="props.context"/>
-    <DialogsBatchMemberAdd @emit="updateEmit" v-if="context.dialogType === 'batchMemberAdd'" :context="props.context"/>
-    <DialogsSessionError @emit="updateEmit" v-if="context.dialogType === 'sessionError'" :context="props.context"/>
-    <DialogsProjectError @emit="updateEmit" v-if="context.dialogType === 'projectError'" :context="props.context"/>
-    <DialogsEditTemplate @emit="updateEmit" v-if="context.dialogType === 'editTemplate'" :context="props.context"/>
-    <DialogsOptionsAlert @emit="updateEmit" v-if="context.dialogType === 'optionsAlert'" :context="props.context"/>
-    <DialogsEditAnnouncement @emit="updateEmit" v-if="context.dialogType === 'editAnnouncement'" :context="props.context"/>
-    <DialogsListAnnouncements @emit="updateEmit" v-if="context.dialogType === 'listAnnouncements'" :context="props.context"/>
+    <DialogsError @emit="updateEmit" v-else-if="context.dialogType === 'error'" :context="props.context"/>
+    <DialogsCreateClass @emit="updateEmit" v-else-if="context.dialogType === 'createClass'" :context="props.context"/>
+    <DialogsSignIn @emit="updateEmit" v-else-if="context.dialogType === 'signIn'" :context="props.context"/>
+    <DialogsSignInLoading @emit="updateEmit" v-else-if="context.dialogType === 'signInLoading'" :context="props.context"/>
+    <DialogsSignInError @emit="updateEmit" v-else-if="context.dialogType === 'signInError'" :context="props.context"/>
+    <DialogsCreateProjectTemplate @emit="updateEmit" v-else-if="context.dialogType === 'createProjectTemplate'" :context="props.context"/>
+    <DialogsEditClass @emit="updateEmit" v-else-if="context.dialogType === 'editClass'" :context="props.context"/>
+    <DialogsUpdateMemberRole @emit="updateEmit" v-else-if="context.dialogType === 'updateMemberRole'" :context="props.context"/>
+    <DialogsSearchUser @emit="updateEmit" v-else-if="context.dialogType === 'searchUser'" :context="props.context"/>
+    <DialogsBatchMemberAdd @emit="updateEmit" v-else-if="context.dialogType === 'batchMemberAdd'" :context="props.context"/>
+    <DialogsSessionError @emit="updateEmit" v-else-if="context.dialogType === 'sessionError'" :context="props.context"/>
+    <DialogsProjectError @emit="updateEmit" v-else-if="context.dialogType === 'projectError'" :context="props.context"/>
+    <DialogsEditTemplate @emit="updateEmit" v-else-if="context.dialogType === 'editTemplate'" :context="props.context"/>
+    <DialogsOptionsAlert @emit="updateEmit" v-else-if="context.dialogType === 'optionsAlert'" :context="props.context"/>
+    <DialogsEditAnnouncement @emit="updateEmit" v-else-if="context.dialogType === 'editAnnouncement'" :context="props.context"/>
+    <DialogsListAnnouncements @emit="updateEmit" v-else-if="context.dialogType === 'listAnnouncements'" :context="props.context"/>
+    <DialogsEditTask @emit="updateEmit" v-else-if="context.dialogType === 'editTask'" :context="props.context"/>
   </div>
 </template>
 
