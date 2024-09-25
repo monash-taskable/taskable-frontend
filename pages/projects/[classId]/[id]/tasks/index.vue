@@ -87,7 +87,7 @@
         @create="() => createSubtask(task)"
         @edit="({subtask: Subtask}) => editSubtask(Subtask, task)"
       />
-      <div class="no-tasks">{{ $t('projectView.tasks.noTasks') }}</div>
+      <div v-if="tasks.length === 0" class="no-tasks">{{ $t('projectView.tasks.noTasks') }}</div>
     </div>
   </div>
 </template>
