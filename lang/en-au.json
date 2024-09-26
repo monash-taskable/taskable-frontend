@@ -193,6 +193,7 @@
   "projectView.subtasks.deleteSubtask": "Delete Task",
   "projectView.subtasks.deleteSubtaskConfirm": "Confirm Task Deletion",
   "projectView.subtasks.deleteConfirmMsg": "You are about to delete %s. This action cannot be reverted.",
+  "projectView.announcements.notSelected": "Select an announcement from the list",
   
   "projectView.options": "Project Options -",
   "projectView.projectActions": "Project Actions",

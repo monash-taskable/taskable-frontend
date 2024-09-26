@@ -229,6 +229,10 @@ onMounted(async () => {
 }
 
 .layout-root {
+  @include flex-col;
+  @include flex-main(flex-start);
+  @include flex-cross(stretch);
+
   height: 100%;
 }
 

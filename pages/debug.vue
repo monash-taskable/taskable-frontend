@@ -5,28 +5,15 @@
 </template>
 
 <script lang="ts" setup>
-import { defaultClose, type DialogAction } from '~/types/Dialog';
+import { FetchRequest } from '~/scripts/FetchTools';
 
 definePageMeta({
   layout: "empty",
 })
 
-const debug = () => useDialogs().closeAllWithTypeThenOpen({
-  dialogType: "optionsAlert",
-  payload: {
-    message: "Hello world",
-    actions: <DialogAction[]>[
-      {
-        caption: "hi",
-        style: {colorPreset: 'accent-strong'},
-        action: console.log,
-      },
-    ]
-  },
-  close: defaultClose,
-  title: "hi",
-  width: "300px",
-})
+const debug = () => {
+  FetchRequest.api('/classes/1/projects/3/tasks/16').commit();
+}
 </script>
 
 <style lang="scss" scoped>
@@ -35,7 +22,7 @@ const debug = () => useDialogs().closeAllWithTypeThenOpen({
 .page-root{
   @include flex-col;
   @include flex-main(center);
-  @include flex-cross(flex-start);
+  @include flex-cross(center);
 
   height: 80vh;
   width: 100vw;

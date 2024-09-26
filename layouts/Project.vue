@@ -17,7 +17,7 @@ const {t} = useI18n();
 @import "/assets/styles/constants/Sizes.scss";
 
 .proj-layout-root {
-  height: 80%;
+  flex: 1;
 }
 
 .proj-layout-content {
@@ -27,8 +27,9 @@ const {t} = useI18n();
     ) + calc($space-large * 2)
   );
   padding-top: $space-medium;
+  padding-bottom: $space-large;
   padding-right: $space-large;
 
-  height: 100%;
+  height: calc(100% - calc($space-medium + $space-large));
 }
 </style>

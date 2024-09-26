@@ -1,20 +1,11 @@
 <template>
-  <div>
-    
-  </div>
+  <NuxtLayout name="announcement">
+    <NuxtPage/>
+  </NuxtLayout>
 </template>
 
 <script lang="ts" setup>
-import { setupProjectState } from '~/scripts/ProjectClassesFetches';
 
-const route = useRoute();
-const state = useAppStateStore();
-
-// update state
-onMounted(async ()=>{
-  await setupProjectState(route.params.classId.toString(), route.params.id.toString());
-  state.setProjectPage("announcements");
-});
 </script>
 
 <style>

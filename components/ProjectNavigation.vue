@@ -17,7 +17,7 @@
           <Icon :name="getIcon('fluent:clipboard-task-list-20-', !!isSelected('tasks'))"/>
           {{ $t('projectView.page.tasks') }}
         </button>
-        <button class="nav-link" :class="isSelected('announcements')" @click="() => navTo('announcements')">
+        <button class="nav-link" :class="isSelected('announcements')" @click="() => navTo('announcements/list')">
           <Icon :name="getIcon('fluent:megaphone-20-', !!isSelected('announcements'))"/>
           {{ $t('projectView.page.announcements') }}
         </button>

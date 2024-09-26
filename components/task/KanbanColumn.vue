@@ -11,7 +11,6 @@
     <div class="list">
       <ListEntry v-for="subtask in subtasks" 
         :subtask="subtask"
-        highlighted
         :readonly="props.readonly"
         @click="() => editSubtask(subtask)"
       />
