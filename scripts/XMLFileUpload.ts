@@ -1,8 +1,6 @@
 import { FetchRequest } from "./FetchTools";
 
 export const uploadFile = async (file: File, url: string, onProgress: (progress: number) => void): Promise<Uint8Array> => {
-  const formData = new FormData();
-  formData.append('file', file);
 
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
@@ -10,7 +8,7 @@ export const uploadFile = async (file: File, url: string, onProgress: (progress:
 
     xhr.upload.onprogress = (event: ProgressEvent) => {
       if (event.lengthComputable) {
-        const percentComplete = Math.round((event.loaded / event.total));
+        const percentComplete = (event.loaded / event.total);
         onProgress(percentComplete); // Call the callback with the percentage
       }
     };
@@ -29,11 +27,14 @@ export const uploadFile = async (file: File, url: string, onProgress: (progress:
       reject(new Error('Upload failed due to network error.'));
     };
 
-    xhr.open('POST', url);
-    if (FetchRequest._csrf){
-      xhr.setRequestHeader('X-XSRF-TOKEN', FetchRequest._csrf);
-    }
-    xhr.send(formData); // Send the form data
+    xhr.open('PUT', url);
+    // if (FetchRequest._csrf){
+    //   xhr.setRequestHeader('X-XSRF-TOKEN', FetchRequest._csrf);
+    // }
+    xhr.setRequestHeader('Content-Type', 'application/octet-stream');
+    file.arrayBuffer().then(a => {
+      xhr.send(a); // Send the form data
+    })
   });
 }
 

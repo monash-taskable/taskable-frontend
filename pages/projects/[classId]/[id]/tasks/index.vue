@@ -307,6 +307,7 @@ const createSubtask = (task: Task) => dialogs.closeAllWithTypeThenOpen({
     },
     tasks,
     deletable: false,
+    leftable: false,
   },
   title: t('projectView.tasks.addSubtask'),
   width: "400px",
@@ -371,10 +372,11 @@ const editSubtask = (s: Subtask, task: Task) => dialogs.closeAllWithTypeThenOpen
       const idx = findIndexInList(multiSubtasks.value[s.task.id], __s => __s.id === s.id);
       if (idx === undefined) return;
       listRemoveIdx(multiSubtasks.value[s.task.id], idx);
-    }
+    },
+    leftable: true,
   },
   title: "",
-  width: "400px",
+  width: "810px",
   close: defaultClose,
   actionsRight: [{
     caption: t("dialogCommon.confirm"),

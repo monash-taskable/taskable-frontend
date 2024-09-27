@@ -41,7 +41,7 @@ export const subtaskFilePreUploadRequest = async (classId: number, projectId: nu
 
 export const getProjectFiles = async (classId: number, projectId: number):Promise<{templateFiles: SharedFile[], projectFiles: SharedFile[]}>  => {
   const req = await FetchRequest
-    .protectedAPI(`/classes/${classId}/projects/${projectId}/files/`)
+    .protectedAPI(`/classes/${classId}/projects/${projectId}/files`)
     .commitAndRecv(GetFilesResponse.decode);
   
   if (req.isError() || req._result === undefined) return {templateFiles: [], projectFiles: []};
@@ -51,7 +51,7 @@ export const getProjectFiles = async (classId: number, projectId: number):Promis
 
 export const getTemplateFiles = async (classId: number, templateId: number):Promise<{templateFiles: SharedFile[], projectFiles: SharedFile[]}>  => {
   const req = await FetchRequest
-    .protectedAPI(`/classes/${classId}/templates/${templateId}/files/`)
+    .protectedAPI(`/classes/${classId}/templates/${templateId}/files`)
     .commitAndRecv(GetFilesResponse.decode);
   
   if (req.isError() || req._result === undefined) return {templateFiles: [], projectFiles: []};
@@ -113,9 +113,9 @@ export const deleteTemplateFile = async (classId: number, templateId: number, fi
     .commit();
 }
 
-export const deleteSubtaskFile = async (classId: number, projectId: number, taskId: number, subtaskId: number, fileId: number) => {
+export const detachSubtaskFile = async (classId: number, projectId: number, taskId: number, subtaskId: number, fileId: number) => {
   const req = await FetchRequest
-    .protectedAPI(`/classes/${classId}/projects/${projectId}/tasks/${taskId}/subtasks/${subtaskId}/files/${fileId}/delete`)
+    .protectedAPI(`/classes/${classId}/projects/${projectId}/tasks/${taskId}/subtasks/${subtaskId}/files/${fileId}/detach`)
     .delete()
     .commit();
 }
@@ -152,7 +152,7 @@ export const subtaskFileDownloadRequest = async (classId: number, projectId: num
 
 export const attachFileToSubtask = async (classId: number, projectId: number, taskId: number, subtaskId: number, fileId: number) => {
   const req = await FetchRequest
-    .protectedAPI(`/classes/${classId}/projects/${projectId}/tasks/${taskId}/subtasks/${subtaskId}/files/${fileId}/attach`)
+    .protectedAPI(`/classes/${classId}/projects/${projectId}/tasks/${taskId}/subtasks/${subtaskId}/files/attach`)
     .post()
     .payload(AttachFileRequest.encode, {id: fileId})
     .commit();

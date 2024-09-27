@@ -1,13 +1,15 @@
 <template>
   <div class="file-select-root">
-    {{ $t('projectView.subtasks.selectAMember') }}
+    <FileUpload @change="fileDrop" :caption="$t('projects.batchCreate.chooseFilePrompt')"/>
+
+    <span v-if="files.length !== 0">{{ $t('projects.sharedFiles.selectFile') }}</span>
 
     <div class="files">
       <Button
-        v-for="member in members"
+        v-for="file in files"
         :styles="{colorPreset: 'strong', backgroundColor: 'var(--layer-background)'}"
-        :caption="member.name"
-        @click="() => action(member, props.context.id)"
+        :caption="file.filename"
+        @click="() => onFileSelect(file, props.context.id)"
       />
     </div>
   </div>
@@ -16,18 +18,21 @@
 <script lang="ts" setup>
 import type { PropType } from 'vue';
 import type { Dialog } from '~/types/Dialog';
-import type { Member } from '~/types/ProjectClass';
+import type { SharedFile } from '~/types/Files';
 
 const emits = defineEmits(["emit"]);
 const props = defineProps({
   context: {type: Object as PropType<Dialog<{
-    members: Member[],
-    action: (m: Member, ctxId: string) => void
+    files: SharedFile[],
+    onFileDrop: (f: File, ctxId: string) => void
+    onFileSelect: (f: SharedFile, ctxId: string) => void
   }>>, required: true}
 })
 
+const {files, onFileDrop, onFileSelect} = props.context.payload;
 
-const {members, action} = props.context.payload;
+const fileDrop = ({file}: {file: File}) => onFileDrop(file, props.context.id);
+
 </script>
 
 <style lang="scss" scoped>
@@ -41,6 +46,10 @@ const {members, action} = props.context.payload;
   
   gap: $space-medium;
   padding: $space-large;
+
+  :deep(.file-upload) {
+    width: 100%;
+  }
 }
 
 .files {

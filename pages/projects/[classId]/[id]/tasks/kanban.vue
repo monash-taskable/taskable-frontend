@@ -96,7 +96,7 @@ const editSubtask = (s: Subtask, task: Task) => dialogs.closeAllWithTypeThenOpen
     }
   },
   title: "",
-  width: "400px",
+  width: "810px",
   close: defaultClose,
   actionsRight: [{
     caption: t("dialogCommon.confirm"),
@@ -150,7 +150,6 @@ const editSubtask = (s: Subtask, task: Task) => dialogs.closeAllWithTypeThenOpen
 const _drop = async ({sourceStatus, sourceTask, subtaskId}: DropSubtaskEvent, destStatus: TaskStatus) => {
   const {classId, projectId} = state;
 
-  console.log(destStatus);
   await updateSubtask(classId!, projectId!, sourceTask.id, subtaskId, {status: destStatus});
 
   const idx = findIndexInList(categorized.value[sourceStatus], s => s.id === subtaskId)!;

@@ -34,14 +34,17 @@
         :file="file"
         :selected="selectedFile === file"
         @select="(e) => toggleTemplateSelect(e, file)"
-        :uploading="file.id === 1 ? 0.2 : undefined"
       />
       <FileCard 
-        v-for="file in templateFiles" 
+        v-for="file in projectFiles" 
         :file="file"
         :selected="selectedFile === file"
         @select="(e) => toggleSelect(e, file)"
-        :uploading="file.id === 1 ? 0.2 : undefined"
+      />
+      <FileCard 
+        v-for="file in fileUploads"
+        :file="file.file"
+        :uploading="file.progress"
       />
     </div>
   </div>
@@ -57,6 +60,7 @@ import type { ButtonStyle } from '~/types/Button';
 import { defaultClose, type Dialog, type DialogAction } from '~/types/Dialog';
 import type { SharedFile } from '~/types/Files';
 import type { Optional } from '~/types/Optional';
+
 
 const btnDefault: ButtonStyle = {colorPreset: 'strong', backgroundColor: 'var(--layer-background)', size: 'small'};
 
@@ -158,14 +162,17 @@ const addProjectFile = () => {
 
         const {id, url} = preUpload;
         const uploadPromise = uploadFile(file, url, async (progress: number) => {
-          const idx = findIndexInList(fileUploads.value, ({file}) => file.id === id)!;
-          fileUploads.value[idx].progress = progress;
-          if (progress >= 0.99) {
-            listRemoveIdx(fileUploads.value, idx);
-            const file = await getProjectFile(classId!, projectId!, id);
-            if (file === undefined) return;
-            projectFiles.value.push(file);
+          const idx = findIndexInList(fileUploads.value, ({file}) => file.id === id);
+          if (idx === undefined) return;
+          if (progress === 1) {
+            setTimeout(async () => {
+              listRemoveIdx(fileUploads.value, idx);
+              const file = await getProjectFile(classId!, projectId!, id);
+              if (file === undefined) return;
+              projectFiles.value.push(file);
+            }, 500);
           }
+          fileUploads.value[idx].progress = progress;
         })
         const sharedFile = {filename: file.name, id: id, size: file.size};
         fileUploads.value.push({
@@ -184,7 +191,7 @@ const addProjectFile = () => {
 onMounted(async ()=>{
   await setupProjectState(route.params.classId.toString(), route.params.id.toString());
   state.setProjectPage("sharedFiles");
-  
+
   const {classId, projectId} = state;
   const fileReq = await getProjectFiles(classId!, projectId!);
   projectFiles.value = fileReq.projectFiles;
@@ -195,15 +202,6 @@ onMounted(async ()=>{
 <style lang="scss" scoped>
 @import "/assets/styles/constants/Flex.scss";
 @import "/assets/styles/constants/Sizes.scss";
-
-.drop-area {
-  height: 300px;
-  max-width: 500px;
-
-  :deep(.file-upload) {
-    height: 300px;
-  }
-}
 
 .files {
   @include flex-row;

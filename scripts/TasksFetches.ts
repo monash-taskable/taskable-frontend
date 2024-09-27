@@ -140,8 +140,6 @@ export const getSubtasksWithLookup = async (classId: number, projectId: number, 
   for (const task of Object.values(taskLookup)) {
     (await getSubtasks(classId, projectId, task)).forEach(x => result.push(x));
   }
-
-  console.log(result);
   return result;
 }
 
@@ -217,7 +215,7 @@ export const getComments = async (classId: number, projectId: number, taskId: nu
     }));
   }
 
-export const updateComments = async (classId: number, projectId: number, taskId: number, subtaskId: number, commentId: number, comment: string) => {
+export const updateComment = async (classId: number, projectId: number, taskId: number, subtaskId: number, commentId: number, comment: string) => {
   await FetchRequest
     .protectedAPI(`/classes/${classId}/projects/${projectId}/tasks/${taskId}/subtasks/${subtaskId}/comments/${commentId}/update`)
     .post()
@@ -225,7 +223,7 @@ export const updateComments = async (classId: number, projectId: number, taskId:
     .commit();
 }
 
-export const deleteComments = async (classId: number, projectId: number, taskId: number, subtaskId: number, commentId: number
+export const deleteComment = async (classId: number, projectId: number, taskId: number, subtaskId: number, commentId: number
 ) => {
   await FetchRequest
     .protectedAPI(`/classes/${classId}/projects/${projectId}/tasks/${taskId}/subtasks/${subtaskId}/comments/${commentId}/delete`)

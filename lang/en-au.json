@@ -162,6 +162,7 @@
   "projects.sharedFiles.delete": "Delete File",
   "projects.sharedFiles.deleteConfirm": "Confirm File Deletion",
   "projects.sharedFiles.deleteConfirmMsg": "You are about to delete %s. This action cannot be reverted.",
+  "projects.sharedFiles.selectFile": "or select an existing project file from the list below",
   
   "projectView.invalidProject": "Error occurred while retrieving this project. Either you don't have permission, or the project doesn't exist.",
   "projectView.backToProjects": "Back to projects",
@@ -202,6 +203,13 @@
   "projectView.subtasks.deleteSubtask": "Delete Task",
   "projectView.subtasks.deleteSubtaskConfirm": "Confirm Task Deletion",
   "projectView.subtasks.deleteConfirmMsg": "You are about to delete %s. This action cannot be reverted.",
+  "projectView.subtasks.attachments": "Attachments",
+  "projectView.subtasks.addAttachment": "Add",
+  "projectView.subtasks.comments": "Comments",
+  "projectView.subtasks.addComment": "Add",
+  "projectView.subtasks.addCommentTitle": "Add Comment",
+  "projectView.subtasks.editCommentTitle": "Edit Comment",
+  "projectView.subtasks.commentInstruction": "Enter a comment...",
   "projectView.announcements.notSelected": "Select an announcement from the list",
   
   "projectView.options": "Project Options -",

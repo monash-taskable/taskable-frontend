@@ -85,7 +85,7 @@ export const formatUrlsToMarkdown = (text: string): string => {
   // Replace each URL with the sanitized markdown format
   return text.replace(urlRegex, (url) => {
       const sanitizedUrl = sanitizeUrl(url);
-      return `(${sanitizedUrl})[${sanitizedUrl}]`;
+      return `[${sanitizedUrl}](${sanitizedUrl})`;
   });
 
 }

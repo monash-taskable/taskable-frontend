@@ -1,7 +1,7 @@
 <template>
   <div
     class="selection-provider"
-    :class="getClass(uploading, selected)"
+    :class="getClass(uploading, selected, compact)"
     :style="getStyle(uploading)"
     >
     <Button
@@ -34,11 +34,11 @@ const props = defineProps({
   file: {type: Object as PropType<SharedFile>, required: true},
   uploading: {type: Number, required: false},
   selected: {type: Boolean, default: false},
+  compact: {type: Boolean, default: false},
 });
 
 const defaultBtn = {padding: '0', colorPreset: 'strong', backgroundColor: 'var(--layer-background)'};
-const uploadingBtn = {padding: '0'};
-
+const uploadingBtn = {padding: '0', backgroundColor: 'transparent'};
 
 // selection logic
 const _onSelect = () => {
@@ -56,9 +56,10 @@ const fBytes = (bytes: number) => {
   return `${formatted.value} ${formatted.unit}`;
 }
 
-const getClass = (uploading: Optional<number>, selected: boolean) => [
+const getClass = (uploading: Optional<number>, selected: boolean, compact: boolean) => [
   uploading === undefined ? '' : 'uploading',
   selected ? 'selected' : '',
+  compact ? 'compact' : '',
 ].join(" ");
 const getStyle = (uploading: Optional<number>) => uploading === undefined ? '' : `--progress: ${uploading * 100}%`;
 </script>
@@ -72,6 +73,29 @@ const getStyle = (uploading: Optional<number>) => uploading === undefined ? '' :
 .selected {
   position: relative;
   outline: 2px solid var(--accent-strong);
+}
+
+.compact {
+  &.uploading .file-card {
+    width: 350px;
+  }
+  
+  .file-card {
+    width: 310px;
+  }
+
+  :deep(button) {
+    width: 100%;
+  }
+  
+  :deep(.caption) {
+    width: 100%;
+  }
+
+  .info {
+    @include flex-row;
+    gap: $space-small;
+  }
 }
 
 .file-card {
@@ -109,6 +133,7 @@ const getStyle = (uploading: Optional<number>) => uploading === undefined ? '' :
   padding: calc($space-medium - 2px);
   border: 2px solid var(--layer-background);
   position: relative;
+  background: var(--background);
 
   .progress {
     display: block;
