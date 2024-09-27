@@ -157,6 +157,11 @@
   "projects.batchCreate.guide": "How to prepare a CSV File",
   "projects.batchCreate.instruction": "Prepare a csv file, with two columns with header 'Student' and 'Project Name'. Each row contains the student email and the project name they should be assigned to. For students of same projects, use the same project name for them.",
   "projects.batchCreate.chooseFilePrompt": "Drop CSV file here or click to upload",
+  "projects.sharedFiles.upload": "Upload file",
+  "projects.sharedFiles.uploadFileInstruction": "Drop a file here or click here to select a file",
+  "projects.sharedFiles.delete": "Delete File",
+  "projects.sharedFiles.deleteConfirm": "Confirm File Deletion",
+  "projects.sharedFiles.deleteConfirmMsg": "You are about to delete %s. This action cannot be reverted.",
   
   "projectView.invalidProject": "Error occurred while retrieving this project. Either you don't have permission, or the project doesn't exist.",
   "projectView.backToProjects": "Back to projects",

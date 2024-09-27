@@ -42,7 +42,7 @@
         <div class="right">
           <div class="cursor-follower" :class="getClassCursor(following)"></div>
           <div class="month-labels">
-            <div v-for="day in range(0, getDaysInMonth(year, month + 1) + 1)" class="month-label">
+            <div v-for="day in range(1, getDaysInMonth(year, month + 1) + 1)" class="month-label">
               {{ day }}
             </div>
           </div>
@@ -62,7 +62,7 @@
             <div 
               v-for="subtask in getSubtasksForMonth(task, month, year)"
               class="subtask" 
-              :style="`--start: ${getMonthSegment(year, month, subtask.start, subtask.end)[0]}; --length: ${getMonthSegment(year, month, subtask.start, subtask.end)[1]};`">
+              :style="`--start: ${getMonthSegment(year, month, subtask.start, subtask.end)[0]}; --length: ${getMonthSegment(year, month, subtask.start, subtask.end)[1] + 1};`">
               <ListEntry :subtask="subtask" />
             </div>
           </div>

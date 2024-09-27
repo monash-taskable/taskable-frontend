@@ -62,6 +62,7 @@ export const useAppStateStore = defineStore({
       this.titleHasIcon = titleHasIcon ?? true;
       this.titleIcon = titleIcon;
       this.projectMenuState = false;
+
     },
     setProjectTitle(title: string) {
       this.setTitle(title, false, "fluent:clover-20-regular");

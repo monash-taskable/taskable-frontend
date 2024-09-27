@@ -40,9 +40,9 @@ const onFocusOut = () => {
   focusFlag.value = false;
   collapse();
 }
-const _onClick = () => {
+const _onClick = (e: MouseEvent) => {
   enterFlag.value = props.maintainClick;
-  emitClick("click");
+  emitClick("click", e);
 }
 
 // expandable logic

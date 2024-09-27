@@ -65,10 +65,8 @@ const readFileContent = (file: File) => {
   justify-content: center;
   cursor: pointer;
   text-align: center;
-  transition: background-color 0.2s ease;
   
   &:hover {
-    background-color: var(--accent-interact);
     border: 2px dashed var(--accent-strong);
   }
 }

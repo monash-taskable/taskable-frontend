@@ -21,10 +21,10 @@
           <Icon :name="getIcon('fluent:megaphone-20-', !!isSelected('announcements'))"/>
           {{ $t('projectView.page.announcements') }}
         </button>
-        <button class="nav-link" :class="isSelected('meetings')" @click="() => navTo('meetings')">
+        <!-- <button class="nav-link" :class="isSelected('meetings')" @click="() => navTo('meetings')">
           <Icon :name="getIcon('fluent:chat-video-20-', !!isSelected('meetings'))"/>
           {{ $t('projectView.page.meetings') }}
-        </button>
+        </button> -->
         <button class="nav-link" :class="isSelected('sharedFiles')" @click="() => navTo('sharedFiles')">
           <Icon :name="getIcon('fluent:folder-20-', !!isSelected('sharedFiles'))"/>
           {{ $t('projectView.page.sharedFiles') }}

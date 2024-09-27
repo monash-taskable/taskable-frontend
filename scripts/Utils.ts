@@ -1,5 +1,4 @@
 import type { Optional } from "~/types/Optional";
-import { Readable } from 'stream';
 
 /**
  * Tests if a value is of type T, where type T is some literal type
@@ -59,6 +58,42 @@ export const isNumericString = (s: string) => allOf(s.split(''), isNumericChar);
 
 export const randRange = (x: number, y: number): number => Math.floor(Math.random() * (y - x + 1)) + x;
 export const range = (x: number, y: number): number[] => Array.from({ length: y - x }, (_, i) => x + i);
+
+// byte computation
+export const formatBytes = (bytes: number): { value: number, unit: string } => {
+  if (bytes < 1024) {
+      return { value: bytes, unit: 'B' };
+  } else if (bytes < 1024 ** 2) {
+      return { value: +(bytes / 1024).toFixed(2), unit: 'KB' };
+  } else if (bytes < 1024 ** 3) {
+      return { value: +(bytes / (1024 ** 2)).toFixed(2), unit: 'MB' };
+  } else {
+      return { value: +(bytes / (1024 ** 3)).toFixed(2), unit: 'GB' };
+  }
+}
+
+// link conversion
+export const formatUrlsToMarkdown = (text: string): string => {
+  // Regex to detect URLs
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  
+  // Function to sanitize the URL by removing "(", ")", "[" and "]"
+  function sanitizeUrl(url: string): string {
+      return url.replace(/[()[\]]/g, ''); // Remove (), [], and other potentially dangerous characters
+  }
+
+  // Replace each URL with the sanitized markdown format
+  return text.replace(urlRegex, (url) => {
+      const sanitizedUrl = sanitizeUrl(url);
+      return `(${sanitizedUrl})[${sanitizedUrl}]`;
+  });
+
+}
+
+// download file
+export const openFileInNewTab = (url: string) => {
+  window.open(url, '_blank');
+}
 
 // some useful FP stuff
 

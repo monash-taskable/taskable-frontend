@@ -88,7 +88,7 @@
       </header>
       <slot/>
     </div>
-    <div style="z-index: 3000;" class="loading layout-root centered" v-show="!authFlag"><Loading/></div>
+    <div class="loading layout-root centered" v-show="!authFlag"><Loading/></div>
   </div>
 </template>
 
@@ -230,8 +230,11 @@ onMounted(async () => {
 }
 
 .centered {
-  @include flex-col;
-  @include flex-cross(center);
+  z-index: 3000 !important;
+  display: flex;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 .layout-root {

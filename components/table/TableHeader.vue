@@ -4,7 +4,7 @@
     class="table-header-cell" 
     :style="getStyle(props.column.flex ?? 1)" 
     :class="getClass(props.sorted !== 'Default', focusFlag)">
-    <div>
+    <div class="label">
       {{ props.column.label }}
     </div>
     <div class="icon">
@@ -68,6 +68,10 @@ const _onClick = () => {
   &:hover {
     background: var(--background-interaction-strong);
   }
+}
+
+.label {
+  @include typemix-label;
 }
 
 .icon {
