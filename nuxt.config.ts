@@ -47,4 +47,10 @@ export default defineNuxtConfig({
 
   css: ['assets/styles/Main.scss'],
   compatibilityDate: '2024-07-08',
+
+  app: {
+    head: {
+      link: [{rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'}]
+    }
+  }
 })
