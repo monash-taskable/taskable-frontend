@@ -4,7 +4,7 @@
     class="table-header-cell" 
     :style="getStyle(props.column.flex ?? 1)" 
     :class="getClass(props.sorted !== 'Default', focusFlag)">
-    <div class="icon">
+    <div>
       {{ props.column.label }}
     </div>
     <div class="icon">

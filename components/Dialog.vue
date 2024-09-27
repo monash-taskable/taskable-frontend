@@ -56,6 +56,7 @@
     <DialogsEditTask @emit="updateEmit" v-else-if="context.dialogType === 'editTask'" :context="props.context"/>
     <DialogsEditSubtask @emit="updateEmit" v-else-if="context.dialogType === 'editSubtask'" :context="props.context"/>
     <DialogsMemberSelect @emit="updateEmit" v-else-if="context.dialogType === 'memberSelect'" :context="props.context"/>
+    <DialogsBatchCreateProject @emit="updateEmit" v-else-if="context.dialogType === 'batchCreateProject'" :context="props.context"/>
   </div>
 </template>
 

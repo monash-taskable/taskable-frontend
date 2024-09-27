@@ -14,7 +14,7 @@
           :caption="$t('projects.editTemplate.createSingleProject')"
           :styles="{colorPreset: 'strong', backgroundColor:'var(--layer-background)', size: 'small'}"/>
         <IconButton
-          @click=""
+          @click="batchCreateProject"
           icon="fluent:add-square-multiple-20-regular"
           :caption="$t('projects.editTemplate.batchProjectCreation')"
           :styles="{colorPreset: 'strong', backgroundColor:'var(--layer-background)', size: 'small'}"/>
@@ -142,6 +142,25 @@ const createSingleProject = async () => dialogs.closeAllWithTypeThenOpen({
         
         dialogs.closeAllDialogs();
         if (projId !== undefined) navigateTo(`/projects/${projectClassId}/${projId}`);
+      },
+    }
+  ]
+})
+const batchCreateProject = async () => dialogs.closeAllWithTypeThenOpen({
+  close: defaultClose,
+  dialogType: "batchCreateProject",
+  title: t("projects.editTemplate.batchProjectCreation"),
+  payload: {classId: projectClassId,},
+  width: "500px",
+  actionsRight: [
+    {
+      caption: t(`dialogCommon.confirm`),
+      icon: "fluent:checkmark-20-regular",
+      style: {colorPreset: "accent-strong"},
+      expanding: false,
+      action: async (c, groups: {groups: {[k: string]: string[]}}) => {
+        await useProjectClassStore().createMultipleProjectFromTemplate(projectClassId, templateId, groups)
+        dialogs.closeDialog(c.id);
       },
     }
   ]

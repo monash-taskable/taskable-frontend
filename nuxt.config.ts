@@ -29,6 +29,10 @@ export default defineNuxtConfig({
           code: 'si-lk',
           file: 'si-lk.json'
         },
+        {
+          code: 'de-de',
+          file: 'de-de.json'
+        },
       ],
       lazy: true,
       langDir: 'lang',

@@ -4,6 +4,7 @@ import { FetchRequest } from '~/scripts/FetchTools'
 import { findInList, ident, listRemove } from '~/scripts/Utils'
 import { isRole, type Member, type OwnershipRole, type ProjectClass, type ProjectClassStore, type Template, type Project } from '~/types/ProjectClass'
 import { AddMembersRequest, AddMembersResponse, CreateProjectRequest, CreateProjectResponse, CreateTemplateRequest, CreateTemplateResponse, GetClassesResponse, GetClassResponse, GetMembersResponse, GetProjectResponse, GetProjectsResponse, GetTemplateResponse, GetTemplatesResponse, Template as TemplateProto, UpdateClassRequest, UpdateMemberRoleRequest, UpdateTemplateRequest } from '~/types/proto/ProjectClass'
+import { BatchCreateRequest } from '~/types/proto/Task'
 
 export const useProjectClassStore = defineStore({
   id: 'projectClassStore',
@@ -253,6 +254,18 @@ export const useProjectClassStore = defineStore({
         this.loadProject(classId, req._result.id);
         return req._result.id;
       }
+    },
+    async createMultipleProjectFromTemplate(classId: number, templateId: number, {groups}: {groups: {[k: string]: string[]}}) {
+      await FetchRequest
+        .protectedAPI(`/classes/${classId}/templates/${templateId}/create-multiple`)
+        .post()
+        .payload(BatchCreateRequest.encode, {
+          projects: Object.keys(groups).map(x => ({projectName: x, students: groups[x]})),
+          createdAt: getCurrentGMTDateTime(),
+        })
+        .commit;
+
+      this.loadProjects(classId);
     },
     async createProject(classId: number, name: string) {
       const req = await FetchRequest

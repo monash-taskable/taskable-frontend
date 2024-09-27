@@ -1,4 +1,5 @@
 import type { Optional } from "~/types/Optional";
+import { Readable } from 'stream';
 
 /**
  * Tests if a value is of type T, where type T is some literal type

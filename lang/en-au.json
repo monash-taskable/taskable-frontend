@@ -153,6 +153,10 @@
   "projects.announcements.deleteAnnouncement": "Delete",
   "projects.announcements.deleteAnnouncementMessage": "You are about to delete announcement(s). This action cannot be reverted.",
   "projects.announcements.editOne": "You can only edit one announcement at once.",
+  "projects.batchCreate.chooseFile": "Upload a CSV File and press confirm",
+  "projects.batchCreate.guide": "How to prepare a CSV File",
+  "projects.batchCreate.instruction": "Prepare a csv file, with two columns with header 'Student' and 'Project Name'. Each row contains the student email and the project name they should be assigned to. For students of same projects, use the same project name for them.",
+  "projects.batchCreate.chooseFilePrompt": "Drop CSV file here or click to upload",
   
   "projectView.invalidProject": "Error occurred while retrieving this project. Either you don't have permission, or the project doesn't exist.",
   "projectView.backToProjects": "Back to projects",

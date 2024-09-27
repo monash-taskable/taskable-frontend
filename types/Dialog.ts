@@ -23,6 +23,7 @@ const dialogTypes = [
   "editTask",
   "editSubtask",
   "memberSelect",
+  "batchCreateProject",
 ] as const;
 export type DialogType = typeof dialogTypes[number];
 export const isOfDialog = isOfType(dialogTypes);
