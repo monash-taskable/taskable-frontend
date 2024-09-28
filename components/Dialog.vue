@@ -60,6 +60,7 @@
     <DialogsUpload @emit="updateEmit" v-else-if="context.dialogType === 'upload'" :context="props.context"/>
     <DialogsSubtaskFileAttach @emit="updateEmit" v-else-if="context.dialogType === 'subtaskFileAttach'" :context="props.context"/>
     <DialogsMultilinePrompt @emit="updateEmit" v-else-if="context.dialogType === 'multilinePrompt'" :context="props.context"/>
+    <DialogsEditTemplateFiles @emit="updateEmit" v-else-if="context.dialogType === 'editTemplateFiles'" :context="props.context"/>
   </div>
 </template>
 

@@ -255,16 +255,16 @@ export const useProjectClassStore = defineStore({
         return req._result.id;
       }
     },
-    async createMultipleProjectFromTemplate(classId: number, templateId: number, {groups}: {groups: {[k: string]: string[]}}) {
+    async createMultipleProjectFromTemplate(classId: number, templateId: number, groups: {[k: string]: string[]}) {
       await FetchRequest
-        .protectedAPI(`/classes/${classId}/templates/${templateId}/create-multiple`)
-        .post()
-        .payload(BatchCreateRequest.encode, {
-          projects: Object.keys(groups).map(x => ({projectName: x, students: groups[x]})),
-          createdAt: getCurrentGMTDateTime(),
-        })
-        .commit;
-
+      .protectedAPI(`/classes/${classId}/templates/${templateId}/create-multiple`)
+      .post()
+      .payload(BatchCreateRequest.encode, {
+        projects: Object.keys(groups).map(x => ({projectName: x, students: groups[x]})),
+        createdAt: getCurrentGMTDateTime(),
+      })
+      .commit();
+      
       this.loadProjects(classId);
     },
     async createProject(classId: number, name: string) {

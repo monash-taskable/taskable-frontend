@@ -27,6 +27,7 @@ const dialogTypes = [
   "upload",
   "subtaskFileAttach",
   "multilinePrompt",
+  "editTemplateFiles",
 ] as const;
 export type DialogType = typeof dialogTypes[number];
 export const isOfDialog = isOfType(dialogTypes);

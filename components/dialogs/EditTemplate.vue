@@ -20,6 +20,13 @@
           :styles="{colorPreset: 'strong', backgroundColor:'var(--layer-background)', size: 'small'}"/>
       </div>
     </div>
+    <div class="actions">
+      <IconButton
+        @click="attachments"
+        icon="fluent:folder-20-regular"
+        :caption="$t('projects.editTemplate.attachments')"
+        :styles="{colorPreset: 'strong', backgroundColor:'var(--layer-background)', size: 'small'}"/>
+    </div>
 
     <div v-if="projectClass.role === 'OWNER'" class="group">
       <h3>{{ $t('projects.editClass.actions') }}</h3>
@@ -158,7 +165,26 @@ const batchCreateProject = async () => dialogs.closeAllWithTypeThenOpen({
       icon: "fluent:checkmark-20-regular",
       style: {colorPreset: "accent-strong"},
       expanding: false,
-      action: async (c, groups: {groups: {[k: string]: string[]}}) => {
+      action: async (c, groups: {[k: string]: string[]}) => {
+        await useProjectClassStore().createMultipleProjectFromTemplate(projectClassId, templateId, groups);
+        dialogs.closeAllDialogs();
+      },
+    }
+  ]
+})
+const attachments = () => dialogs.closeAllWithTypeThenOpen({
+  close: defaultClose,
+  dialogType: "editTemplateFiles",
+  title: t("projects.editTemplate.batchProjectCreation"),
+  payload: {projClass: projectClass, template: template},
+  width: "750px",
+  actionsRight: [
+    {
+      caption: t(`dialogCommon.confirm`),
+      icon: "fluent:checkmark-20-regular",
+      style: {colorPreset: "accent-strong"},
+      expanding: false,
+      action: async (c, groups: {[k: string]: string[]}) => {
         await useProjectClassStore().createMultipleProjectFromTemplate(projectClassId, templateId, groups)
         dialogs.closeDialog(c.id);
       },

@@ -31,6 +31,7 @@ const props = defineProps({
 const onFileUpload = ({file}: {file: File}) => {
   const reader = new FileReader();
   reader.onload = () => {
+    
     const text = reader.result as string;
     const splitted = text.split("\n");
     const header = splitted[0].split(",");
