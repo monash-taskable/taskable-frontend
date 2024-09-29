@@ -33,6 +33,14 @@ export default defineNuxtConfig({
           code: 'de-de',
           file: 'de-de.json'
         },
+        {
+          code: 'fi-fi',
+          file: 'fi-fi.json'
+        },
+        {
+          code: 'ru-ru',
+          file: 'ru-ru.json'
+        },
       ],
       lazy: true,
       langDir: 'lang',

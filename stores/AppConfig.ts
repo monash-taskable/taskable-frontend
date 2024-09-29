@@ -11,7 +11,9 @@ export const languageNames = {
   "en-au": "English (Australia)",
   "zh-tw": "中文（台灣）",
   "si-lk": "සිංහල (ශ්‍රී ලංකාව)",
-  "de-de": "Deutsch (Deutschland)"
+  "de-de": "Deutsch (Deutschland)",
+  "ru-ru": "Русский (Россия)",
+  "fi-fi": "suomi (Suomi)",
 };
 
 export type AppConfig = {
