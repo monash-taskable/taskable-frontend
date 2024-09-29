@@ -10,6 +10,7 @@
         <div class="options">
           <ThemePreview/>
           <ThemePreview theme="dark"/>
+          <ThemePreview theme="autumn"/>
         </div>
       </div>
       <!-- color -->
