@@ -1,6 +1,6 @@
 import { isOfType } from "~/scripts/Utils";
 
-const themes = ["light", "dark", "contrast-light"] as const;
+const themes = ["light", "dark", "autumn"] as const;
 export type Theme = typeof themes[number];
 export const isTheme = isOfType(themes);
 

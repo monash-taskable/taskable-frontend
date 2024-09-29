@@ -23,10 +23,11 @@
 </template>
 
 <script lang="ts" setup>
+import type { PropType } from 'vue';
 import { isTheme, type Theme } from '~/types/Theming';
 
 const props = defineProps({
-  theme: {type: String, default: "light"}
+  theme: {type: String as PropType<Theme>, default: "light"}
 });
 
 const appConfigStore = useAppConfigStore();
