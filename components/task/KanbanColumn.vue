@@ -86,6 +86,7 @@ const getClass = (outlined: boolean) => {
   @include flex-main(flex-start);
   
   outline: 2px solid transparent;
+  outline-offset: -2px;
   background: var(--layer-background);
   min-width: 400px;
 }

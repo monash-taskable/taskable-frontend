@@ -196,6 +196,9 @@ const navToTimeline = () => navigateTo("timeline");
   
   gap: $space-large;
   margin-top: $space-large;
+  width: 100%;
+  height: 100%;
+  overflow-x: auto;
 }
 
 </style>

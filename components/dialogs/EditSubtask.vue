@@ -246,9 +246,14 @@ const taskChange = (id: String) => {
 
 onMounted(async () => {
   emits("emit", dataRef.value);
+
+  
   const {classId, projectId, session} = state;
   availableMembers.value = await getProjectMembers(projectId!, classId!)!;
   selfId.value = session.profile!.id;
+  
+  if (_subtask.id === -1) return;
+
   const members = await getProjectMembers(projectId!, classId!);
   const selfIdx = findIndexInList(members, m => m.id === selfId.value);
   if (selfIdx !== undefined){

@@ -73,6 +73,7 @@ const getStyle = (uploading: Optional<number>) => uploading === undefined ? '' :
 .selected {
   position: relative;
   outline: 2px solid var(--accent-strong);
+  outline-offset: -2px;
 }
 
 .compact {

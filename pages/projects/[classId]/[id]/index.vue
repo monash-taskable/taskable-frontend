@@ -1,6 +1,6 @@
 <template>
-  <div>
-    View Proj!
+  <div class="panel">
+    <div>WIP</div>
   </div>
 </template>
 
@@ -19,5 +19,7 @@ onMounted(async ()=>{
 </script>
 
 <style>
-
+div {
+  color: var(--foreground);
+}
 </style>

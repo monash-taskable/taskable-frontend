@@ -46,7 +46,7 @@
 
 <script lang="ts" setup>
 import { sprintf } from 'sprintf-js';
-import { deleteTemplateFile, getTemplateFile, templateFileDownloadRequest, templateFilePreUploadRequest } from '~/scripts/FileUploadFetches';
+import { deleteTemplateFile, getTemplateFile, getTemplateFiles, templateFileDownloadRequest, templateFilePreUploadRequest } from '~/scripts/FileUploadFetches';
 import { findIndexInList, listRemoveIdx, openFileInNewTab } from '~/scripts/Utils';
 import { uploadFile } from '~/scripts/XMLFileUpload';
 import type { ButtonStyle } from '~/types/Button';
@@ -174,6 +174,10 @@ const addTemplateFile = () => {
   })
 }
 
+onMounted(async () => {
+  templateFiles.value = (await getTemplateFiles(projClass.classId, template.templateId)).templateFiles;
+})
+
 </script>
 
 <style scoped lang="scss">
@@ -184,5 +188,34 @@ const addTemplateFile = () => {
 .dialog-body {
   padding: $space-large;
   height: var(--height);
+}
+
+
+.actions {
+  @include flex-row;
+  @include flex-main(flex-start);
+
+  gap: $space-medium;
+  margin-bottom: $space-medium;
+}
+
+.action-group {
+  @include flex-row;
+  @include flex-main(flex-start);
+
+  & button {
+    border-bottom: 0;
+    padding-bottom: $space-small !important;
+  }
+  
+  &>.selected button {
+    border-bottom: 2px solid var(--accent-strong);
+    padding-bottom: calc($space-small - 2px) !important;
+  }
+}
+
+.files {
+  height: 100%;
+  overflow-y: auto;
 }
 </style>

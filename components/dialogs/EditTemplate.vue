@@ -175,21 +175,9 @@ const batchCreateProject = async () => dialogs.closeAllWithTypeThenOpen({
 const attachments = () => dialogs.closeAllWithTypeThenOpen({
   close: defaultClose,
   dialogType: "editTemplateFiles",
-  title: t("projects.editTemplate.batchProjectCreation"),
+  title: t("projects.editTemplate.editAttachments"),
   payload: {projClass: projectClass, template: template},
   width: "750px",
-  actionsRight: [
-    {
-      caption: t(`dialogCommon.confirm`),
-      icon: "fluent:checkmark-20-regular",
-      style: {colorPreset: "accent-strong"},
-      expanding: false,
-      action: async (c, groups: {[k: string]: string[]}) => {
-        await useProjectClassStore().createMultipleProjectFromTemplate(projectClassId, templateId, groups)
-        dialogs.closeDialog(c.id);
-      },
-    }
-  ]
 })
 </script>
 

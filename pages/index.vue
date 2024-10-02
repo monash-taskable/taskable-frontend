@@ -19,7 +19,7 @@
           :description="$t('home.appSettingsDesc')"
           :caption="$t('home.appSettings')"/>
       </div>
-      <div class="row">
+      <!-- <div class="row">
         <TitleButton
           icon="fluent:add-square-20-regular"
           :styles="buttonStyle"
@@ -31,7 +31,7 @@
           :styles="buttonStyle"
           :description="$t('home.userProfileDesc')"
           :caption="$t('home.userProfile')"/>
-      </div>
+      </div> -->
     </div>
     <div class="recent"></div>
   </div>
@@ -117,6 +117,7 @@ const openCreateProject = () => dialogControl.closeAllWithTypeThenOpen({
   @include flex-col;
   @include flex-main(center);
   @include flex-cross(center);
+  // background: linear-gradient(45deg, var(--accent-weak) 0%, var(--accent-interact) 100%);
 }
 
 .menu {

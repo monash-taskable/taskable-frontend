@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { getCurrentGMTDateTime, stringToDate } from '~/scripts/Datetime'
 import { FetchRequest } from '~/scripts/FetchTools'
-import { findInList, ident, listRemove } from '~/scripts/Utils'
+import { findIndexInList, findInList, ident, listRemove, listRemoveIdx } from '~/scripts/Utils'
 import { isRole, type Member, type OwnershipRole, type ProjectClass, type ProjectClassStore, type Template, type Project } from '~/types/ProjectClass'
 import { AddMembersRequest, AddMembersResponse, CreateProjectRequest, CreateProjectResponse, CreateTemplateRequest, CreateTemplateResponse, GetClassesResponse, GetClassResponse, GetMembersResponse, GetProjectResponse, GetProjectsResponse, GetTemplateResponse, GetTemplatesResponse, Template as TemplateProto, UpdateClassRequest, UpdateMemberRoleRequest, UpdateTemplateRequest } from '~/types/proto/ProjectClass'
 import { BatchCreateRequest } from '~/types/proto/Task'
@@ -242,6 +242,10 @@ export const useProjectClassStore = defineStore({
         .protectedAPI(`/classes/${classId}/templates/${templateId}/delete`)
         .delete()
         .commit();
+
+      const idx = findIndexInList(this.projectClasses[classId].templates, x => x.templateId === templateId);
+      if (idx === undefined) return;
+      listRemoveIdx(this.projectClasses[classId].templates, idx);
     },
     async createSingleProjectFromTemplate(classId: number, templateId: number, name: string) {
       const req = await FetchRequest

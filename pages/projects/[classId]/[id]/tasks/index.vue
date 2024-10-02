@@ -51,7 +51,7 @@
         />
         <!-- delete -->
         <IconButton v-if="editMode"
-          :styles="Object.keys(selectedTasks).length === 0 ? btnDisabled : btnDefault"
+          :styles="Object.keys(selectedTasks).length === 0 ? btnDisabled : {colorPreset: 'dangerous', size:'small', backgroundColor: 'var(--layer-background)'}"
           icon="fluent:delete-20-regular"
           :caption="$t('projectView.tasks.deleteTask')"
           @click="() => deleteTasks(Object.values(selectedTasks).map(x => x.task))"
@@ -336,8 +336,9 @@ const createSubtask = (task: Task) => dialogs.closeAllWithTypeThenOpen({
         return;
       };
 
+      console.log(id)
       if (s.assignment.length){
-        await assignToSubtask(classId!, projectId!, s.task.id, s.id, s.assignment.map(x => x.id));
+        await assignToSubtask(classId!, projectId!, s.task.id, id, s.assignment.map(x => x.id));
       }
       
       const _subtask = await getSubtask(classId!, projectId!, s.task, id);
@@ -470,6 +471,9 @@ const navToTimeline = () => navigateTo("tasks/timeline");
   
   gap: $space-large;
   margin-top: $space-large;
+  width: 100%;
+  height: 100%;
+  overflow-x: auto;
 }
 
 .no-tasks {
