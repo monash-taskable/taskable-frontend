@@ -239,8 +239,8 @@
     // functional colours
     --dangerous-strong: #D45D3C;
     --dangerous-intermediate: #E06E55;
-    --dangerous-interact: #FFC4B4;
-    --dangerous-weak: #FFD4C6;
+    --dangerous-interact: #FFCFC2;
+    --dangerous-weak: #FFDED4;
 
     // functional
     --popup-overlay: rgba(57, 57, 57, 0.1);
@@ -283,40 +283,40 @@
     & .theme-override.color--orange {
       --accent-strong: #D96500;
       --accent-intermediate: #FF8E03;
-      --accent-interact: #F6CA9A;
-      --accent-weak: #FEDAB4;
+      --accent-interact: #FFDAB3;
+      --accent-weak: #FFE5C9;
     }
 
     &.color--green,
     & .theme-override.color--green {
-      --accent-strong: #6D9F00;
+      --accent-strong: #598200;
       --accent-intermediate: #8BBD1F;
-      --accent-interact: #C8E38E;
-      --accent-weak: #D8EBAE;
+      --accent-interact: #D3E8A7;
+      --accent-weak: #DEECC0;
     }
 
     &.color--blue,
     & .theme-override.color--blue {
       --accent-strong: #0D8F77;
       --accent-intermediate: #1FBDA0;
-      --accent-interact: #97E3C0;
-      --accent-weak: #AEEBCF;
+      --accent-interact: #B8E6D1;
+      --accent-weak: #CBF2DC;
     }
 
     &.color--purple,
     & .theme-override.color--purple {
       --accent-strong: #C820EE;
       --accent-intermediate: #D54AE2;
-      --accent-interact: #E5B0FF;
-      --accent-weak: #ECC5FF;
+      --accent-interact: #EDC9FF;
+      --accent-weak: #F1DAFC;
     }
 
     &.color--magenta,
     & .theme-override.color--magenta {
       --accent-strong: #D43C92;
       --accent-intermediate: #E055A4;
-      --accent-interact: #FFB6DF;
-      --accent-weak: #FFCAE8;
+      --accent-interact: #FFC3E5;
+      --accent-weak: #FFD8EE;
     }
   }
 }
