@@ -78,7 +78,8 @@
     --tc-gray-weak: #DFDFDF;
 
     &.color--orange,
-    & .theme-override.color--orange {
+    & .theme-override.color--orange, 
+    & .color--orange{
       --accent-strong: #D66400;
       --accent-intermediate: #ED8200;
       --accent-interact: #F5D6B5;
@@ -86,7 +87,8 @@
     }
 
     &.color--green,
-    & .theme-override.color--green {
+    & .theme-override.color--green, 
+    & .color--green{
       --accent-strong: #458228;
       --accent-intermediate: #51BD1F;
       --accent-interact: #C0DCB2;
@@ -94,7 +96,8 @@
     }
 
     &.color--blue,
-    & .theme-override.color--blue {
+    & .theme-override.color--blue, 
+    & .color--blue{
       --accent-strong: #165296;
       --accent-intermediate: #1077C5;
       --accent-interact: #B3D3ED;
@@ -102,7 +105,8 @@
     }
 
     &.color--purple,
-    & .theme-override.color--purple {
+    & .theme-override.color--purple, 
+    & .color--purple{
       --accent-strong: #531396;
       --accent-intermediate: #7110D9;
       --accent-interact: #D9C5F0;
@@ -110,7 +114,8 @@
     }
 
     &.color--magenta,
-    & .theme-override.color--magenta {
+    & .theme-override.color--magenta, 
+    & .color--magenta{
       --accent-strong: #9D0D5F;
       --accent-intermediate: #D91082;
       --accent-interact: #F1BEDB;
@@ -219,9 +224,9 @@
 
   &.theme--autumn {
     // generic colours
-    --background: #FFF7E7;
+    --background: #FFF1D4;
     --background-interaction-strong: #F2E5CB;
-    --layer-background: #FFF1D4;
+    --layer-background: #FFF7E7;
     --foreground: #553900;
     --foreground-weak: #B7A174;
     --foreground-disabled: #D3C5AB;
