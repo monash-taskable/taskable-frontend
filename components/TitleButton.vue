@@ -138,6 +138,7 @@ button {
   .description {
     @include typemix-label();
     color: var(--foreground-weak);
+    text-align: left;
   }
   
   gap: $space-small;

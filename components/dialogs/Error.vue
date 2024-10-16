@@ -1,21 +1,23 @@
 <template>
   <div class="dialog-body">
     <div class="error-body">
-      {{ props.context.payload }}
+      <VueMarkdown :source="message"/>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import type { PropType } from 'vue';
+import VueMarkdown from 'vue-markdown-render';
 import type { Dialog } from '~/types/Dialog';
 
 const props = defineProps({
-  context: {type: Object as PropType<Dialog<string>>, required: true},
+  context: {type: Object as PropType<Dialog<{
+    message: string
+  }>>, required: true},
 });
 
-const dialogs = useDialogs();
-
+const { message } = props.context.payload;
 </script>
 
 <style scoped lang="scss">
@@ -26,8 +28,13 @@ const dialogs = useDialogs();
 .error-body {
   @include typemix-label;
 
-  padding: $space-medium;
+  padding: $space-large $space-extra;
   height: var(--height);
+
+  p {
+    margin: 0;
+  }
+  
 }
 
 .actions {

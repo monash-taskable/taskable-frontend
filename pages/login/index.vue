@@ -10,8 +10,6 @@ import type {ButtonStyle } from '~/types/Button';
 
 definePageMeta({ layout: "empty" });
 
-const t = useI18n();
-
 const buttonStyle: ButtonStyle = {
   colorPreset: "layer",
   size: "large"
@@ -26,7 +24,6 @@ const openSigninDialog = () => {
   dialogFlag.value = true;
   dialogs.closeAllWithTypeThenOpen({
     title: "taskable",
-    titleI18n: true,
     dialogType: "signIn",
     payload: undefined,
     width: "400px",
@@ -36,7 +33,6 @@ const openSignInLoadingDialog = () => {
   dialogFlag.value = true;
   return dialogs.getDialog(dialogs.closeAllWithTypeThenOpen({
     title: "taskable",
-    titleI18n: true,
     dialogType: "signInLoading",
     payload: undefined,
     width: "300px",

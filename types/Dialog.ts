@@ -11,6 +11,23 @@ const dialogTypes = [
   "signInError",
   "createProjectTemplate",
   "editClass",
+  "updateMemberRole",
+  "searchUser",
+  "batchMemberAdd",
+  "sessionError",
+  "projectError",
+  "editTemplate",
+  "optionsAlert",
+  "listAnnouncements",
+  "editAnnouncement",
+  "editTask",
+  "editSubtask",
+  "memberSelect",
+  "batchCreateProject",
+  "upload",
+  "subtaskFileAttach",
+  "multilinePrompt",
+  "editTemplateFiles",
 ] as const;
 export type DialogType = typeof dialogTypes[number];
 export const isOfDialog = isOfType(dialogTypes);
@@ -27,7 +44,6 @@ export type DialogStyle = {
 export type DialogInit<T> = {
   title: string,
   icon?: string,
-  titleI18n?: boolean,
   style?: DialogStyle,
   dialogType: DialogType
   width: string,
@@ -44,7 +60,6 @@ export type Dialog<T> = {
   id: string,
   icon?: string,
   title: string,
-  titleI18n: boolean,
   style?: DialogStyle,
   dialogType: DialogType
   width: string,
@@ -59,40 +74,44 @@ export type Dialog<T> = {
 
 export type DialogAction = {
   caption: string
-  captionI18n: boolean,
   style: ButtonStyle,
   icon: string,
   expanding: boolean,
+  expanded?: boolean,
   action?: (context: Dialog<any>, emitted: any) => void,
 }
 
-export const defaultClose: DialogAction = {
-  caption: "dialogCommon.close",
-  captionI18n: true,
+export const defaultClose: DialogAction = ({
+  caption: "",
   icon: "fluent:dismiss-20-regular",
   style: {colorPreset: 'strong'},
   expanding: true,
-};
+  expanded: false,
+});
 
 export const quickAlert = (message: string, title?: string) => useDialogs().openDialog({
   title: title ?? "Alert",
   dialogType: 'alert',
   payload: message,
-  titleI18n: false,
   width: "300px",
-  x: 120,
-  y: 120,
+  close: defaultClose
 })
 
-export const quickError = (message: string, title?: string, icon?: string) => useDialogs().closeAllWithTypeThenOpen({
-  title: title ?? "dialogError.somethingWentWrong",
-  icon: icon ?? "fluent:error-circle-20-regular",
-  dialogType: "error",
-  width: "400px",
-  titleI18n: true,
-  payload: message,
-  style: {
-    titleBackground: "var(--dangerous-weak)",
-    titleColor: "var(--dangerous-strong)",
-  },
-})
+export const quickError = (message: string, title: string, icon?: string) => 
+  useDialogs().closeAllWithTypeThenOpen({
+    title: title,
+    icon: icon ?? "fluent:error-circle-20-regular",
+    dialogType: "error",
+    width: "400px",
+    payload: { 
+      message,
+    },
+    close: {
+      ...defaultClose,
+      style: {colorPreset: "dangerous-strong"}
+    },
+    style: {
+      titleBackground: "var(--dangerous-weak)",
+      titleColor: "var(--dangerous-strong)",
+    },
+  })

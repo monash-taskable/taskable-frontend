@@ -14,6 +14,8 @@
         v-model="value" 
         @focusout="unfocus"
         @focusin="focus"
+        @keydown="_onKeyDown"
+        @keyup="_onKeyUp"
         />
     </div>
     <div v-show="props.error" :style="getStyle(props.styles)" class="error-msg">
@@ -48,16 +50,16 @@ onMounted(()=>{
 })
 
 // focus and filled logic
-const emitChange = defineEmits(["change", "focusin", "focusout"]);
+const emitEvent = defineEmits(["change", "focusin", "focusout", "keydown", "keyup"]);
 
 const focusFlag = ref(props.focused);
 const focus = () => {
   focusFlag.value = true;
-  emitChange("focusin");
+  emitEvent("focusin");
 }
 const unfocus = () => {
   focusFlag.value = false;
-  emitChange("focusout");
+  emitEvent("focusout");
 };
 
 const value = ref("");
@@ -74,9 +76,12 @@ const styleSwitcher = (test: Optional<any>, varName: string): string => {
 const model = defineModel({type: String});
 
 const updateText = () => {
-  emitChange("change", value.value)
+  emitEvent("change", value.value)
   model.value = value.value;
 }
+
+const _onKeyDown = (e: KeyboardEvent) => emitEvent("keydown", e);
+const _onKeyUp = (e: KeyboardEvent) => {emitEvent("keyup", e); updateText()};
 
 
 // getters
@@ -155,6 +160,9 @@ const getStyle = (style: InputStyle) => {
     outline: none;
 
     color: var(--fg);
+
+    width: calc(100% - ($space-small * 2));
+    height: calc(100% - ($space-small * 2));
   }
 
   .placeholder {
@@ -211,23 +219,10 @@ const getStyle = (style: InputStyle) => {
 
   &.placeholder-color .placeholder { color: var(--placeholder-color) }
 
-  &.padding input
-  { padding: var(--padding); }
+  &.padding input { padding: var(--padding); }
 
-  &.width {
-    width: var(--width);
+  &.width { width: var(--width); }
 
-    &.small input { width: calc(var(--width) - ($space-small * 2)); }
-    &.medium input { width: calc(var(--width) - ($space-medium * 2)); }
-    &.large input { width: calc(var(--width) - ($space-large * 2)); }
-  }
-
-  &.height {
-    height: var(--height);
-
-    &.small input { height: (var(--width) - ($space-small * 2)); }
-    &.medium input { height: (var(--width) - ($space-medium * 2)); }
-    &.large input { height: (var(--width) - ($space-large * 2)); }
-  }
+  &.height { height: var(--height); }
 }
 </style>

@@ -7,10 +7,26 @@
           
           <IconButton
             v-if="appState.showingTitle.value"
+            @click="_openProjectMenu"
+            :id="_projMenuId"
             :tabindex="1002"
             :styles="navBtnStyle"
             :icon="appState.titleIcon.value"
-            :caption="appState.titleI18n ? $t(appState.title.value) : appState.title.value" />
+            :caption="appState.title.value" />
+          <TitleDropdown :id="_projMenuId" :button="_projMenu" click-away :show="_projMenuRef" @hide="_hideProjMenu">
+            <template #tab>
+              <IconButton
+                v-if="appState.showingTitle.value"
+                @click="_hideProjMenu"
+                id="page-title-btn"
+                :tabindex="1002.1"
+                :styles="{...navBtnStyle, backgroundColor: 'var(--layer-background)'}"
+                :icon="appState.titleIcon.value"
+                :caption="appState.title.value" />
+            </template>
+            <div class="dropdown-content">
+            </div>
+          </TitleDropdown>
         </nav>
         <nav>
           <!-- Notification Menu -->
@@ -46,18 +62,24 @@
   
           <!-- User Menu -->
           <IconButton :tabindex="1005" :id="_userMenuId" @click="_showUserMenu" :styles="navBtnStyle"
-            icon="fluent:person-20-regular" :caption="getUsername(appState.session.value.profile)" />
+            icon="fluent:person-20-regular" :caption="getUsername(appState.session.value.profile)">
+            <Skeleton v-show="appStateStore.sessionLoading"/>
+          </IconButton>
           <TitleDropdown :id="_userMenuId" :button="_userMenu" click-away :show="_userMenuRef" @hide="_hideUserMenu">
             <template #tab>
               <IconButton :tabindex="1005.1" @click="_hideUserMenu"
                 :styles="{ ...navBtnStyle, backgroundColor: 'var(--layer-background)' }" icon="fluent:person-20-regular"
-                :caption="getUsername(appState.session.value.profile)" />
+                :caption="getUsername(appState.session.value.profile)">
+                <Skeleton v-show="appStateStore.sessionLoading"/>
+              </IconButton>
             </template>
             <div class="dropdown-content user-menu">
               <IconButton :tabindex="1005.2" @click="navToProfile" :caption="$t('header.btn.profile')"
                 icon="fluent:person-square-20-regular" />
               <IconButton :tabindex="1005.3" @click="navToAbout" :caption="$t('header.btn.about')"
                 icon="fluent:info-20-regular" />
+              <IconButton :tabindex="1005.4" @click="navToDebug" :caption="$t('header.btn.debug')"
+                icon="fluent:bug-20-regular" v-if="conf.public.debug" />
               <IconButton :tabindex="1005.4" :caption="$t('header.btn.signOut')" :styles="{ colorPreset: 'dangerous' }"
                 icon="fluent:arrow-exit-20-regular" @click="signOut" />
             </div>
@@ -74,11 +96,17 @@
 import { sprintf } from 'sprintf-js';
 import { buttonStyle } from '~/types/Button';
 import type { Optional } from '~/types/Optional';
-import type { Profile } from '~/types/Session';
 
-const t = useI18n();
+const {t} = useI18n();
+
+useHead({
+  title: t('Monash Taskable'),
+})
+
+const conf = useRuntimeConfig();
 const notificationCount = ref(30);
 const navBtnStyle = buttonStyle({ colorPreset: 'layer' });
+const {setLocale} = useI18n();
 
 const appStateStore = useAppStateStore()
 const appState = storeToRefs(appStateStore);
@@ -141,6 +169,20 @@ const {
 } = _constructExpandingDropdown(ref(false), ref(undefined), "navbtn-notimenu");
 
 
+// project menu
+const {
+  hideDropdown: _hideProjMenu,
+  showDropdown: _showProjMenu,
+  expandedRef: _projExpanded,
+  ref: _projMenuRef,
+  elem: _projMenu,
+  id: _projMenuId
+} = _constructExpandingDropdown(ref(false), ref(undefined), "page-title-btn");
+const _openProjectMenu = () => {
+  if (appStateStore.projectMenuState) _showProjMenu();
+}
+
+
 // static nav links
 const navTo = (path: string) => async () => {
   await navigateTo(path);
@@ -150,18 +192,25 @@ const navToHome = navTo("/");
 const navToAbout = navTo("/about");
 const navToSettings = navTo("/settings");
 const navToProfile = navTo("/profile");
+const navToDebug = () => location.href = "/debug";
 
 // session
 const authFlag = ref(false);
 onMounted(async () => {
-  authFlag.value = true;
-  // if (await appStateStore.validateSession()){
-  //   authFlag.value = true;
-  //   await appStateStore.initSessionAndCsrf();
-  // }
-  // else {
-  //   navigateTo("/login");
-  // }
+  if (useRuntimeConfig().public.debug) {
+    appStateStore.loadDebugProfile();
+    authFlag.value = true;
+    return;
+  }
+
+  if (await appStateStore.validateSession()){
+    authFlag.value = true;
+    const lang = await appStateStore.initSessionAndCsrf();
+    setLocale(lang ?? 'en-au');
+  }
+  else {
+    navigateTo("/login");
+  }
 })
 
 </script>
@@ -181,11 +230,18 @@ onMounted(async () => {
 }
 
 .centered {
-  @include flex-col;
-  @include flex-cross(center);
+  z-index: 3000 !important;
+  display: flex;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 .layout-root {
+  @include flex-col;
+  @include flex-main(flex-start);
+  @include flex-cross(stretch);
+
   height: 100%;
 }
 

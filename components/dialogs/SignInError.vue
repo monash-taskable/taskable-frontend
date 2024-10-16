@@ -26,8 +26,6 @@ const tryAgain = () => {
   navigateTo("/login");
 }
 
-const t = useI18n();
-
 </script>
 
 <style scoped lang="scss">

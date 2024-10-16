@@ -17,7 +17,6 @@ import type { PropType } from 'vue';
 import type { ButtonStyle } from '~/types/Button';
 import type { Dialog } from '~/types/Dialog';
 
-const t = useI18n();
 const props = defineProps({
   context: {type: Object as PropType<Dialog<undefined>>, required: true},
 });

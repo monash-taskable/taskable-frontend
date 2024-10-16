@@ -5,7 +5,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       oAuthLinkGoogle: process.env.GOOGLE_OAUTH_URL,
-      apiHost: process.env.API_HOST
+      apiHost: process.env.API_HOST,
+      debug: process.env.DEBUG === "TRUE"
     }
   },
 
@@ -19,11 +20,32 @@ export default defineNuxtConfig({
         {
           code: 'en-au',
           file: 'en-au.json'
-        }
+        },
+        {
+          code: 'zh-tw',
+          file: 'zh-tw.json'
+        },
+        {
+          code: 'si-lk',
+          file: 'si-lk.json'
+        },
+        {
+          code: 'de-de',
+          file: 'de-de.json'
+        },
+        {
+          code: 'fi-fi',
+          file: 'fi-fi.json'
+        },
+        {
+          code: 'ru-ru',
+          file: 'ru-ru.json'
+        },
       ],
       lazy: true,
       langDir: 'lang',
-      defaultLocale: 'en-au'
+      defaultLocale: 'en-au',
+      strategy: "no_prefix"
     }],
   ],
   
@@ -33,4 +55,10 @@ export default defineNuxtConfig({
 
   css: ['assets/styles/Main.scss'],
   compatibilityDate: '2024-07-08',
+
+  app: {
+    head: {
+      link: [{rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'}]
+    }
+  }
 })

@@ -2,7 +2,9 @@
   <div class="page-root">
     <div class="menu">
       <div class="greeting">
-        {{ $t('home.welcomeBack') }} <span>{{ getName(appState) }}</span>
+        {{ $t('home.welcomeBack') }} 
+        <span>{{ getName(appState) }}</span>
+        <Skeleton width="15rem" v-show="appState.sessionLoading" size="title"/>
       </div>
       <div class="row">
         <TitleButton 
@@ -17,7 +19,7 @@
           :description="$t('home.appSettingsDesc')"
           :caption="$t('home.appSettings')"/>
       </div>
-      <div class="row">
+      <!-- <div class="row">
         <TitleButton
           icon="fluent:add-square-20-regular"
           :styles="buttonStyle"
@@ -29,22 +31,22 @@
           :styles="buttonStyle"
           :description="$t('home.userProfileDesc')"
           :caption="$t('home.userProfile')"/>
-      </div>
+      </div> -->
     </div>
     <div class="recent"></div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import type { AppState } from "~/types/AppState";
 import type { ButtonStyle } from "~/types/Button";
 import { defaultClose, quickAlert } from "~/types/Dialog";
+
+const { t } = useI18n();
 
 definePageMeta({
   layout: "default"
 })
 
-const t = useI18n();
 const appState = useAppStateStore();
 
 // name
@@ -77,19 +79,17 @@ const dialogControl = useDialogs();
 const openCreateProject = () => dialogControl.closeAllWithTypeThenOpen({
   width: "450px",
   height: "fit-content",
-  title: `projects.newProject.title`,
-  titleI18n: true,
+  title: t("projects.newProject.title"),
   dialogType: "createProjectTemplate",
   close: {
     ...defaultClose,
-    caption: `dialogCommon.cancel`, 
+    caption: t("dialogCommon.cancel"), 
     style: {colorPreset: "strong"}
   },
   actionsRight: [
     {
-      caption: `dialogCommon.confirm`,
-      captionI18n: true,
-      icon: "fluent:checkmark-20-regular",
+      caption: t("dialogCommon.confirm"),
+      icon: t("fluent:checkmark-20-regular"),
       style: {colorPreset: "accent-strong"},
       action: (_, x) => quickAlert(x),
       expanding: false,
@@ -117,6 +117,7 @@ const openCreateProject = () => dialogControl.closeAllWithTypeThenOpen({
   @include flex-col;
   @include flex-main(center);
   @include flex-cross(center);
+  // background: linear-gradient(45deg, var(--accent-weak) 0%, var(--accent-interact) 100%);
 }
 
 .menu {
@@ -139,9 +140,12 @@ const openCreateProject = () => dialogControl.closeAllWithTypeThenOpen({
 }
 
 .greeting {
-  padding-bottom: $space-medium;
   @include typemix-title;
+  @include flex-cross(center);
 
+  display: inline-flex;
+  padding-bottom: $space-medium;
+  gap: $space-extra-small;
   span { color: var(--accent-strong); }
 }
 </style>

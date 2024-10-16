@@ -21,7 +21,7 @@ const props = defineProps({
 
 .alert-body {
   @include typemix-label;
-  padding: $space-small;
+  padding: $space-large;
   height: var(--height);
 }
 </style>

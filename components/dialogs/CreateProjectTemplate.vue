@@ -6,6 +6,7 @@
 
     <div class="input-group">
       <TextInput
+        focused
         :placeholder="props.context.payload.template ? $t('projects.newTemplate.name') : $t('projects.newProject.name')"
         :styles="{colorPreset: 'layer', width: '100%'}"
         @change="emitValue" :error="error" :error-messages="props.context.payload.template ? $t('projects.newTemplate.cannotBeEmpty') : $t('projects.newProject.cannotBeEmpty')"/>
@@ -16,8 +17,6 @@
 <script lang="ts" setup>
 import type { PropType } from 'vue';
 import type { Dialog } from '~/types/Dialog';
-
-const t = useI18n();
 
 const props = defineProps({
   context: {type: Object as PropType<Dialog<{

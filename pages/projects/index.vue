@@ -1,70 +1,51 @@
 <template>
-  <div class="container">
+  <div class="container" :class="isEmpty() ? 'empty' : ''">
     <ProjectClassList :project-class="projCls" v-for="[_, projCls] in Object.entries(projectClassRef.projectClasses.value)" />
-    <ProjectClassList :project-class="personalProjects" personal/>
+    <div v-if="isEmpty()">
+      {{ $t('projects.noClass') }}
+    </div>
     <div class="new-section">
       <IconButton @click="openCreateClassForm" icon="fluent:people-community-add-20-regular" :caption="$t('projects.newClass')" :styles="{colorPreset: 'accent', size: 'small'}" />
+      <IconButton v-if="useRuntimeConfig().public.debug" @click="addDebugClass" icon="fluent:bug-20-regular" :caption="$t('projects.addDebugClass')" :styles="{colorPreset: 'accent', size: 'small'}" />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { getCurrentGMTDateTime } from '~/scripts/Datetime';
 import { FetchRequest } from '~/scripts/FetchTools';
-import { getCurrentGMTDateTime } from '~/scripts/Utils';
 import { defaultClose, type Dialog } from '~/types/Dialog';
-import type { ProjectClass } from '~/types/ProjectClass';
+import { debugProjectClass } from '~/types/ProjectClass';
 import { CreateClassRequest, GetClassResponse } from '~/types/proto/ProjectClass';
 
-const t = useI18n();
+const {t} = useI18n();
 
-useAppStateStore().setTitle("projects.title", true, true);
+useAppStateStore().setTitle(t("projects.title"), true);
 const dialogControl = useDialogs();
-
-// project classes
-const personalProjects: ProjectClass = {
-  archived: false,
-  classId: -1,
-  projects: [
-    {
-      archived: false,
-      name: "awa",
-      description: "",
-      project_id: 1987
-    }
-  ],
-  templates: [],
-  description: "",
-  name: "<CLASS-PERSONAL>",
-  createdAt: new Date(),
-  role: "Owner",
-  members: [
-    {id: 2, name: "1 John Smith", role: 'Student'},
-    {id: 3, name: "3 Jane Doe", role: 'Admin'},
-    {id: 6, name: "2 Jane Doe", role: 'Student'},
-  ]
-}
-
 
 const projectClassStore = useProjectClassStore();
 const projectClassRef = storeToRefs(projectClassStore);
+
+const addDebugClass = () => projectClassStore.setLocalClass(debugProjectClass);
+
+const isEmpty = () => Object.keys(projectClassRef.projectClasses.value).length === 0;
+
 
 // create class
 const openCreateClassForm = () => dialogControl.closeAllWithTypeThenOpen({
   width: "350px",
   height: "fit-content",
-  title: "projects.newClass.title",
-  titleI18n: true,
+  title: t("projects.newClass.title"),
   dialogType: "createClass",
   close: {
     ...defaultClose,
-    caption: "dialogCommon.cancel", 
+    caption: t("dialogCommon.cancel"), 
     style: {colorPreset: "strong"}
   },
   actionsRight: [
     {
-      caption: "dialogCommon.confirm",
-      captionI18n: true,
-      icon: "fluent:checkmark-20-regular",
+      caption: t("dialogCommon.confirm"),
+      icon: t("fluent:checkmark-20-regular"),
       style: {colorPreset: "accent-strong"},
       action: (d: Dialog<{}>, emt?: any) => {
         emt = emt as string;
@@ -73,7 +54,7 @@ const openCreateClassForm = () => dialogControl.closeAllWithTypeThenOpen({
         }
 
         // create class call
-        const createClassReq = FetchRequest.protectedAPI("create-class")
+        const createClassReq = FetchRequest.protectedAPI("/classes/create")
           .post()
           .payload(CreateClassRequest.encode, {
             classDesc: "",
@@ -111,12 +92,12 @@ onMounted(async () => {
   border: 2px dashed var(--layer-background);
   padding: calc($space-medium - 4px);
   min-width: max-content;
-
+  
   & .section-title {
     @include flex-row;
     @include flex-cross(center);
     @include flex-main(space-around);
-
+    
     & .controls { @include flex-row; };
     & h3 { flex: 1; }
   }
@@ -132,11 +113,21 @@ onMounted(async () => {
   padding: $space-medium;
   gap: $space-medium;
   overflow-x: auto;
-
+  
   @media only screen and (max-width: 700px) {
     @include flex-col;
     @include flex-cross(stretch);
     @include flex-main(flex-start);
   }
+}
+
+.empty {
+  @include flex-col;
+  @include flex-cross(center);
+  @include flex-main(center);
+  @include typemix-title;
+
+
+  gap: $space-extra;
 }
 </style>

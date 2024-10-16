@@ -6,7 +6,7 @@
         <span v-if="context.icon" class="title-icon">
           <Icon :name="context.icon"/>
         </span>
-        {{ (context.title === "@@UUID") ? context.id : (context.titleI18n ? $t(context.title) : context.title) }}
+        {{ (context.title === "@@UUID") ? context.id : context.title }}
       </div>
       <div class="right">
         <IconButton 
@@ -15,40 +15,52 @@
           :expanding="action.expanding"
           :styles="{...action.style, size: 'small'}"
           :icon="action.icon"
-          :caption="action.captionI18n
-            ? $t(action.caption)
-            : action.caption"/>
+          :caption="action.caption"/>
         <IconButton 
           v-if="context.close !== undefined"
           @click="closeDialog"
           :expanding="context.close.expanding"
+          :expanded="context.close.expanded"
           :styles="{...context.close.style, size: 'small'}"
           :icon="context.close.icon"
-          :caption="context.close.captionI18n
-            ? $t(context.close.caption)
-            : context.close.caption"/>
+          :caption="context.close.caption"/>
         <IconButton 
           v-for="action in context.actionsRight"
           @click="() => getClickEvent(props.context, emitted, action.action)"
           :expanding="action.expanding"
           :styles="{...action.style, size: 'small'}"
           :icon="action.icon"
-          :caption="action.captionI18n
-            ? $t(action.caption)
-            : action.caption"/>
+          :caption="action.caption"/>
       </div>
       <div class="left" @mousedown="dragOn" @mouseup="dragOff" @mousemove="onDrag" @mouseleave="dragOff"></div>
     </div>
     
     <!-- Dialog Types -->
     <DialogsAlert @emit="updateEmit" v-if="context.dialogType === 'alert'" :context="props.context"/>
-    <DialogsError @emit="updateEmit" v-if="context.dialogType === 'error'" :context="props.context"/>
-    <DialogsCreateClass @emit="updateEmit" v-if="context.dialogType === 'createClass'" :context="props.context"/>
-    <DialogsSignIn @emit="updateEmit" v-if="context.dialogType === 'signIn'" :context="props.context"/>
-    <DialogsSignInLoading @emit="updateEmit" v-if="context.dialogType === 'signInLoading'" :context="props.context"/>
-    <DialogsSignInError @emit="updateEmit" v-if="context.dialogType === 'signInError'" :context="props.context"/>
-    <DialogsCreateProjectTemplate @emit="updateEmit" v-if="context.dialogType === 'createProjectTemplate'" :context="props.context"/>
-    <DialogsEditClass @emit="updateEmit" v-if="context.dialogType === 'editClass'" :context="props.context"/>
+    <DialogsError @emit="updateEmit" v-else-if="context.dialogType === 'error'" :context="props.context"/>
+    <DialogsCreateClass @emit="updateEmit" v-else-if="context.dialogType === 'createClass'" :context="props.context"/>
+    <DialogsSignIn @emit="updateEmit" v-else-if="context.dialogType === 'signIn'" :context="props.context"/>
+    <DialogsSignInLoading @emit="updateEmit" v-else-if="context.dialogType === 'signInLoading'" :context="props.context"/>
+    <DialogsSignInError @emit="updateEmit" v-else-if="context.dialogType === 'signInError'" :context="props.context"/>
+    <DialogsCreateProjectTemplate @emit="updateEmit" v-else-if="context.dialogType === 'createProjectTemplate'" :context="props.context"/>
+    <DialogsEditClass @emit="updateEmit" v-else-if="context.dialogType === 'editClass'" :context="props.context"/>
+    <DialogsUpdateMemberRole @emit="updateEmit" v-else-if="context.dialogType === 'updateMemberRole'" :context="props.context"/>
+    <DialogsSearchUser @emit="updateEmit" v-else-if="context.dialogType === 'searchUser'" :context="props.context"/>
+    <DialogsBatchMemberAdd @emit="updateEmit" v-else-if="context.dialogType === 'batchMemberAdd'" :context="props.context"/>
+    <DialogsSessionError @emit="updateEmit" v-else-if="context.dialogType === 'sessionError'" :context="props.context"/>
+    <DialogsProjectError @emit="updateEmit" v-else-if="context.dialogType === 'projectError'" :context="props.context"/>
+    <DialogsEditTemplate @emit="updateEmit" v-else-if="context.dialogType === 'editTemplate'" :context="props.context"/>
+    <DialogsOptionsAlert @emit="updateEmit" v-else-if="context.dialogType === 'optionsAlert'" :context="props.context"/>
+    <DialogsEditAnnouncement @emit="updateEmit" v-else-if="context.dialogType === 'editAnnouncement'" :context="props.context"/>
+    <DialogsListAnnouncements @emit="updateEmit" v-else-if="context.dialogType === 'listAnnouncements'" :context="props.context"/>
+    <DialogsEditTask @emit="updateEmit" v-else-if="context.dialogType === 'editTask'" :context="props.context"/>
+    <DialogsEditSubtask @emit="updateEmit" v-else-if="context.dialogType === 'editSubtask'" :context="props.context"/>
+    <DialogsMemberSelect @emit="updateEmit" v-else-if="context.dialogType === 'memberSelect'" :context="props.context"/>
+    <DialogsBatchCreateProject @emit="updateEmit" v-else-if="context.dialogType === 'batchCreateProject'" :context="props.context"/>
+    <DialogsUpload @emit="updateEmit" v-else-if="context.dialogType === 'upload'" :context="props.context"/>
+    <DialogsSubtaskFileAttach @emit="updateEmit" v-else-if="context.dialogType === 'subtaskFileAttach'" :context="props.context"/>
+    <DialogsMultilinePrompt @emit="updateEmit" v-else-if="context.dialogType === 'multilinePrompt'" :context="props.context"/>
+    <DialogsEditTemplateFiles @emit="updateEmit" v-else-if="context.dialogType === 'editTemplateFiles'" :context="props.context"/>
   </div>
 </template>
 
@@ -56,8 +68,6 @@
 import { type PropType } from 'vue';
 import type { Dialog } from '~/types/Dialog';
 import type { Optional } from '~/types/Optional';
-
-const t = useI18n();
 
 const props = defineProps({
   context: {type: Object as PropType<Dialog<any>>, required: true},

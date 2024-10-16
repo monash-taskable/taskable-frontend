@@ -18,10 +18,11 @@
 </template>
 
 <script lang="ts" setup>
-import { isAccentColor, type Theme } from '~/types/Theming';
+import type { PropType } from 'vue';
+import { isAccentColor, type AccentColor, type Theme } from '~/types/Theming';
 
 const props = defineProps({
-  "color": {type: String, default: "blue"}
+  "color": {type: String as PropType<AccentColor>, default: "blue"}
 });
 
 const appConfigStore = useAppConfigStore();

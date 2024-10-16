@@ -5,13 +5,12 @@
 </template>
 
 <script lang="ts" setup>
-import { FetchError, FetchRequest } from '~/scripts/FetchTools';
+import { API, FetchError, FetchRequest } from '~/scripts/FetchTools';
 import type { Optional } from '~/types/Optional';
 import { GetCsrfResponse, LoginExchangeRequest, LoginExchangeResponse } from '~/types/proto/Auth';
 
 definePageMeta({ layout: "empty" });
 
-const t = useI18n();
 const getClass = (dialog: boolean) => dialog ? "filtered" : "";
 
 // sign in dialog
@@ -21,7 +20,6 @@ const openSignInLoadingDialog = () => {
   dialogFlag.value = true;
   return dialogs.getDialog(dialogs.closeAllWithTypeThenOpen({
     title: "taskable",
-    titleI18n: true,
     dialogType: "signInLoading",
     payload: undefined,
     width: "300px",
@@ -29,15 +27,14 @@ const openSignInLoadingDialog = () => {
 };
 
 const appState = useAppStateStore();
-const error = (error: FetchError | Error) => {
+const error = () => {
   dialogs.closeAllDialogs();
   // timeout is for ux
   setTimeout(()=>{
     dialogs.openDialog({
       dialogType: "signInError",
-      payload: error,
+      payload: undefined,
       title: "dialogError.somethingWentWrong",
-      titleI18n: true,
       width: "350px",
       style: {
         titleBackground: "var(--dangerous-weak)",
@@ -48,43 +45,28 @@ const error = (error: FetchError | Error) => {
 }
 
 onMounted(async ()=>{
+
   dialogs.closeAllDialogs();
-  
   const route = useRoute();
 
   // check if error
   const code = route.query.code as Optional<string>;
   if (route.query.error || code === undefined) {
     dialogFlag.value = true;
-    error(new Error());
+    error();
     return;
   }
 
   openSignInLoadingDialog();
-
-  // get temp csrf token
-  const tempCsrfTokenFetch = await FetchRequest.api("/auth/get-temp-csrf").commitAndRecv(GetCsrfResponse.decode);
-  let token = "";
-  if (tempCsrfTokenFetch._result !== undefined){
-    token = tempCsrfTokenFetch._result.csrfToken;
-  }
-
-  // try sign in
-  const tokenExchange = await FetchRequest.api("/auth/login-exchange").post().payload(
-    LoginExchangeRequest.encode,
-    {authorizationCode: code},
-  ).overrideCsrf(token).commitAndRecv(LoginExchangeResponse.decode);
-  if (tokenExchange.otherErr(error).httpErr(error).isError()){
-    return;
-  }
   
-  // set global csrf
-  tokenExchange.res(csrfMessage => {
-    FetchRequest.updateCsrf(csrfMessage.csrfToken);
+  const appState = useAppStateStore();
+  if (await appState.signIn(code)) {
     location.href = "/";
-  })
+  }
+  else {
+    error();
+  }
 
-  appState.validateSession();
 })
 </script>
 
